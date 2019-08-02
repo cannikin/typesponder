@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import moment from "moment";
 import md5 from "blueimp-md5/js/md5"
-import './app.css'
+import './app.sass'
 
 const RESPONSES = [
   {
