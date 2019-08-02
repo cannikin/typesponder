@@ -10,7 +10,7 @@ class Detail extends React.Component {
 
   render() {
     try {
-      const { answers, notes } = this.props.response
+      const { id, answers, notes } = this.props.response
 
       return(
         <div className="flex">
@@ -24,7 +24,7 @@ class Detail extends React.Component {
               ))
             }
           </dl>
-          <Notes notes={notes} />
+          <Notes id={ id } notes={ notes } />
         </div>
       )
     } catch(e) {

@@ -35,12 +35,13 @@ class Notes extends React.Component {
   }
 
   render() {
-    const { notes } = this.props
+    const { id, notes } = this.props
     const { saving } = this.state
 
     return(
       <form className="w-50 pl3" action={endpoints.save} method="POST" onSubmit={ this.onSubmit }>
-        <textarea name="notes" className="w-100 h5 f6 pa3 b--moon-gray mb2" placeholder="Notes" defaultValue={notes || ""} />
+        <input type="hidden" name="id" value={ id } />
+        <textarea name="notes" className="w-100 h5 f6 br3 pa3 b--moon-gray mb2" placeholder="Notes" defaultValue={notes || ""} />
         <button type="submit" className={ `db f5 fw5 bg-pwv-red pv3 w4 white bn br2 center pointer ${ saving ? "o-70" : "" }` } disabled={ saving ? true : false }>
           {
             saving
