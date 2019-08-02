@@ -1,4 +1,5 @@
-import React from "react";
+import React from "react"
+import Notes from "./Notes"
 
 class Detail extends React.Component {
   textFormat(text) {
@@ -9,7 +10,7 @@ class Detail extends React.Component {
 
   render() {
     try {
-      const { answers } = this.props.response
+      const { answers, notes } = this.props.response
 
       return(
         <div className="flex">
@@ -23,10 +24,7 @@ class Detail extends React.Component {
               ))
             }
           </dl>
-          <form className="w-50 pl3" method="post">
-            <textarea className="w-100 h5 f6 pa3 b--moon-gray mb2" placeholder="Notes" />
-            <button type="submit" className="db f5 fw5 bg-pwv-red pv3 w4 white bn br2 center">Save</button>
-          </form>
+          <Notes notes={notes} />
         </div>
       )
     } catch(e) {

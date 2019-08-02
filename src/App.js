@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './styles/app.sass'
 import logo from './images/logo.svg'
 
+import endpoints from './endpoints'
 import Responses from './components/Responses'
 import Detail from './components/Detail'
 
@@ -13,7 +14,7 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    fetch('/.netlify/functions/hello')
+    fetch(endpoints.getResponses)
       .then(response => response.json())
       .then(json => this.setState({ responses: json }))
       .catch()
