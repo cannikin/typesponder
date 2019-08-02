@@ -8,6 +8,8 @@ exports.handler = (event, context, callback) => {
     })
   }
 
+  console.info(event.body)
+
   callback(null, {
     statusCode: 200,
     body: event.body
