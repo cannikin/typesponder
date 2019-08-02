@@ -8,7 +8,7 @@ exports.handler = (event, context, callback) => {
     })
   }
 
-  console.info(event.body)
+  console.info(`post data: ${event.body}`)
 
   callback(null, {
     statusCode: 200,
