@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import './app.sass'
+import './styles/app.sass'
+import logo from './images/logo.svg'
 
 import Responses from './components/Responses'
 import Detail from './components/Detail'
@@ -34,6 +35,7 @@ class App extends React.Component {
         <div className="app sans-serif">
           <header className="App-header ph3 pv3 mb4 cf bb b--moon-gray">
             <h1 className="ma0 f4 fl">
+              <img src={ logo } alt="logo" className="w2 v-mid mr2" />
               <Link to="/" className="no-underline blue">Typesponder</Link>
             </h1>
             <h3 className="mt1 mb0 f6 fw4 fr silver">{ responses.length } Responses</h3>
