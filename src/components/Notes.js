@@ -28,7 +28,6 @@ class Notes extends React.Component {
       .then(response => ( response.json() ))
       .then(data => {
         this.setState({ saving: false })
-        console.info(data)
       })
 
     event.preventDefault()

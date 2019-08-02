@@ -22,8 +22,6 @@ class App extends React.Component {
 
   render() {
     const { responses } = this.state
-    console.info('rendering')
-    console.info(responses)
 
     return (
       <Router>
