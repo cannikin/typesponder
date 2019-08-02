@@ -26,11 +26,9 @@ const RESPONSES = [
 ]
 
 exports.handler = (event, context, callback) => {
-  setTimeout(() => {
-    callback(null, {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(RESPONSES)
-    });
-  }, 500)
+  callback(null, {
+    statusCode: 200,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(RESPONSES)
+  })
 }
