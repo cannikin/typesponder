@@ -1,4 +1,6 @@
 exports.handler = (event, context, callback) => {
+
+  // only respond to POST
   if (event.httpMethod != 'POST') {
     return callback(null, {
       statusCode: 404,
@@ -6,13 +8,8 @@ exports.handler = (event, context, callback) => {
     })
   }
 
-  let body = event.body
-
-  console.info(body)
-
   callback(null, {
     statusCode: 200,
-    //headers: { "Content-Type": "application/json" },
-    body: body
+    body: event.body
   })
 }
