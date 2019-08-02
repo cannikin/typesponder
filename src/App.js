@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import moment from "moment";
+import md5 from "blueimp-md5/js/md5"
+import './app.css'
 
 const RESPONSES = [
   {
@@ -44,16 +46,17 @@ class App extends React.Component {
     return (
       <Router>
         <div className="app sans-serif">
-          <header className="App-header">
-            <h1 className="mt0 mb3 ph3 pv2 f4 bb b--moon-gray dark-red">
-              <Link to="/">Typesponder</Link>
+          <header className="App-header ph3 pv3 mb4 cf bb b--moon-gray">
+            <h1 className="ma0 f4 fl">
+              <Link to="/" className="no-underline blue">Typesponder</Link>
             </h1>
+            <h3 className="mt1 mb0 f6 fw4 fr silver">{ responses.length } Responses</h3>
           </header>
-          <main className="flex">
-            <nav className="w-25 ph3">
+          <main className="flex flex-wrap flex-auto-ns">
+            <nav className="w-100 w-third-ns mb3 ph3 bb bn-ns b--moon-gray">
               <Responses list={ responses } />
             </nav>
-            <section className="w-75 ph3">
+            <section className="w-100 w-two-thirds-ns ph3">
               <Route exact path="/" render={() => (
                 <div>
                   Pick a response to get started
@@ -108,15 +111,21 @@ class Responses extends React.Component {
 class Row extends React.Component {
   render() {
     const { id, email, created_at } = this.props
+    const avatar = md5(email)
 
     return(
       <li className="mb3">
-        <Link to={`/responses/${id}`} className="db blue dim">
-          { email }
+        <Link to={`/responses/${id}`} className="flex dim no-underline">
+          <div className="w2-5 mr2">
+            <img src={`https://gravatar.com/avatar/${avatar}`} alt="avatar" className="br-100" />
+          </div>
+          <div>
+            <span className="db red">{ email }</span>
+            <time className="f7 silver" dateTime={ moment(created_at).format() }>
+              { moment(created_at).format('LLL') }
+            </time>
+          </div>
         </Link>
-        <time className="f7 silver" dateTime={ moment(created_at).format() }>
-          { moment(created_at).format('LLL') }
-        </time>
       </li>
     )
   }
