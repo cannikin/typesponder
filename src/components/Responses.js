@@ -1,10 +1,8 @@
 import React from "react";
 import Row from "./Row";
 
-class Responses extends React.Component {
-  render() {
-    const { list } = this.props
-
+export default function Responses({ list }) {
+  if (list.length) {
     return(
       <ul className="list ma0 pa0">
         {
@@ -14,7 +12,9 @@ class Responses extends React.Component {
         }
       </ul>
     )
+  } else {
+    return(
+      <p>Loading...</p>
+    )
   }
 }
-
-export default Responses

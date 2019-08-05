@@ -1,36 +1,32 @@
 import React from "react"
 import Notes from "./Notes"
 
-class Detail extends React.Component {
-  textFormat(text) {
+export default function Detail({ response }) {
+  function textFormat(text) {
     return text.split('\n').map((item, key) => {
       return <span key={key}>{item}<br/></span>
     })
   }
 
-  render() {
-    try {
-      const { id, answers, notes } = this.props.response
+  if (response) {
+    const { id, answers, notes } = response
 
-      return(
-        <div className="flex">
-          <dl className="w-50 mt0 mb3 measure">
-            {
-              answers.map((hash, i) => (
-                <div key={ i }>
-                  <dt className="f4 fw5 pwv-blue lh-title mb2">{ hash.question }</dt>
-                  <dd className="ma0 mb4 pwv-blue o-70 lh-copy">{ this.textFormat(hash.answer) }</dd>
-                </div>
-              ))
-            }
-          </dl>
-          <Notes id={ id } notes={ notes } />
-        </div>
-      )
-    } catch(e) {
-      return null
-    }
+    return(
+      <div className="flex">
+        <dl className="w-50 mt0 mb3 measure">
+          {
+            answers.map((hash, i) => (
+              <div key={ i }>
+                <dt className="f4 fw5 pwv-blue lh-title mb2">{ hash.question }</dt>
+                <dd className="ma0 mb4 pwv-blue o-70 lh-copy">{ textFormat(hash.answer) }</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <Notes id={ id } notes={ notes } />
+      </div>
+    )
+  } else {
+    return null
   }
 }
-
-export default Detail
