@@ -7,7 +7,13 @@ export default function Responses({ list }) {
       <ul className="list ma0 pa0">
         {
           list.map(item =>
-            <Row key={ item.id } id={item.id} name={item.name} email={item.email} createdAt={item.created_at} />
+            <Row
+              key={ item.id }
+              id={ item.id }
+              email={ item.email }
+              createdAt={ item.created_at }
+              tags={ item.tags }
+            />
           )
         }
       </ul>
