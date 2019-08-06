@@ -12,8 +12,8 @@ export default function Detail({ response }) {
     const { id, answers, notes } = response
 
     return(
-      <div className="flex">
-        <dl className="w-50 mt0 mb3 measure">
+      <div className="relative">
+        <dl className="w-50-ns mt0 mb3 measure">
           {
             answers.map((hash, i) => (
               <div key={ i }>

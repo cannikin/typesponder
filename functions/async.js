@@ -13,14 +13,13 @@ exports.handler = async (event, context) => {
     }
   }
 
-  async function loop() {
+  async function get() {
     await asyncForEach([1, 2], async num => {
       await fetch(500)
-      console.log('done')
     })
   }
 
-  await loop()
+  await get()
 
   return {
     statusCode: 200,

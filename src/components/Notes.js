@@ -49,7 +49,7 @@ export default function Notes({id, notes}) {
   }
 
   return(
-    <form className="w-50 pl3" action={endpoints.save} method="POST" onSubmit={ onSubmit }>
+    <form className="w-third-ns mt5-ns pl3-ns fixed-ns top-2 right-2" action={endpoints.save} method="POST" onSubmit={ onSubmit }>
       <input type="hidden" name="id" value={ id } />
       <textarea
         name="notes"
@@ -59,7 +59,7 @@ export default function Notes({id, notes}) {
         onChange={ onChange } />
       <button
         type="submit"
-        className={ `db f5 fw5 bg-pwv-red pv3 w4 white bn br2 center pointer ${ saveButtonClass() }` }
+        className={ `db f5 fw5 bg-pwv-red pv3 w4 white bn br2 center pointer mb3 ${ saveButtonClass() }` }
         disabled={ saving }>
         { saveButtonLabel() }
       </button>
