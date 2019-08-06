@@ -11,7 +11,7 @@ export default function Responses({ list }) {
               key={ item.id }
               id={ item.id }
               email={ item.email }
-              createdAt={ item.created_at }
+              createdAt={ item.createdAt }
               tags={ item.tags }
             />
           )
