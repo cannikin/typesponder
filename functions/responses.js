@@ -79,7 +79,7 @@ exports.handler = async (event, context) => {
     raw.answers.forEach(data => {
       let userAnswers = [],
           email = extractEmail(data.answers),
-          form = FORMS.find(f => f.id == data.formId)
+          form = FORMS.find(f => f.id === data.formId)
 
       data.answers.forEach(answer => {
         if (answer.field) {
