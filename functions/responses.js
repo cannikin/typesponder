@@ -24,10 +24,6 @@ exports.handler = async (event, context) => {
   }
   let output = []
 
-  function wait(ms) {
-    return new Promise(r => setTimeout(r, ms));
-  }
-
   // custom version of forEach that respects promises
   async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
