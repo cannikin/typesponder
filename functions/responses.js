@@ -89,12 +89,10 @@ exports.handler = async (event, context) => {
       let existingUser = output.find(o => o.email === email)
 
       if (existingUser) {
-        console.info('existing')
         // user already found, just append answers
         existingUser.tags.push(form.name)
         existingUser.answers = existingUser.answers.concat(userAnswers)
       } else {
-        console.info('new')
         // user doesn't exist, add to output along with answers
         output.push({
           id: data.id,
