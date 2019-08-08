@@ -1,0 +1,50 @@
+// Example response that the front end is looking for 
+
+[
+  {
+    "id": "4rdvi15b6k298w1lslg34rdh0934tklk",
+    "email": "jamesgondwe@cydmalawi.org",
+    "createdAt": "2019-08-05T17:46:38Z",
+    "tags": [
+      "intro"
+    ],
+    "answers": [
+      {
+        "question": "Your name",
+        "answer": "James Gondwe"
+      },
+      {
+        "question": "Organization name",
+        "answer": "Centre for Youth and Development"
+      },
+      {
+        "question": "Your position within the organization",
+        "answer": "Executive Director"
+      },
+      {
+        "question": "Organization website (if available)",
+        "answer": "https://www.cydmalawi.org"
+      },
+      {
+        "question": "Your phone",
+        "answer": "+265999940260"
+      },
+      {
+        "question": "Your email",
+        "answer": "jamesgondwe@cydmalawi.org"
+      },
+      {
+        "question": "Countries your organization operates in",
+        "answer": "Malawi"
+      },
+      {
+        "question": "How would you describe what your organization does to an interested non-expert?",
+        "answer": "We are a local Non-Governmental organization that works with Government and communities to improve lives for children, youth and women to create a conducive environment for them to develop to their fullest potential. We effect changes in sectors of education, sustainable livelihoods and health."
+      },
+      {
+        "question": "What current family planning programming do you have? How does it fit within your overall programming?",
+        "answer": "Our family planning program is called \"Community-based Integrated family planning Promotion (CIFPP)\" and is embedded in our strategic plan and aims at enabling people to have access to information, products and services. \n\nOur model revolves around “Community-Health workers (CHW)” who are based in communities but are linked to health facilities.  Our model builds the capacity of CWH and provides them with tools to ensure that family planning services are provided effectively. Apart from training, we also provide push bicycles for mobility and materials for raising awareness. We also conduct social mobilization through the use of Theatre for Development by training youth on theatre and Family planning. \n\nWe also work on Health governance in relation to family at facility level but also at district level. Our work at facility level is with the Health Advisory committee, by providing them with training on social accountability specifically Community Score Card. They facilitate these sessions with health facility staff and community members to rank service delivery and develop plans for improvement. At district level we work with the District Health Technical Committee to lobby for provision of contraceptives and improved service delivery in the district specifically hard to reach areas. \n\nFamily planning contributes to health family's, health children, youth and women allowing them to access education and other opportunities and reach their fullest potential. \n"
+      }
+    ]
+  }
+]
