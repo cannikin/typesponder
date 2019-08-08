@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
 const Photon = require("@generated/photon")
+const moment = require("moment")
 
 const photon = new Photon()
 
@@ -13,7 +14,7 @@ async function asyncForEach(array, callback) {
 async function main() {
 
   ////////////////////////
-  // Forms
+  // Forms, Questions
   ////////////////////////
 
   const formData = [
@@ -470,6 +471,220 @@ async function main() {
           }
         ]
       }
+    },
+    {
+      uid: "vuL4pI",
+      name: "New - Start",
+      tag: "(N) Start",
+      questions: {
+        create: [
+          {
+            uid: 'QLvCL7dN8vsp',
+            text: 'When was your organization founded?',
+            type: 'long_text'
+          },
+          {
+            uid: 'emsscfAphSSV',
+            text: 'Number of paid staff and basic list of positions',
+            type: 'long_text'
+          },
+          {
+            uid: 'Rn9WI8PEHqVp',
+            text: "Last year's operating budget (in US$)",
+            type: 'short_text'
+          }
+        ]
+      }
+    },
+    {
+      uid: "SO6tIV",
+      name: "New - Activities & Learnings",
+      tag: "(N) Learnings",
+      questions: {
+        create: [
+          {
+            uid: 'qhrjx9k7T6Bt',
+            text: 'What problems with access to family planning ' +
+              'supplies/information/rights do you have within your community? How ' +
+              'do you know? What kinds of needs assessment(s) did you complete ' +
+              'within the community?',
+            type: 'long_text'
+          },
+          {
+            uid: 'kibn5mcbBoMC',
+            text: 'How did you determine that your program(s) will solve the problem(s)?',
+            type: 'long_text'
+          },
+          {
+            uid: 'kv7iSIaOoB3s',
+            text: 'Who do you serve with your family planning programs?',
+            type: 'long_text'
+          },
+          {
+            uid: 'OwRHvlXETUmi',
+            text: 'How and why did you decide to focus on your ' +
+              'current beneficiaries in your family planning ' +
+              'work?',
+            type: 'long_text'
+          },
+          {
+            uid: 'jnHoRFGHXxJ5',
+            text: 'Who in your organization is responsible for ' +
+              'collecting data and tracking progress toward your ' +
+              'family planning goals? What does their work look ' +
+              'like?',
+            type: 'long_text'
+          },
+          {
+            uid: 'CNXMKGgkWXgt',
+            text: 'What assumptions did you have to assess on the ' +
+              'road to achieving your expected program results?',
+            type: 'long_text'
+          },
+          {
+            uid: 'pQrfUOlz3afp',
+            text: 'Please provide an example of a family planning program you had ' +
+              'for at least one year. What outputs and outcomes did you ' +
+              'measure? Did you collect any data that demonstrated long-term ' +
+              'impact?',
+            type: 'long_text'
+          },
+          {
+            uid: 'RnBWaWC0zPw0',
+            text: 'How do you know that your family ' +
+              'planning intervention(s) is/are ' +
+              'working?',
+            type: 'long_text'
+          }
+        ]
+      }
+    },
+    {
+      uid: "aWm1bg",
+      name: "New - Big Picture",
+      tag: "(N) Big Picture",
+      questions: {
+        create: [
+          {
+            uid: 'eSIWwC2aEuQs',
+            text: 'What other organizations provide family planning ' +
+              'programs in your region and/or community? How does your ' +
+              'work differ from theirs? How do you fit in the overall ' +
+              'system?',
+            type: 'long_text'
+          },
+          {
+            uid: 'MniBe2bTzlMW',
+            text: 'What organizations or entities do you collaborate with and ' +
+              'how? What is the desired impact of these collaborations?',
+            type: 'long_text'
+          },
+          {
+            uid: 'idptfRe7NRoA',
+            text: 'What risks does your organization face in trying to complete its work?',
+            type: 'long_text'
+          },
+          {
+            uid: 'gC2KYZLv2Hzy',
+            text: 'What are two internal challenges you face? Provide ' +
+              'an example of something that went wrong recently ' +
+              'within the organization and how the team dealt with ' +
+              'it.',
+            type: 'long_text'
+          }
+        ]
+      }
+    },
+    {
+      uid: "W3k3ee",
+      name: "New - Finances",
+      tag: "(N) Finances",
+      questions: {
+        create: [
+          {
+            uid: 'Uc3KLCL2YZPm',
+            text: 'What are your current funding sources for your family planning ' +
+              'programming and for how long do they last? If possible, please give ' +
+              'us a breakdown of your current family planning funding sources out of ' +
+              '100%. ',
+            type: 'long_text'
+          },
+          {
+            uid: 'oBApp6ei1caq',
+            text: 'What are your expected funding sources for 2020?',
+            type: 'long_text'
+          },
+          {
+            uid: 'Ko76Dg9rHfwA',
+            text: 'If you receive a grant from us, but you do not ' +
+              'receive intended funding from other partners, ' +
+              'what would you do? How would our grant be put to ' +
+              'use?',
+            type: 'long_text'
+          }
+        ]
+      }
+    },
+    {
+      uid: "XB0CzI",
+      name: "New - Attachments",
+      tag: "(N) Attachments",
+      questions: {
+        create: [
+          {
+            uid: 'MFo1M8WmkmD3',
+            text: 'Proof of organizational legal status.',
+            type: 'file_upload'
+          },
+          {
+            uid: 'L5IkZsyjEJXV',
+            text: 'This year’s organizational budget',
+            type: 'file_upload'
+          },
+          {
+            uid: 'WwcFNrO2qGJh',
+            text: 'Last year’s organizational budget',
+            type: 'file_upload'
+          },
+          {
+            uid: 'Ze0sOlvvzQ9s',
+            text: 'References - please provide two (2) names and contact information\n',
+            type: 'file_upload'
+          },
+          {
+            uid: 'NHwTAUtpQAj5',
+            text: 'Organizational chart',
+            type: 'file_upload'
+          },
+          {
+            uid: 'HpVfkfcsy6f4',
+            text: 'Last year’s annual report',
+            type: 'file_upload'
+          },
+          {
+            uid: 'MwBqBSJlQHqc',
+            text: 'Business plan',
+            type: 'file_upload'
+          },
+          {
+            uid: 'Th9Xkq2MJhgG',
+            text: 'Policies you may have for child protection, ethics, etc.',
+            type: 'file_upload'
+          },
+          {
+            uid: 'fk5nKuBu191W',
+            text: 'Any external evaluations or studies',
+            type: 'file_upload'
+          },
+          {
+            uid: 'F7QUUFHaJK6c',
+            text: 'Other materials that you would like to ' +
+              'share with us (videos, art, ' +
+              'testimonials).',
+            type: 'file_upload'
+          }
+        ]
+      }
     }
   ]
 
@@ -490,9 +705,167 @@ async function main() {
     }
   })
 
-  
   console.info(`Created ${forms.length} forms:`)
   console.dir(forms)
+
+  ///////////////////////////////
+  // Users, Responses, Answers
+  ///////////////////////////////
+
+  const userData = [
+    {
+      "email": "nderitudavid@gmail.com",
+      "responses": [
+        {
+          "uid": "tv9bh14cqzqilhy8tv9bhh4krdeh6to0",
+          "createdAt": "2019-08-08T13:29:27Z",
+          "answers": [
+            {
+              "question_uid": "IUWgGhQA3d5t",
+              "text": "David Nderitu"
+            },
+            {
+              "question_uid": "F2NsnryEDre7",
+              "text": "Imarisha CBO"
+            },
+            {
+              "question_uid": "vyQF0KCqWuay",
+              "text": "Executive Director"
+            },
+            {
+              "question_uid": "rzO4roXJIPzF",
+              "text": "https://www.imarisha.org"
+            },
+            {
+              "question_uid": "P4PPcwnBSztV",
+              "text": "+254723935597"
+            },
+            {
+              "question_uid": "NLWFHlRalA0H",
+              "text": "nderitudavid@gmail.com"
+            },
+            {
+              "question_uid": "l9Hf0HNHcpXp",
+              "text": "Kenya"
+            },
+            {
+              "question_uid": "KjiMOBBtowrg",
+              "text": "Imarisha is a Kiswahili word meaning to make better.  We envision empowered Kenya communities driving sustainable development while our mission is to facilitate adoption of innovative practices and approaches among marginalized communities for sustainable development."
+            },
+            {
+              "question_uid": "ljjLBQRXGtJ4",
+              "text": "Imarisha CBO is currently running a project whose goal is to have Sexual and Reproductive Health (SRH) and other livelihoods needs of adolescents living with HIV/AIDS addressed in Nyeri County in Kenya. The project acknowledges that discussion of SRH issues between parents/guardians and adolescents face myriad socio-cultural challenges. The project takes note of the rising number of HIV positive adolescents and the inadequate programming for them which may trigger increased HIV infections in Kenya if the issue is not addressed. We are equipping adolescents living with requisite skills to champion for adolescents living with HIV health and other livelihoods needs. We are empowering and encouraging HIV-positive young people to freely discuss the SRH issues not only with parents/ guardians but also with other service providers by strengthening support groups and peer groups for HIV positive adolescents. The project has trained 22 champions on peer education, leadership and management and advocacy. Additionally, the project has conducted Systemic Child Counseling training to 23 school teachers aiming at equipping the trained counselors with the counseling skills and empower them to diversify the context. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "email": "jamesgondwe@cydmalawi.org",
+      "responses": [
+        {
+          "uid": "4rdvi15b6k298w1lslg34rdh0934tklk",
+          "createdAt": "2019-08-05T17:46:38Z",
+          "answers": [
+            {
+              "question_uid": "IUWgGhQA3d5t",
+              "text": "James Gondwe"
+            },
+            {
+              "question_uid": "F2NsnryEDre7",
+              "text": "Centre for Youth and Development"
+            },
+            {
+              "question_uid": "vyQF0KCqWuay",
+              "text": "Executive Director"
+            },
+            {
+              "question_uid": "rzO4roXJIPzF",
+              "text": "https://www.cydmalawi.org"
+            },
+            {
+              "question_uid": "P4PPcwnBSztV",
+              "text": "+265999940260"
+            },
+            {
+              "question_uid": "NLWFHlRalA0H",
+              "text": "jamesgondwe@cydmalawi.org"
+            },
+            {
+              "question_uid": "l9Hf0HNHcpXp",
+              "text": "Malawi"
+            },
+            {
+              "question_uid": "KjiMOBBtowrg",
+              "text": "We are a local Non-Governmental organization that works with Government and communities to improve lives for children, youth and women to create a conducive environment for them to develop to their fullest potential. We effect changes in sectors of education, sustainable livelihoods and health."
+            },
+            {
+              "question_uid": "ljjLBQRXGtJ4",
+              "text": "Our family planning program is called \"Community-based Integrated family planning Promotion (CIFPP)\" and is embedded in our strategic plan and aims at enabling people to have access to information, products and services. \n\nOur model revolves around “Community-Health workers (CHW)” who are based in communities but are linked to health facilities.  Our model builds the capacity of CWH and provides them with tools to ensure that family planning services are provided effectively. Apart from training, we also provide push bicycles for mobility and materials for raising awareness. We also conduct social mobilization through the use of Theatre for Development by training youth on theatre and Family planning. \n\nWe also work on Health governance in relation to family at facility level but also at district level. Our work at facility level is with the Health Advisory committee, by providing them with training on social accountability specifically Community Score Card. They facilitate these sessions with health facility staff and community members to rank service delivery and develop plans for improvement. At district level we work with the District Health Technical Committee to lobby for provision of contraceptives and improved service delivery in the district specifically hard to reach areas. \n\nFamily planning contributes to health family's, health children, youth and women allowing them to access education and other opportunities and reach their fullest potential. \n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+
+  const users = []
+
+  await asyncForEach(userData, async user => {
+    const currentUser = await photon.users.findMany({
+      where: {
+        email: user.email
+      }
+    })
+
+    // only create if they don't already exist, a Rails-like .firstOrCreate() would be handy here
+    if (!currentUser.length) {
+      users.push(await photon.users.create({
+        data: {
+          email: user.email
+        }
+      }))
+
+      // responses 
+      await asyncForEach(user.responses, async response => {
+        await photon.responses.create({
+          data: {
+            uid: response.uid,
+            createdAt: moment(response.createdAt).toDate(),
+            user: {
+              connect: {
+                email: user.email
+              }
+            }
+          }
+        })
+
+        // answers
+        await asyncForEach(response.answers, async answer => {
+          await photon.answers.create({
+            data: {
+              text: answer.text,
+              question: {
+                connect: {
+                  uid: answer.question_uid
+                }
+              },
+              response: {
+                connect: {
+                  uid: response.uid
+                }
+              }
+            }
+          })
+        })
+
+      })
+
+    }
+  })
+
+  console.info(`Created ${users.length} users:`)
+  console.dir(users)
 
 }
 
