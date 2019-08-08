@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const Photon = require("@generated/photon")
 
 const photon = new Photon()
@@ -488,6 +490,7 @@ async function main() {
     }
   })
 
+  
   console.info(`Created ${forms.length} forms:`)
   console.dir(forms)
 

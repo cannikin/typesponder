@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const Photon = require('@generated/photon')
 const photon = new Photon()
 
