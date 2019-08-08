@@ -1,4 +1,4 @@
 export default {
-  getResponses: "/.netlify/functions/responses",
-  save: "/.netlify/functions/save"
+  getUsers: "/.netlify/functions/users",
+  saveNote: "/.netlify/functions/note"
 }

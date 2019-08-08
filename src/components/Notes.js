@@ -1,16 +1,16 @@
 import React, { useState } from "react"
 import endpoints from "../endpoints"
 
-export default function Notes({id, notes}) {
+export default function Notes({ note }) {
   const [saving, setSaving] = useState(false)
-  const [input, setInput] = useState(notes)
-  const [prevId, setPrevId] = useState(id)
+  const [input, setInput] = useState(note.text)
+  const [prevId, setPrevId] = useState(note.id)
 
   // component won't re-render when changing responses so it always shows the notes from the first
   // picked response. force the input value to change here when the ID changes
-  if (id !== prevId) {
-    setInput(notes)
-    setPrevId(id)
+  if (note.id !== prevId) {
+    setInput(note.text)
+    setPrevId(note.id)
   }
 
   function formData(form) {
@@ -38,21 +38,24 @@ export default function Notes({id, notes}) {
   }
 
   function onSubmit(event) {
+    const body = formData(event.target)
     setSaving(true)
 
-    fetch(endpoints.save, {
+    console.info(body)
+
+    fetch(endpoints.saveNote, {
       method: 'post',
-      body: JSON.stringify(formData(event.target))
+      body: JSON.stringify(body)
     }).then(() => setSaving(false))
 
     event.preventDefault()
   }
 
   return(
-    <form className="w-third-ns mt5-ns pl3-ns fixed-ns top-2 right-2" action={endpoints.save} method="POST" onSubmit={ onSubmit }>
-      <input type="hidden" name="id" value={ id } />
+    <form className="w-third-ns mt5-ns pl3-ns fixed-ns top-2 right-2" action={endpoints.saveNote} method="POST" onSubmit={ onSubmit }>
+      <input type="hidden" name="id" value={ note.id } />
       <textarea
-        name="notes"
+        name="text"
         className="w-100 h5 f6 br3 pa3 b--moon-gray mb2"
         placeholder="Notes"
         value={ input || '' }
