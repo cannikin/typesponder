@@ -3,7 +3,7 @@
 const Photon = require("@generated/photon")
 const moment = require("moment")
 
-const photon = new Photon()
+const photon = new Photon({ debug: true })
 
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
@@ -718,7 +718,8 @@ async function main() {
       "responses": [
         {
           "uid": "tv9bh14cqzqilhy8tv9bhh4krdeh6to0",
-          "createdAt": "2019-08-08T13:29:27Z",
+          "submittedAt": "2019-08-08T13:29:27Z",
+          "form": "bv8u0Y",
           "answers": [
             {
               "question_uid": "IUWgGhQA3d5t",
@@ -765,7 +766,8 @@ async function main() {
       "responses": [
         {
           "uid": "4rdvi15b6k298w1lslg34rdh0934tklk",
-          "createdAt": "2019-08-05T17:46:38Z",
+          "submittedAt": "2019-08-05T17:46:38Z",
+          "form": "bv8u0Y",
           "answers": [
             {
               "question_uid": "IUWgGhQA3d5t",
@@ -822,7 +824,12 @@ async function main() {
     if (!currentUser.length) {
       users.push(await photon.users.create({
         data: {
-          email: user.email
+          email: user.email,
+          note: {
+            create: {
+              text: ''
+            }
+          }
         }
       }))
 
@@ -831,7 +838,12 @@ async function main() {
         await photon.responses.create({
           data: {
             uid: response.uid,
-            createdAt: moment(response.createdAt).toDate(),
+            submittedAt: moment(response.submittedAt).toDate(),
+            form: {
+              connect: {
+                uid: response.form
+              }
+            },
             user: {
               connect: {
                 email: user.email

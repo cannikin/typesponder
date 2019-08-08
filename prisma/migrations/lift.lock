@@ -6,3 +6,6 @@
 20190807151002-init
 20190808121818-remove_answer_uid
 20190808122210-remove_answers_type
+20190808150249-add_submitted_at_to_response
+20190808151329-add_form_to_response
+20190808155248-create_note
