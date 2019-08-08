@@ -4,3 +4,5 @@
 # Read more about conflict resolution here: TODO
 
 20190807151002-init
+20190808121818-remove_answer_uid
+20190808122210-remove_answers_type

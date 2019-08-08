@@ -1,0 +1,10 @@
+{
+  "version": "0.1.9",
+  "steps": [
+    {
+      "stepType": "DeleteField",
+      "model": "Answer",
+      "name": "uid"
+    }
+  ]
+}

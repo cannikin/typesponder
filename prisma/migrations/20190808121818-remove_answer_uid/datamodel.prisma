@@ -29,6 +29,7 @@ model Question {
 
 model Answer {
   id        Int      @id @unique
+  type      String
   text      String
   question  Question?
   response  Response?
