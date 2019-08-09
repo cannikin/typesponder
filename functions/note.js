@@ -5,15 +5,12 @@ exports.handler = async (event, context) => {
 
   const data = JSON.parse(event.body)
 
-  console.info(`id: ${data.id}`)
-  console.info(`text: ${data.text}`)
-
   // only respond to POST
   if (event.httpMethod != 'POST') {
-    return callback(null, {
+    return {
       statusCode: 404,
       body: ''
-    })
+    }
   }
 
   const updatedNote = await photon.notes.update({

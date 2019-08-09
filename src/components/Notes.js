@@ -41,8 +41,6 @@ export default function Notes({ note }) {
     const body = formData(event.target)
     setSaving(true)
 
-    console.info(body)
-
     fetch(endpoints.saveNote, {
       method: 'post',
       body: JSON.stringify(body)

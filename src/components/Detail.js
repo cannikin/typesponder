@@ -13,7 +13,6 @@ export default function Detail({ forms, user }) {
     const answers = user.responses.map(u => u.answers)[0]
     const questions = forms[0].questions
 
-    console.info(questions)
     return(
       <div className="relative">
         <dl className="w-50-ns mt0 mb3 measure">
