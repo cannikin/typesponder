@@ -10,14 +10,15 @@ import Detail from './components/Detail'
 
 export default function App() {
 
-  const [responses, setResponses] = useState([])
+  const [users, setUsers] = useState([])
+  const [forms, setForms] = useState([])
 
-  useEffect(() => {
-    if (!responses.length) {
-      fetch(endpoints.getResponses)
-        .then(response => response.json())
-        .then(json => setResponses(json))
-        .catch()
+  useEffect(async () => {
+    if (!users.length) {
+      const response = await fetch(endpoints.getResponses)
+      const json = await response.json()
+      setForms(json.forms)
+      setUsers(json.users)
     }
   })
 
@@ -29,18 +30,18 @@ export default function App() {
             <img src={ logo } alt="logo" className="w2 v-mid mr2" />
             <Link to="/" className="no-underline pwv-blue">Typesponder</Link>
           </h1>
-          <h3 className="mt1 mb0 f6 fw4 fr silver">{ responses.length } Responses</h3>
+          <h3 className="mt1 mb0 f6 fw4 fr silver">{ users.length } Responses</h3>
         </header>
         <main className="flex flex-wrap flex-auto-ns">
           <nav className="w-100 w-25-ns mb3 ph3 bb bn-ns b--moon-gray">
-            <Responses list={ responses } />
+            <Responses users={ users } />
           </nav>
           <section className="w-100 w-75-ns ph3">
             <Route exact path="/" render={() => (
               <BlankSlate />
             )} />
-            <Route path="/responses/:id" render={({ match }) => (
-              <Detail response={ responses.find(r => r.id === match.params.id) } />
+            <Route path="/users/:id" render={({ match }) => (
+              <Detail user={ users.find(r => r.id === match.params.id) } />
             )} />
           </section>
         </main>

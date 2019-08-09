@@ -2,22 +2,21 @@ import React from "react";
 import Row from "./Row";
 import RowLoading from "./RowLoading";
 
-export default function Responses({ list }) {
+export default function Responses({ users, forms }) {
 
-  if (!list.length) {
+  if (!users.length) {
     return <RowLoading />
   }
 
   return(
     <ul className="list ma0 pa0">
       {
-        list.map(item =>
+        users.map(item =>
           <Row
-            key={ item.id }
-            id={ item.id }
-            email={ item.email }
-            createdAt={ item.createdAt }
-            tags={ item.tags }
+            key={ users.id }
+            email={ users.email }
+            createdAt={ users.createdAt }
+            tags={ [] }
           />
         )
       }
