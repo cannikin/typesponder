@@ -1,6 +1,6 @@
 datasource db {
   provider = env("PRISMA_PROVIDER")
-  url      = env("PRISMA_RL")
+  url      = env("PRISMA_URL")
 }
 
 generator photon {
