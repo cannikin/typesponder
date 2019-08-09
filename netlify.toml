@@ -1,4 +1,4 @@
 [build]
-  command = "yarn build"
+  command = "yarn install && yarn prisma generate && yarn prisma lift up && node prisma/seed.js && yarn build"
   publish = "build"
   functions = "functions"
