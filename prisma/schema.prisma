@@ -5,6 +5,7 @@ datasource db {
 
 generator photon {
   provider = "photonjs"
+  platforms = ["native", "linux-glibc-libssl1.0.2"]
 }
 
 model Form {
