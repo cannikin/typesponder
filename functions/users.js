@@ -10,7 +10,12 @@ exports.handler = async (event, context) => {
       note: true,
       responses: {
         include: {
-          answers: true
+          form: { select: { id: true } },
+          answers: {
+            include: {
+              question: { select: { id: true } }
+            }
+          }
         }
       }
     }
