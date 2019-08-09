@@ -13,7 +13,7 @@ var dynamodb = new AWS.DynamoDB();
 // Forms
 ////////////////////////////////
 
-var params = {
+var forms = {
   TableName: "forms",
   KeySchema: [
     { AttributeName: "id", KeyType: "HASH" },  //Partition key
@@ -27,7 +27,7 @@ var params = {
   }
 };
 
-dynamodb.createTable(params, function (err, data) {
+dynamodb.createTable(forms, function (err, data) {
   if (err) {
     console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
   } else {
@@ -39,7 +39,7 @@ dynamodb.createTable(params, function (err, data) {
 // Users
 ////////////////////////////////
 
-var params = {
+var users = {
   TableName: "users",
   KeySchema: [
     { AttributeName: "id", KeyType: "HASH" }
@@ -53,7 +53,7 @@ var params = {
   }
 };
 
-dynamodb.createTable(params, function (err, data) {
+dynamodb.createTable(users, function (err, data) {
   if (err) {
     console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
   } else {
