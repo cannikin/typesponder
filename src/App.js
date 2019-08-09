@@ -18,8 +18,8 @@ export default function App() {
       fetch(endpoints.getUsers)
         .then(response => response.json())
         .then(json => {
-          setForms(json.forms)
           setUsers(json.users)
+          setForms(json.forms)
         })
         .catch()
     }

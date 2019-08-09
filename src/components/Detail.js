@@ -9,7 +9,7 @@ export default function Detail({ forms, user }) {
   }
 
   if (user) {
-    const { id, note } = user
+    const { note } = user
     const answers = user.responses.map(u => u.answers)[0]
     const questions = forms[0].questions
 

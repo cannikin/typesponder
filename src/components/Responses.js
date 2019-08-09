@@ -4,6 +4,14 @@ import RowLoading from "./RowLoading";
 
 export default function Responses({ forms, users }) {
 
+  function formTags(responses) {
+    return (
+      responses.map(response => forms.find(f => f.id === response.form.id))
+        .filter(f => f)
+        .map(form => form.tag)
+    )
+  }
+
   if (!users.length) {
     return <RowLoading />
   }
@@ -17,8 +25,7 @@ export default function Responses({ forms, users }) {
             id={ user.id }
             email={ user.email }
             createdAt={ user.createdAt }
-            // tags={ user.responses.map(response => forms.find(f => f.id === response.form)).map(response => response.form.tag) }
-            tags={ [forms[0].tag] }
+            tags={ formTags(user.responses) }
           />
         )
       }
