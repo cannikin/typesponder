@@ -2,10 +2,9 @@ var AWS = require("aws-sdk");
 var fs = require('fs');
 
 AWS.config.update({
-  accessKeyId: 'KEY',
-  secretAccessKey: 'SECRET', 
-  region: "us-west-2",
-  endpoint: "http://localhost:8000"
+  accessKeyId: process.env("AMAZON_ACCESS_KEY_ID"),
+  secretAccessKey: process.env("AMAZON_SECRET_ACCESS_KEY"),
+  region: process.env("AMAZON_DYNAMODB_REGION")
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
@@ -69,7 +68,7 @@ var forms = [
 ]
 
 forms.forEach(form => {
-  docClient.put(forms, function (err, data) {
+  docClient.put(form, function (err, data) {
     if (err) {
       console.error("Unable to add form. Error JSON:", JSON.stringify(err, null, 2));
     } else {
@@ -135,7 +134,7 @@ var users = [
 ]
 
 users.forEach(user => {
-  docClient.put(forms, function (err, data) {
+  docClient.put(user, function (err, data) {
     if (err) {
       console.error("Unable to add form. Error JSON:", JSON.stringify(err, null, 2));
     } else {
