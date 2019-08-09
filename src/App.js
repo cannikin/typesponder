@@ -13,12 +13,15 @@ export default function App() {
   const [users, setUsers] = useState([])
   const [forms, setForms] = useState([])
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!users.length) {
-      const response = await fetch(endpoints.getResponses)
-      const json = await response.json()
-      setForms(json.forms)
-      setUsers(json.users)
+      fetch(endpoints.getResponses)
+        .then(response => response.json())
+        .then(json => {
+          setForms(json.forms)
+          setUsers(json.users)
+        })
+        .catch()
     }
   })
 
@@ -34,7 +37,7 @@ export default function App() {
         </header>
         <main className="flex flex-wrap flex-auto-ns">
           <nav className="w-100 w-25-ns mb3 ph3 bb bn-ns b--moon-gray">
-            <Responses users={ users } />
+            <Responses users={ users } forms={ forms } />
           </nav>
           <section className="w-100 w-75-ns ph3">
             <Route exact path="/" render={() => (
