@@ -18,8 +18,9 @@ export default function App() {
       fetch(endpoints.getUsers)
         .then(response => response.json())
         .then(json => {
-          setUsers(json.users)
+          // TODO: if these aren't set in this order then going directly to a user page blows up
           setForms(json.forms)
+          setUsers(json.users)
         })
         .catch()
     }
