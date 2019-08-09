@@ -2,7 +2,6 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
 import md5 from "blueimp-md5/js/md5"
-import _ from 'lodash'
 
 export default function Row({ id, email, createdAt, tags, responses }) {
 
@@ -27,8 +26,8 @@ export default function Row({ id, email, createdAt, tags, responses }) {
         <ul className="flex flex-wrap list ml2 f7 fw2">
           {
             tags.map((tag, i) =>
-              <li key={ i }className="bg-pwv-red white mr1 mb1 ph2 pv1 br1">
-                { _.startCase(tag) }
+              <li key={ i } className="bg-pwv-red white mr1 mb1 ph2 pv1 br1">
+                { tag }
               </li>
             )
           }

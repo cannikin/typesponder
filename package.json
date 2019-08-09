@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "blueimp-md5": "^2.11.0",
-    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
     "prisma2": "^2.0.0-preview-5",
