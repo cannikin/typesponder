@@ -1,7 +1,6 @@
 datasource db {
-  provider = "sqlite"
-  url      = "file:dev.db"
-  default  = true
+  provider = env("PRISMA_PROVIDER")
+  url      = env("PRISMA_RL")
 }
 
 generator photon {
