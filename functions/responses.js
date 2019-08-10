@@ -1,16 +1,12 @@
 const AWS = require("aws-sdk");
 
 AWS.config.update({
-  accessKeyId: 'KEY',
-  secretAccessKey: 'SECRET', 
-  region: "us-west-2",
-  endpoint: "http://localhost:8000"
+  accessKeyId: process.env.AMAZON_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AMAZON_SECRET_ACCESS_KEY,
+  region: process.env.AMAZON_DYNAMODB_REGION
 });
 
 const docClient = new AWS.DynamoDB.DocumentClient();
-const params = {
-  TableName: "forms"
-};
 
 exports.handler = async (event, context) => {
 

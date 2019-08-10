@@ -1,18 +1,19 @@
-var AWS = require("aws-sdk");
+const AWS = require("aws-sdk");
 
 AWS.config.update({
-  accessKeyId: process.env("AMAZON_ACCESS_KEY_ID"),
-  secretAccessKey: process.env("AMAZON_SECRET_ACCESS_KEY"), 
-  region: process.env("AMAZON_DYNAMODB_REGION")
+  accessKeyId: process.env.AMAZON_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AMAZON_SECRET_ACCESS_KEY,
+  region: process.env.AMAZON_DYNAMODB_REGION
+
 });
 
-var dynamodb = new AWS.DynamoDB();
+const dynamodb = new AWS.DynamoDB();
 
 ////////////////////////////////
 // Forms
 ////////////////////////////////
 
-var forms = {
+const forms = {
   TableName: "forms",
   KeySchema: [
     { AttributeName: "id", KeyType: "HASH" },  //Partition key
@@ -38,7 +39,7 @@ dynamodb.createTable(forms, function (err, data) {
 // Users
 ////////////////////////////////
 
-var users = {
+const users = {
   TableName: "users",
   KeySchema: [
     { AttributeName: "id", KeyType: "HASH" }
