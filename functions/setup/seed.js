@@ -87,6 +87,7 @@ const users = [
       id: "1",
       email: "nderitudavid@gmail.com",
       createdAt: "2019-08-08T13:29:27Z",
+      notes: "Notes here!",
       responses: [
         {
           id: "4rdvi15b6k298w1lslg34rdh0934tklk",
@@ -132,7 +133,61 @@ const users = [
         }
       ]
     }
+  },
+  {
+    TableName: "users",
+    Item: {
+      id: "2",
+      email: "rob.cameron@fastmail.com",
+      createdAt: "2019-08-09T13:29:27Z",
+      notes: " ",
+      responses: [
+        {
+          id: "4rdvi15b6k298w1lslg34rdh0934tklj",
+          formId: "bv8u0Y",
+          answers: [
+            {
+              questionId: "IUWgGhQA3d5t",
+              text: "Rob Cameron"
+            },
+            {
+              questionId: "F2NsnryEDre7",
+              text: "Cameron Tech"
+            },
+            {
+              questionId: "vyQF0KCqWuay",
+              text: "Owner"
+            },
+            {
+              questionId: "rzO4roXJIPzF",
+              text: "https://camerontech.io"
+            },
+            {
+              questionId: "P4PPcwnBSztV",
+              text: "+7606725123"
+            },
+            {
+              questionId: "NLWFHlRalA0H",
+              text: "rob.cameron@fastmail.com"
+            },
+            {
+              questionId: "l9Hf0HNHcpXp",
+              text: "USA"
+            },
+            {
+              questionId: "KjiMOBBtowrg",
+              text: "Something goes here"
+            },
+            {
+              questionId: "ljjLBQRXGtJ4",
+              text: "Nothing"
+            }
+          ]
+        }
+      ]
+    }
   }
+
 ]
 
 users.forEach(user => {
