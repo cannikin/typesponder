@@ -35,7 +35,7 @@ exports.handler = (event, context, callback) => {
   docClient.update({
     TableName: "users",
     Key: {
-      id: body.id
+      id: parseInt(body.id)
     },
     UpdateExpression: "SET notes = :notes",
     ExpressionAttributeValues: {
