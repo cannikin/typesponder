@@ -6,6 +6,10 @@ AWS.config.update({
   region: process.env.AMAZON_DYNAMODB_REGION
 });
 
+if (process.env.AMAZON_DYNAMODB_ENDPOINT) {
+  AWS.config.update({ endpoint: process.env.AMAZON_DYNAMODB_ENDPOINT })
+}
+
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 const forms = [
@@ -13,9 +17,9 @@ const forms = [
     TableName: "forms",
     Item: {
       id: "bv8u0Y",
-      name: "Introduction questionIdnaire",
+      name: "Introduction Questionnaire",
       tag: "Intro",
-      questionIds: [
+      questions: [
         {
           id: "IUWgGhQA3d5t",
           type: "short_text",
@@ -90,39 +94,39 @@ const users = [
           answers: [
             {
               questionId: "IUWgGhQA3d5t",
-              answer: "David Nderitu"
+              text: "David Nderitu"
             },
             {
               questionId: "F2NsnryEDre7",
-              answer: "Imarisha CBO"
+              text: "Imarisha CBO"
             },
             {
               questionId: "vyQF0KCqWuay",
-              answer: "Executive Director"
+              text: "Executive Director"
             },
             {
               questionId: "rzO4roXJIPzF",
-              answer: "https://www.imarisha.org"
+              text: "https://www.imarisha.org"
             },
             {
               questionId: "P4PPcwnBSztV",
-              answer: "+254723935597"
+              text: "+254723935597"
             },
             {
               questionId: "NLWFHlRalA0H",
-              answer: "nderitudavid@gmail.com"
+              text: "nderitudavid@gmail.com"
             },
             {
               questionId: "l9Hf0HNHcpXp",
-              answer: "Kenya"
+              text: "Kenya"
             },
             {
               questionId: "KjiMOBBtowrg",
-              answer: "Imarisha is a Kiswahili word meaning to make better.  We envision empowered Kenya communities driving sustainable development while our mission is to facilitate adoption of innovative practices and approaches among marginalized communities for sustainable development."
+              text: "Imarisha is a Kiswahili word meaning to make better.  We envision empowered Kenya communities driving sustainable development while our mission is to facilitate adoption of innovative practices and approaches among marginalized communities for sustainable development."
             },
             {
               questionId: "ljjLBQRXGtJ4",
-              answer: "Imarisha CBO is currently running a project whose goal is to have Sexual and Reproductive Health (SRH) and other livelihoods needs of adolescents living with HIV/AIDS addressed in Nyeri County in Kenya. The project acknowledges that discussion of SRH issues between parents/guardians and adolescents face myriad socio-cultural challenges. The project takes note of the rising number of HIV positive adolescents and the inadequate programming for them which may trigger increased HIV infections in Kenya if the issue is not addressed. We are equipping adolescents living with requisite skills to champion for adolescents living with HIV health and other livelihoods needs. We are empowering and encouraging HIV-positive young people to freely discuss the SRH issues not only with parents/ guardians but also with other service providers by strengthening support groups and peer groups for HIV positive adolescents. The project has trained 22 champions on peer education, leadership and management and advocacy. Additionally, the project has conducted Systemic Child Counseling training to 23 school teachers aiming at equipping the trained counselors with the counseling skills and empower them to diversify the context. "
+              text: "Imarisha CBO is currently running a project whose goal is to have Sexual and Reproductive Health (SRH) and other livelihoods needs of adolescents living with HIV/AIDS addressed in Nyeri County in Kenya. The project acknowledges that discussion of SRH issues between parents/guardians and adolescents face myriad socio-cultural challenges. The project takes note of the rising number of HIV positive adolescents and the inadequate programming for them which may trigger increased HIV infections in Kenya if the issue is not addressed. We are equipping adolescents living with requisite skills to champion for adolescents living with HIV health and other livelihoods needs. We are empowering and encouraging HIV-positive young people to freely discuss the SRH issues not only with parents/ guardians but also with other service providers by strengthening support groups and peer groups for HIV positive adolescents. The project has trained 22 champions on peer education, leadership and management and advocacy. Additionally, the project has conducted Systemic Child Counseling training to 23 school teachers aiming at equipping the trained counselors with the counseling skills and empower them to diversify the context. "
             }
           ]
         }
