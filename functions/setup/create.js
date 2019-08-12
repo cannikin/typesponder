@@ -12,6 +12,7 @@ if (process.env.AMAZON_DYNAMODB_ENDPOINT) {
 
 const dynamodb = new AWS.DynamoDB();
 
+
 ////////////////////////////////
 // Forms
 ////////////////////////////////
