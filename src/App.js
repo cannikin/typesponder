@@ -15,7 +15,7 @@ export default function App() {
 
   useEffect(() => {
     if (!users.length) {
-      fetch(endpoints.getResponses)
+      fetch(endpoints.getUsers)
         .then(response => response.json())
         .then(json => {
           setForms(json.forms)
@@ -44,7 +44,7 @@ export default function App() {
               <BlankSlate />
             )} />
             <Route path="/users/:id" render={({ match }) => (
-              <Detail user={ users.find(r => r.id === match.params.id) } />
+              <Detail user={ users.find(r => r.id === match.params.id) } forms={ forms } />
             )} />
           </section>
         </main>

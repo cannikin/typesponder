@@ -5,8 +5,6 @@ import RowLoading from "./RowLoading";
 export default function Responses({ forms, users }) {
 
   function formTags(responses) {
-    console.info(responses)
-    console.info(forms)
     return (
       responses.map(response => forms.find(f => f.id === response.formId))
         .filter(f => f)
