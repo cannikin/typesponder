@@ -1,4 +1,4 @@
-const Photon = require("../src/generated/photon")
+const Photon = require("generated/photon")
 const photon = new Photon({ debug: true })
 
 exports.handler = async (event, context) => {
