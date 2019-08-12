@@ -12,26 +12,16 @@ if (process.env.AMAZON_DYNAMODB_ENDPOINT) {
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-exports.handler = async (event, context) => {
+exports.handler = (event, context, callback) => {
 
-  function docClientAsync(params) {
-    return new Promise((resolve, reject) => {
-      docClient.scan(params, (err, data) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(data)
-        }
+  docClient.scan({ TableName: "users" }, (err, users) => {
+    docClient.scan({ TableName: "forms" }, (err, forms) => {
+      callback(null , {
+        statusCode: 200,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ forms: forms.Items, users: users.Items })
       })
     })
-  }
+  })
 
-  const users = (await docClientAsync({ TableName: "users" })).Items
-  const forms = (await docClientAsync({ TableName: "forms"})).Items
-
-  return {
-    statusCode: 200,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ forms, users })
-  }
 }
