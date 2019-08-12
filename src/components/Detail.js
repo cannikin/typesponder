@@ -15,7 +15,7 @@ export default function Detail({ user, forms, onUserUpdate }) {
   if (user && forms) {
     const { id, notes } = user
     const answers = user.responses.map(r => r.answers)[0]
-    const questions = forms.map(f => f.questions)[0]
+    const questions = forms.map(f => f.questions).flat()
     
     return(
       <div className="relative">
