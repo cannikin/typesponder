@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import endpoints from "../endpoints"
 
-export default function Notes({id, notes}) {
+export default function Notes({ id, notes, onUpdate }) {
   const [saving, setSaving] = useState(false)
   const [input, setInput] = useState(notes)
   const [prevId, setPrevId] = useState(id)
@@ -41,9 +41,12 @@ export default function Notes({id, notes}) {
     setSaving(true)
 
     fetch(endpoints.save, {
-      method: 'post',
+      method: "post",
       body: JSON.stringify(formData(event.target))
-    }).then(() => setSaving(false))
+    }).then(response => response.json()).then((user) => {
+      onUpdate(user)
+      setSaving(false)
+    })
 
     event.preventDefault()
   }

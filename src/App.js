@@ -13,6 +13,18 @@ export default function App() {
   const [users, setUsers] = useState([])
   const [forms, setForms] = useState([])
 
+  function updateUser(data) {
+    const updatedUsers = users.map(user => {
+      if (data.id === user.id) {
+        return data
+      } else {
+        return user
+      }
+    })
+
+    setUsers(updatedUsers)
+  }
+
   useEffect(() => {
     if (!users.length) {
       fetch(endpoints.getUsers)
@@ -44,7 +56,7 @@ export default function App() {
               <BlankSlate />
             )} />
             <Route path="/users/:id" render={({ match }) => (
-              <Detail user={ users.find(r => r.id === match.params.id) } forms={ forms } />
+              <Detail user={ users.find(r => r.id === match.params.id) } forms={ forms } onUserUpdate={ updateUser } />
             )} />
           </section>
         </main>

@@ -1,7 +1,7 @@
 import React from "react"
 import Notes from "./Notes"
 
-export default function Detail({ user, forms }) {
+export default function Detail({ user, forms, onUserUpdate }) {
   function textFormat(text) {
     return String(text).split('\n').map((item, key) => {
       return <span key={key}>{item}<br/></span>
@@ -29,7 +29,7 @@ export default function Detail({ user, forms }) {
             ))
           }
         </dl>
-        <Notes id={ id } notes={ notes } />
+        <Notes id={ id } notes={ notes } onUpdate={ onUserUpdate } />
       </div>
     )
   } else {
