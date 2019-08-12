@@ -31,13 +31,16 @@ const forms = {
   }
 };
 
-dynamodb.createTable(forms, function (err, data) {
-  if (err) {
-    console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
-  } else {
-    console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
-  }
-});
+dynamodb.deleteTable({ TableName: "forms" }, (err, data) => {
+  dynamodb.createTable(forms, function (err, data) {
+    if (err) {
+      console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
+    } else {
+      console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
+    }
+  });
+})
+
 
 ////////////////////////////////
 // Users
@@ -46,10 +49,12 @@ dynamodb.createTable(forms, function (err, data) {
 const users = {
   TableName: "users",
   KeySchema: [
-    { AttributeName: "id", KeyType: "HASH" }
+    { AttributeName: "id", KeyType: "HASH" },
+    { AttributeName: "createdAt", KeyType: "RANGE" }
   ],
   AttributeDefinitions: [
-    { AttributeName: "id", AttributeType: "S" }
+    { AttributeName: "id", AttributeType: "S" },
+    { AttributeName: "createdAt", AttributeType: "S" },
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 1,
@@ -57,11 +62,14 @@ const users = {
   }
 };
 
-dynamodb.createTable(users, function (err, data) {
-  if (err) {
-    console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
-  } else {
-    console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
-  }
-});
+dynamodb.deleteTable({ TableName: "users" }, (err, data) => {
+  dynamodb.createTable(users, function (err, data) {
+    if (err) {
+      console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
+    } else {
+      console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
+    }
+  });
+})
+
 
