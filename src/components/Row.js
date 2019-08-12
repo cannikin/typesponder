@@ -2,13 +2,14 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
 import md5 from "blueimp-md5/js/md5"
-import _ from 'lodash'
 
 export default function Row({ id, email, createdAt, tags }) {
 
   function avatar(email) {
     return `https://gravatar.com/avatar/${md5(email)}`
   }
+
+  console.info(tags)
 
   return(
     <li className="mb1">
@@ -26,9 +27,9 @@ export default function Row({ id, email, createdAt, tags }) {
         </div>
         <ul className="flex flex-wrap list ml2 f7 fw2">
           {
-            tags.map((tag, i) =>
+            tags.map((tag, i) => 
               <li key={ i }className="bg-pwv-red white mr1 mb1 ph2 pv1 br1">
-                { _.startCase(tag) }
+                { tag }
               </li>
             )
           }
