@@ -6,6 +6,10 @@ AWS.config.update({
   region: process.env.AMAZON_DYNAMODB_REGION
 });
 
+if (process.env.AMAZON_DYNAMODB_ENDPOINT) {
+  AWS.config.update({ endpoint: process.env.AMAZON_DYNAMODB_ENDPOINT })
+}
+
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event, context) => {
