@@ -571,7 +571,7 @@ forms.forEach(form => {
 const users = 
   [
     {
-      "id": "8",
+      "id": 8,
       "email": "michaelhynds@maternityafrica.org",
       "createdAt": "2019-08-12T10:29:31Z",
       "notes": " ",
@@ -663,7 +663,7 @@ const users =
       ]
     },
     {
-      "id": "7",
+      "id": 7,
       "email": "jsebisaho@amaniglobalworks.org",
       "createdAt": "2019-08-11T12:37:25Z",
       "notes": " ",
@@ -713,7 +713,7 @@ const users =
       ]
     },
     {
-      "id": "6",
+      "id": 6,
       "email": "ndayirukiye2013@gmail.com",
       "createdAt": "2019-08-11T10:12:04Z",
       "notes": " ",
@@ -763,7 +763,7 @@ const users =
       ]
     },
     {
-      "id": "5",
+      "id": 5,
       "email": "muzabel@resilienceaction.net",
       "createdAt": "2019-08-11T04:47:00Z",
       "notes": " ",
@@ -813,7 +813,7 @@ const users =
       ]
     },
     {
-      "id": "4",
+      "id": 4,
       "email": "jberman@musohealth.org",
       "createdAt": "2019-08-09T23:07:16Z",
       "notes": " ",
@@ -863,7 +863,7 @@ const users =
       ]
     },
     {
-      "id": "3",
+      "id": 3,
       "email": "hakizetutanzania@yahoo.com",
       "createdAt": "2019-08-09T11:15:17Z",
       "notes": " ",
@@ -913,7 +913,7 @@ const users =
       ]
     },
     {
-      "id": "2",
+      "id": 2,
       "email": "nderitudavid@gmail.com",
       "createdAt": "2019-08-08T13:29:27Z",
       "notes": " ",
@@ -963,7 +963,7 @@ const users =
       ]
     },
     {
-      "id": "1",
+      "id": 1,
       "email": "jamesgondwe@cydmalawi.org",
       "createdAt": "2019-08-05T17:46:38Z",
       "notes": " ",

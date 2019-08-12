@@ -20,10 +20,10 @@ const dynamodb = new AWS.DynamoDB();
 const forms = {
   TableName: "forms",
   KeySchema: [
-    { AttributeName: "id", KeyType: "HASH" },  //Partition key
+    { AttributeName: "id", KeyType: "HASH" }
   ],
   AttributeDefinitions: [
-    { AttributeName: "id", AttributeType: "S" },
+    { AttributeName: "id", AttributeType: "S" }
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 1,
@@ -49,12 +49,10 @@ dynamodb.deleteTable({ TableName: "forms" }, (err, data) => {
 const users = {
   TableName: "users",
   KeySchema: [
-    { AttributeName: "id", KeyType: "HASH" },
-    { AttributeName: "createdAt", KeyType: "RANGE" }
+    { AttributeName: "id", KeyType: "HASH" }
   ],
   AttributeDefinitions: [
-    { AttributeName: "id", AttributeType: "S" },
-    { AttributeName: "createdAt", AttributeType: "S" },
+    { AttributeName: "id", AttributeType: "N" }
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 1,
