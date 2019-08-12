@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import './styles/app.sass'
-import logo from './images/logo.svg'
+import "./styles/app.sass"
+import logo from "./images/logo.svg"
+import moment from "moment"
 
-import endpoints from './endpoints'
-import BlankSlate from './components/BlankSlate'
-import Responses from './components/Responses'
-import Detail from './components/Detail'
+import endpoints from "./endpoints"
+import BlankSlate from "./components/BlankSlate"
+import Responses from "./components/Responses"
+import Detail from "./components/Detail"
 
 export default function App() {
 
@@ -25,13 +26,23 @@ export default function App() {
     setUsers(updatedUsers)
   }
 
+  function sortUsers(users) {
+    return users.sort((a, b) => {
+      if (moment(a.createdAt).unix() < moment(b.createdAt).unix()) {
+        return 1
+      } else {
+        return -1
+      }
+    })
+  }
+
   useEffect(() => {
     if (!users.length) {
       fetch(endpoints.getUsers)
         .then(response => response.json())
         .then(json => {
           setForms(json.forms)
-          setUsers(json.users)
+          setUsers(sortUsers(json.users))
         })
         .catch()
     }
@@ -56,7 +67,7 @@ export default function App() {
               <BlankSlate />
             )} />
             <Route path="/users/:id" render={({ match }) => (
-              <Detail user={ users.find(r => r.id === match.params.id) } forms={ forms } onUserUpdate={ updateUser } />
+              <Detail user={ users.find(r => r.id === parseInt(match.params.id)) } forms={ forms } onUserUpdate={ updateUser } />
             )} />
           </section>
         </main>
