@@ -4,7 +4,7 @@ import Notes from "./Notes"
 
 export default function Detail({ user, forms, onUserUpdate }) {
   const { id, notes } = user || {}
-  const answers = ((user || {}).responses || []).map(r => r.answers)[0]
+  const answers = ((user || {}).responses || []).map(r => r.answers).flat()
   const questions = (forms || []).map(f => f.questions).flat()
 
   function textFormat(text) {
@@ -22,8 +22,8 @@ export default function Detail({ user, forms, onUserUpdate }) {
       <div className="relative">
         <dl className="w-50-ns mt0 mb3 measure">
           {
-            answers.map(answer => (
-              <div key={ answer.questionId }>
+            answers.map((answer, i) => (
+              <div key={ i }>
                 <dt className="f4 fw5 pwv-blue lh-title mb2">{ findQuestion(answer).text }</dt>
                 <Linkify properties={{ target: "_blank" }}><dd className="ma0 mb4 pwv-blue o-70 lh-copy">{ textFormat(answer.text) }</dd></Linkify>
               </div>

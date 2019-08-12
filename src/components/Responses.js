@@ -8,7 +8,7 @@ export default function Responses({ forms, users }) {
     return (
       responses.map(response => forms.find(f => f.id === response.formId))
         .filter(f => f)
-        .map(form => form.tag)
+        .map(form => form.tag).flat()
     )
   }
 
@@ -25,7 +25,7 @@ export default function Responses({ forms, users }) {
             id={ user.id }
             email={ user.email }
             createdAt={ user.createdAt }
-            tags={ [formTags(user.responses)] }
+            tags={ formTags(user.responses) }
           />
         )
       }
