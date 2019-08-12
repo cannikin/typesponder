@@ -3,13 +3,13 @@ import endpoints from "../endpoints"
 
 export default function Notes({ id, notes, onUpdate }) {
   const [saving, setSaving] = useState(false)
-  const [input, setInput] = useState(notes)
+  const [input, setInput] = useState(notes == " " ? "" : notes)
   const [prevId, setPrevId] = useState(id)
 
   // component won't re-render when changing responses so it always shows the notes from the first
   // picked response. force the input value to change here when the ID changes
   if (id !== prevId) {
-    setInput(notes)
+    setInput(notes == " " ? "" : notes)
     setPrevId(id)
   }
 

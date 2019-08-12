@@ -39,7 +39,7 @@ exports.handler = (event, context, callback) => {
     },
     UpdateExpression: "SET notes = :notes",
     ExpressionAttributeValues: {
-      ":notes": body.notes
+      ":notes": (body.notes == "" ? " " : body.notes)
     },
     ReturnValues: "ALL_NEW"
   }, (err, data) => {
