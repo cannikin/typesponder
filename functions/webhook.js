@@ -11,6 +11,7 @@ if (process.env.AMAZON_DYNAMODB_ENDPOINT) {
 }
 
 const docClient = new AWS.DynamoDB.DocumentClient();
+const IGNORE_QUESTION_IDS = ["FNpSFI70cRum", "xoPkRLGnE7M1"]
 
 exports.handler = (event, context, callback) => {
 
@@ -55,18 +56,20 @@ exports.handler = (event, context, callback) => {
     answers.forEach(answer => {
       let text = ""
       
-      switch (answer.type) {
-        case "choice":
-          text = answer.choice.label
-          break
-        default:
-          text = String(answer[answer.type])
-      }
+      if (IGNORE_QUESTION_IDS.indexOf(answer.field.id) === -1) {
+        switch (answer.type) {
+          case "choice":
+            text = answer.choice.label
+            break
+          default:
+            text = String(answer[answer.type])
+        }
 
-      output.push({
-        questionId: answer.field.id,
-        text: text
-      })
+        output.push({
+          questionId: answer.field.id,
+          text: text
+        })
+      }
     })
 
     return output
