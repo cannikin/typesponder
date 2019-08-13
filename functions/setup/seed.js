@@ -568,455 +568,616 @@ forms.forEach(form => {
   })
 })
 
-const users = 
-  [
-    {
-      "id": 8,
-      "email": "michaelhynds@maternityafrica.org",
-      "createdAt": "2019-08-12T10:29:31Z",
-      "notes": " ",
-      "responses": [
-        {
-          "id": "6kqrxgjcm2migykzwsw56kqrx3n5tjcc",
-          "formId": "bv8u0Y",
-          "answers": [
-            {
-              "questionId": "IUWgGhQA3d5t",
-              "text": "Michael Hynds"
-            },
-            {
-              "questionId": "F2NsnryEDre7",
-              "text": "Maternity Africa"
-            },
-            {
-              "questionId": "vyQF0KCqWuay",
-              "text": "Director of Fundraising"
-            },
-            {
-              "questionId": "rzO4roXJIPzF",
-              "text": "https://www.maternityafrica.org"
-            },
-            {
-              "questionId": "P4PPcwnBSztV",
-              "text": "+447818094787"
-            },
-            {
-              "questionId": "NLWFHlRalA0H",
-              "text": "michaelhynds@maternityafrica.org"
-            },
-            {
-              "questionId": "l9Hf0HNHcpXp",
-              "text": "Tanzania"
-            },
-            {
-              "questionId": "KjiMOBBtowrg",
-              "text": "Maternity Africa provides the full spectrum of maternal healthcare services, including comprehensive family planning, to vulnerable and marginalized women and girls of childbearing age.  It does so free of charge, so that 'none get left behind'."
-            },
-            {
-              "questionId": "ljjLBQRXGtJ4",
-              "text": "Comprehensive family planning services are offered free of charge to all maternity patients, fistula patients and members of the local community.  Services offered include temporary and permanent solutions.  We have an arrangement with Unite the World with Africa Foundation, Inc., whereby we have increased contact with teenagers in the community, thus increasing our reach and scope for offering comprehensive family planning services for this vulnerable population."
-            },
-            {
-              "questionId": "i2gteXtXYyvN",
-              "text": "How did you hear about this opportunity?"
-            }
-          ]
-        },
-        {
-          "id": "6kqrxgjcm2migykzwsw56kqrx3n5tjcd",
-          "formId": "bv8u0Y",
-          "answers": [
-            {
-              "questionId": "IUWgGhQA3d5t",
-              "text": "Michael Hynds"
-            },
-            {
-              "questionId": "F2NsnryEDre7",
-              "text": "Vision Maternity Care"
-            },
-            {
-              "questionId": "vyQF0KCqWuay",
-              "text": "Fundraising consultant"
-            },
-            {
-              "questionId": "rzO4roXJIPzF",
-              "text": "https://www.barbaramayfoundation.com/index"
-            },
-            {
-              "questionId": "P4PPcwnBSztV",
-              "text": "+447818094787"
-            },
-            {
-              "questionId": "NLWFHlRalA0H",
-              "text": "michaelhynds@maternityafrica.org"
-            },
-            {
-              "questionId": "l9Hf0HNHcpXp",
-              "text": "Ethiopia"
-            },
-            {
-              "questionId": "KjiMOBBtowrg",
-              "text": "Vision Maternity Care provides the full spectrum of maternal healthcare services to vulnerable and marginalized women and girls of childbearing age.  Services are provided free of charge, so that no-one gets left behind."
-            },
-            {
-              "questionId": "ljjLBQRXGtJ4",
-              "text": "All of the women accessing Vision Maternity Care for maternal health services are offered family planning consultations at the neighbouring Government-run health centre.  In the event that a patient chooses permanent family planning solutions, Vision Maternity Care provides them at its facility.  Through its provision of access to good, evidence-based maternal healthcare, Vision Maternity Care also provides access to comprehensive family planning services."
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 7,
-      "email": "jsebisaho@amaniglobalworks.org",
-      "createdAt": "2019-08-11T12:37:25Z",
-      "notes": " ",
-      "responses": [
-        {
-          "id": "jkc176cqu3n5bgjbjkc4btxp4x82hblv",
-          "formId": "bv8u0Y",
-          "answers": [
-            {
-              "questionId": "IUWgGhQA3d5t",
-              "text": "Jacques Sebisaho"
-            },
-            {
-              "questionId": "F2NsnryEDre7",
-              "text": "Amani Global Works"
-            },
-            {
-              "questionId": "vyQF0KCqWuay",
-              "text": "Founder and CEO"
-            },
-            {
-              "questionId": "rzO4roXJIPzF",
-              "text": "https://www.amaniglobalworks.org"
-            },
-            {
-              "questionId": "P4PPcwnBSztV",
-              "text": "+13472661481"
-            },
-            {
-              "questionId": "NLWFHlRalA0H",
-              "text": "jsebisaho@amaniglobalworks.org"
-            },
-            {
-              "questionId": "l9Hf0HNHcpXp",
-              "text": "Idjwi Island (Democratic Republic of Congo)"
-            },
-            {
-              "questionId": "KjiMOBBtowrg",
-              "text": "We built and manage a primary healthcare care system for 300,000 who didn’t have access to healthcare before on a big island between Rwanda and Congo where the population has grown from 37,000 in 1978 to 300,000 in 2018 and where fertility rate is 8.5 per woman."
-            },
-            {
-              "questionId": "ljjLBQRXGtJ4",
-              "text": "We provide women and girls access to short and long-term birth control methods at the community level (through our network of community health workers) and health facility ( through our hospital and network of health clinics). Family planning fits within our overall maternal health that consists of providing a minimum of 3 prenatal care to all pregnant women, family planning counseling, safe birth with a skilled birth attendent, and our goal to have all women in Idjwi access a modern family planning method, and decrease fertility rate from 8.5 to 6 in the 5 years."
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 6,
-      "email": "ndayirukiye2013@gmail.com",
-      "createdAt": "2019-08-11T10:12:04Z",
-      "notes": " ",
-      "responses": [
-        {
-          "id": "qnhtbem05uy6b1vukf0qnhtqf15mere1",
-          "formId": "bv8u0Y",
-          "answers": [
-            {
-              "questionId": "IUWgGhQA3d5t",
-              "text": "Ndayirukiye Jean Pierre"
-            },
-            {
-              "questionId": "F2NsnryEDre7",
-              "text": "IPROSARUDE"
-            },
-            {
-              "questionId": "vyQF0KCqWuay",
-              "text": "Executive secretary "
-            },
-            {
-              "questionId": "rzO4roXJIPzF",
-              "text": "http://www.iprosarude.com"
-            },
-            {
-              "questionId": "P4PPcwnBSztV",
-              "text": "+25779927913"
-            },
-            {
-              "questionId": "NLWFHlRalA0H",
-              "text": "ndayirukiye2013@gmail.com"
-            },
-            {
-              "questionId": "l9Hf0HNHcpXp",
-              "text": "Burundi"
-            },
-            {
-              "questionId": "KjiMOBBtowrg",
-              "text": "is  a local NGO who work in rural area to  provide health quality care  to vulnerable peoples  especially specialized services and included sexual reproductive health  like family planning care,post abortion care,antenatal and postnatal care,STI treatment;HIV/AIDS,cancer services care,...We have to both  clinic and community health programs."
-            },
-            {
-              "questionId": "ljjLBQRXGtJ4",
-              "text": "we have to both programs :clinic and community .I clinic,we are provided family planning services in 4 clinics and in community we use the community health workers to provide family planning products  for the peoples who can't not attending our clinics ."
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 5,
-      "email": "muzabel@resilienceaction.net",
-      "createdAt": "2019-08-11T04:47:00Z",
-      "notes": " ",
-      "responses": [
-        {
-          "id": "m0a9wlry9n9fm845jjef8m0a9wlrzj19",
-          "formId": "bv8u0Y",
-          "answers": [
-            {
-              "questionId": "IUWgGhQA3d5t",
-              "text": "Muzabel Welongo "
-            },
-            {
-              "questionId": "F2NsnryEDre7",
-              "text": "Resilience Action International "
-            },
-            {
-              "questionId": "vyQF0KCqWuay",
-              "text": "Founder & Executive Director "
-            },
-            {
-              "questionId": "rzO4roXJIPzF",
-              "text": "https://www.resilienceaction.net"
-            },
-            {
-              "questionId": "P4PPcwnBSztV",
-              "text": "+12028201034"
-            },
-            {
-              "questionId": "NLWFHlRalA0H",
-              "text": "muzabel@resilienceaction.net"
-            },
-            {
-              "questionId": "l9Hf0HNHcpXp",
-              "text": "Kenya, Tanzania "
-            },
-            {
-              "questionId": "KjiMOBBtowrg",
-              "text": "Resilience Action is a refugee run nonprofit that promotes the right to self-reliance among refugees through reproductive health information and services, vocational training, and entrepreneurship development. "
-            },
-            {
-              "questionId": "ljjLBQRXGtJ4",
-              "text": "Our YouthRise Initiative avails accurate and relevant information about reproductive health and family planning to refugee adolescent girls and boys in Kenya and Tanzania. We partner with local healthcare providers to refer sexually active adolescents to receive specialized counseling and contraceptive services. Our plan is to establish Health Corners, which are youth-friendly facilities where adolescents can access family planning services with dignity. "
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "email": "jberman@musohealth.org",
-      "createdAt": "2019-08-09T23:07:16Z",
-      "notes": " ",
-      "responses": [
-        {
-          "id": "ubewdf5ypi32es7wfubedufxdc90k638",
-          "formId": "bv8u0Y",
-          "answers": [
-            {
-              "questionId": "IUWgGhQA3d5t",
-              "text": "Julia Berman"
-            },
-            {
-              "questionId": "F2NsnryEDre7",
-              "text": "Muso"
-            },
-            {
-              "questionId": "vyQF0KCqWuay",
-              "text": "Chief Partnerships Officer "
-            },
-            {
-              "questionId": "rzO4roXJIPzF",
-              "text": "https://www.musohealth.org/"
-            },
-            {
-              "questionId": "P4PPcwnBSztV",
-              "text": "+15034845098"
-            },
-            {
-              "questionId": "NLWFHlRalA0H",
-              "text": "jberman@musohealth.org"
-            },
-            {
-              "questionId": "l9Hf0HNHcpXp",
-              "text": "Mali"
-            },
-            {
-              "questionId": "KjiMOBBtowrg",
-              "text": "Muso acts as an operational research partner to help governments design and implement strategies for universal health coverage. We create systems that deliver health care with speed: to all patients who need it, when they need it. \n\nMany national programs have been unable to deliver impact because of inadequate community engagement, insufficient performance management, out-of-pocket payments patients can’t afford, and inadequate quality of diagnosis and care, in the community and in the clinic. These barriers mean patients get care too late, or not at all. New, research-proven models for child survival and universal health coverage are urgently needed. \n\nFor more than a decade, we have partnered with the Malian government on a proactive community health care model, Proactive Community Case Management (ProCCM). The Malian government has recently committed to taking many of ProCCM's strategies to scale nationally with support and technical assistance from the Muso team.\n"
-            },
-            {
-              "questionId": "ljjLBQRXGtJ4",
-              "text": "Muso's model deploys Community Health Workers (CHWs) as the front lines of ProCCM. These health workers, mostly women, provide care within their own neighborhoods and build trusting, ongoing relationships with their patients. Reproductive health services, including pregnancy tests and same-day family planning provision, are integrated into our package of care. All CHWs are trained to provide this service. CHWs can provide condoms, Depo-Provera injections, and oral contraceptive pills in the privacy of their patient’s home, or they can bring women to the health center for IUDs or implants.\n\nMuso added reproductive services to our package of care in 2015.  Between 2015-2017, preliminary data shows that contraceptive use among the population we serve increased from 34.7% to 42.4%. The baseline rate of 34.7% in 2015 was already significantly higher than the rate of contraceptive use documented nationally in Mali, which has hovered between 10%-16% over the past five years. A visit by a CHW within the previous three months was also found to be a positive predictor of family planning use, underlying how the connection established by a CHW and community members can work against limiting taboos and gender norms, opening up a path to family planning access for all."
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "email": "hakizetutanzania@yahoo.com",
-      "createdAt": "2019-08-09T11:15:17Z",
-      "notes": " ",
-      "responses": [
-        {
-          "id": "e30fltmmork1e5uhe30flt87z39159zi",
-          "formId": "bv8u0Y",
-          "answers": [
-            {
-              "questionId": "IUWgGhQA3d5t",
-              "text": "Gervas Evodius"
-            },
-            {
-              "questionId": "F2NsnryEDre7",
-              "text": "Hakizetu Tanzania"
-            },
-            {
-              "questionId": "vyQF0KCqWuay",
-              "text": "Co-founder and Programs Director"
-            },
-            {
-              "questionId": "rzO4roXJIPzF",
-              "text": "https://www.hakizetu.org"
-            },
-            {
-              "questionId": "P4PPcwnBSztV",
-              "text": "+255757330906"
-            },
-            {
-              "questionId": "NLWFHlRalA0H",
-              "text": "hakizetutanzania@yahoo.com"
-            },
-            {
-              "questionId": "l9Hf0HNHcpXp",
-              "text": "Tanzania"
-            },
-            {
-              "questionId": "KjiMOBBtowrg",
-              "text": "Hakizetu Tanzania is a non governmental organization working on preventing violence against  women and girls specifically working on preventing child marriage, teenage pregnancy and other form of sexual violence, Hakizetu is also working on empowering economically young women and girls survivors of violence.  "
-            },
-            {
-              "questionId": "ljjLBQRXGtJ4",
-              "text": "Hakizetu is working on providing information on SRHR in  communities and schools. Hakizetu is using a well trained community volunteers and in school champion educators to lead small and large group conversation toward family planning and other SRH issues. Hakizetu has developed a tool kits which can be used by adolescents to lead conversation on issues related to family planning, abortion and pregnancy. The tool kit has been adapted in other part of East Africa.  Also currently  Hakizetu is conducting a SMART advocacy to call the government of Tanzania accountable toward its commitment toward FP2020. Hakizetu have been funded by PAI and Segal Family Foundation  to advocate for change toward family planning. Also Hakizetu is conducting community session intended to eradicate abortion stigma and linking those in need of family planning in the community with service provides "
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "email": "nderitudavid@gmail.com",
-      "createdAt": "2019-08-08T13:29:27Z",
-      "notes": " ",
-      "responses": [
-        {
-          "id": "tv9bh14cqzqilhy8tv9bhh4krdeh6to0",
-          "formId": "bv8u0Y",
-          "answers": [
-            {
-              "questionId": "IUWgGhQA3d5t",
-              "text": "David Nderitu"
-            },
-            {
-              "questionId": "F2NsnryEDre7",
-              "text": "Imarisha CBO"
-            },
-            {
-              "questionId": "vyQF0KCqWuay",
-              "text": "Executive Director"
-            },
-            {
-              "questionId": "rzO4roXJIPzF",
-              "text": "https://www.imarisha.org"
-            },
-            {
-              "questionId": "P4PPcwnBSztV",
-              "text": "+254723935597"
-            },
-            {
-              "questionId": "NLWFHlRalA0H",
-              "text": "nderitudavid@gmail.com"
-            },
-            {
-              "questionId": "l9Hf0HNHcpXp",
-              "text": "Kenya"
-            },
-            {
-              "questionId": "KjiMOBBtowrg",
-              "text": "Imarisha is a Kiswahili word meaning to make better.  We envision empowered Kenya communities driving sustainable development while our mission is to facilitate adoption of innovative practices and approaches among marginalized communities for sustainable development."
-            },
-            {
-              "questionId": "ljjLBQRXGtJ4",
-              "text": "Imarisha CBO is currently running a project whose goal is to have Sexual and Reproductive Health (SRH) and other livelihoods needs of adolescents living with HIV/AIDS addressed in Nyeri County in Kenya. The project acknowledges that discussion of SRH issues between parents/guardians and adolescents face myriad socio-cultural challenges. The project takes note of the rising number of HIV positive adolescents and the inadequate programming for them which may trigger increased HIV infections in Kenya if the issue is not addressed. We are equipping adolescents living with requisite skills to champion for adolescents living with HIV health and other livelihoods needs. We are empowering and encouraging HIV-positive young people to freely discuss the SRH issues not only with parents/ guardians but also with other service providers by strengthening support groups and peer groups for HIV positive adolescents. The project has trained 22 champions on peer education, leadership and management and advocacy. Additionally, the project has conducted Systemic Child Counseling training to 23 school teachers aiming at equipping the trained counselors with the counseling skills and empower them to diversify the context. "
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 1,
-      "email": "jamesgondwe@cydmalawi.org",
-      "createdAt": "2019-08-05T17:46:38Z",
-      "notes": " ",
-      "responses": [
-        {
-          "id": "4rdvi15b6k298w1lslg34rdh0934tklk",
-          "formId": "bv8u0Y",
-          "answers": [
-            {
-              "questionId": "IUWgGhQA3d5t",
-              "text": "James Gondwe"
-            },
-            {
-              "questionId": "F2NsnryEDre7",
-              "text": "Centre for Youth and Development"
-            },
-            {
-              "questionId": "vyQF0KCqWuay",
-              "text": "Executive Director"
-            },
-            {
-              "questionId": "rzO4roXJIPzF",
-              "text": "https://www.cydmalawi.org"
-            },
-            {
-              "questionId": "P4PPcwnBSztV",
-              "text": "+265999940260"
-            },
-            {
-              "questionId": "NLWFHlRalA0H",
-              "text": "jamesgondwe@cydmalawi.org"
-            },
-            {
-              "questionId": "l9Hf0HNHcpXp",
-              "text": "Malawi"
-            },
-            {
-              "questionId": "KjiMOBBtowrg",
-              "text": "We are a local Non-Governmental organization that works with Government and communities to improve lives for children, youth and women to create a conducive environment for them to develop to their fullest potential. We effect changes in sectors of education, sustainable livelihoods and health."
-            },
-            {
-              "questionId": "ljjLBQRXGtJ4",
-              "text": "Our family planning program is called \"Community-based Integrated family planning Promotion (CIFPP)\" and is embedded in our strategic plan and aims at enabling people to have access to information, products and services. \n\nOur model revolves around “Community-Health workers (CHW)” who are based in communities but are linked to health facilities.  Our model builds the capacity of CWH and provides them with tools to ensure that family planning services are provided effectively. Apart from training, we also provide push bicycles for mobility and materials for raising awareness. We also conduct social mobilization through the use of Theatre for Development by training youth on theatre and Family planning. \n\nWe also work on Health governance in relation to family at facility level but also at district level. Our work at facility level is with the Health Advisory committee, by providing them with training on social accountability specifically Community Score Card. They facilitate these sessions with health facility staff and community members to rank service delivery and develop plans for improvement. At district level we work with the District Health Technical Committee to lobby for provision of contraceptives and improved service delivery in the district specifically hard to reach areas. \n\nFamily planning contributes to health family's, health children, youth and women allowing them to access education and other opportunities and reach their fullest potential. \n"
-            }
-          ]
-        }
-      ]
-    }
-  ]
+const users = [
+  {
+    "id": 11,
+    "email": "nkurujose2000@yahoo.com",
+    "createdAt": "2019-08-13T08:24:26Z",
+    "notes": " ",
+    "responses": [
+      {
+        "id": "3vdla9ant3vw050hbvrmsz3v7f4qzzw0",
+        "formId": "VwLtMw",
+        "answers": [
+          {
+            "questionId": "ef7PUrxUVuF6",
+            "text": "Joseph Nkurunziza Ntale"
+          },
+          {
+            "questionId": "BLvcKixhgXwY",
+            "text": "St. Francis Health Care Services"
+          },
+          {
+            "questionId": "nJkvzzaTRuyR",
+            "text": "Director of Programs"
+          },
+          {
+            "questionId": "DueMWKkCwXkK",
+            "text": "https://www.stfrancishcs.org"
+          },
+          {
+            "questionId": "nQ2sPJbI8A0t",
+            "text": "+256772628578"
+          },
+          {
+            "questionId": "UZJ3kT2XKnxw",
+            "text": "nkurujose2000@yahoo.com"
+          },
+          {
+            "questionId": "SZI4kzVGK9US",
+            "text": "Uganda"
+          },
+          {
+            "questionId": "Tk7fJsWeOQlk",
+            "text": "61(Executive Director, Director of Programs, Finance and Administration, Monitoring, Learning and Evaluation Manager, Medical Services Manager, Internal Auditor, Human Resource Officer"
+          },
+          {
+            "questionId": "pjwCtqPhgiNm",
+            "text": "549,764"
+          },
+          {
+            "questionId": "QUdeELUDJNCG",
+            "text": "false"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "email": "willy.kamya@mihs.ac.ug",
+    "createdAt": "2019-08-13T09:03:05Z",
+    "notes": " ",
+    "responses": [
+      {
+        "id": "ferjnj9omr9ew02yhferjurveeyzqts1",
+        "formId": "bv8u0Y",
+        "answers": [
+          {
+            "questionId": "IUWgGhQA3d5t",
+            "text": "WILLY KAMYA"
+          },
+          {
+            "questionId": "F2NsnryEDre7",
+            "text": "MILDMAY UGANDA"
+          },
+          {
+            "questionId": "vyQF0KCqWuay",
+            "text": "HEAD OF GRANTS AND BUSINESS DEVELOPMENT"
+          },
+          {
+            "questionId": "rzO4roXJIPzF",
+            "text": "https://www.mildmay.or.ug"
+          },
+          {
+            "questionId": "P4PPcwnBSztV",
+            "text": "+256772650613"
+          },
+          {
+            "questionId": "NLWFHlRalA0H",
+            "text": "willy.kamya@mihs.ac.ug"
+          },
+          {
+            "questionId": "l9Hf0HNHcpXp",
+            "text": "Uganda"
+          },
+          {
+            "questionId": "KjiMOBBtowrg",
+            "text": "Mildmay Uganda (MUg) operated as a local chapter of Mildmay International since 1998, and was registered as an autonomous indigenous NGO in 2011. \nMUg is one of the Centres of Excellence (CoE) recognized by Government of Uganda, Ministry of Health. MUg pioneered specialist paediatric HIV care in sub-Saharan Africa and is one of the two paediatric palliative care Beacon Centres in Africa. MUg is one of the National NGOs (NNGOs) operating sub-national programs that contribute significantly to national health outcomes. \nMUg is currently the PEPFAR comprehensive implementing partner for Central Uganda (the region with highest HIV prevalence of 10.6% compared to 7.3% national prevalence).\n\nVision: Communities transformed for sustainable health. Mission: Empowering communities for health and sustainable livelihoods by providing quality health care, developing human resources for health and generating evidence to influence health policy.\n\nAs an organisation with over 20 years of experience in Empowering communities for health and sustainable livelihoods by providing quality healthcare, developing human resources for health and generating evidence to influence health policy, Mildmay is far from a stranger to the power and potential of good research in the field. \n\nMUg Strengthens Health Systems (HSS) at district, health facility, CBO/CSO, community and household levels to ensure delivery of effective, safe, quality health services, including integrated Maternal Child Health/Family planing (MCH/FP) services. These HSS and MCH/FP integrated interventions target the 6 HSS building blocks, i.e. service delivery, health workforce, information and research, medical products and technologies, health financing and governance."
+          },
+          {
+            "questionId": "ljjLBQRXGtJ4",
+            "text": "MUg has integrated Family Planning interventions across its Health Systems Strengthening Programs. In particular,  through it Mildmay Institute of Health Sciences (MIHS) - its capacity building and community development arm, MUg is implementing the Safe motherhood and Child Disability Rehabilitation project with funding from the Netherlands government since 2013. \nThe project is in four districts of central Uganda i.e; Mubende, Mityana, Nakaseke and Luwero. The project utilizes a Health Systems Strengthening Approach. This project has been renewed annually based of performance. The current phase will be ending December 2020. \n\nThe project addresses the 5 thematic areas of Safe Motherhood namely; Family Planning, Antenatal Care (ANC),  Basic and Comprehensive Obstetric emergency, Post natal care (PNC) and Prevention and Management of STIs/STD among children, adolescents and women.  To contribute to justice and human dignity, the project intervenes to prevent birth defects, increase early detection of birth defects and rehabilitation of child disability. \n\nThe project is aligned  to strategic goal 1:  Strengthen MUg capacity as a leading implementing partner of the fast-track initiative to end the HIV epidemic in Uganda and addressing emerging health priorities, and Goal 4: Generate evidence to influence healthcare policy and practice in Uganda and sub-Saharan Africa, in the MUg Strategic plan July 01, 2018 to June 30, 2023.   \nParticularly, under strategic goal 1: Strengthen MUg capacity as a lead implementer in the fast-track initiative to end the HIV epidemic in Uganda and address emerging health priorities; strategic objective 1.3:  To address emerging global sustainable development priorities in partnership with Government of Uganda and its development partners; sub section a, b and c, MUg is committed to; a) Strengthening district, facility and community systems for effective RMCH service delivery; b) Strengthening district, facility and community systems to address HIV; c) Improving access to modern contraceptives for women of reproductive age."
+          },
+          {
+            "questionId": "i2gteXtXYyvN",
+            "text": "From Health for Development Initiatives (HDI-Uganda)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "email": "clogan@safaridoctors.org",
+    "createdAt": "2019-08-13T09:02:14Z",
+    "notes": " ",
+    "responses": [
+      {
+        "id": "kgd45qvpxnnyv1lmgkgd45qa7bakc661",
+        "formId": "bv8u0Y",
+        "answers": [
+          {
+            "questionId": "IUWgGhQA3d5t",
+            "text": "Clementine Logan"
+          },
+          {
+            "questionId": "F2NsnryEDre7",
+            "text": "Safari Doctors"
+          },
+          {
+            "questionId": "vyQF0KCqWuay",
+            "text": "Communications and Development Officer"
+          },
+          {
+            "questionId": "rzO4roXJIPzF",
+            "text": "https://www.safaridoctors.org/"
+          },
+          {
+            "questionId": "P4PPcwnBSztV",
+            "text": "+254703505482"
+          },
+          {
+            "questionId": "NLWFHlRalA0H",
+            "text": "clogan@safaridoctors.org"
+          },
+          {
+            "questionId": "l9Hf0HNHcpXp",
+            "text": "Kenya"
+          },
+          {
+            "questionId": "KjiMOBBtowrg",
+            "text": "Safari Doctors provides innovative, community-driven healthcare solutions that promote\nwell-being for marginalized communities in Lamu, Kenya."
+          },
+          {
+            "questionId": "ljjLBQRXGtJ4",
+            "text": "Family planning is a key component of our monthly mobile clinics, by boat and road. Each month, our team reaches up to 800 patients across at least 8 remote villages in Lamu."
+          },
+          {
+            "questionId": "i2gteXtXYyvN",
+            "text": "Through our partner, Segal Family Foundation"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "email": "michaelhynds@maternityafrica.org",
+    "createdAt": "2019-08-12T10:29:31Z",
+    "notes": " ",
+    "responses": [
+      {
+        "id": "6kqrxgjcm2migykzwsw56kqrx3n5tjcc",
+        "formId": "bv8u0Y",
+        "answers": [
+          {
+            "questionId": "IUWgGhQA3d5t",
+            "text": "Michael Hynds"
+          },
+          {
+            "questionId": "F2NsnryEDre7",
+            "text": "Maternity Africa"
+          },
+          {
+            "questionId": "vyQF0KCqWuay",
+            "text": "Director of Fundraising"
+          },
+          {
+            "questionId": "rzO4roXJIPzF",
+            "text": "https://www.maternityafrica.org"
+          },
+          {
+            "questionId": "P4PPcwnBSztV",
+            "text": "+447818094787"
+          },
+          {
+            "questionId": "NLWFHlRalA0H",
+            "text": "michaelhynds@maternityafrica.org"
+          },
+          {
+            "questionId": "l9Hf0HNHcpXp",
+            "text": "Tanzania"
+          },
+          {
+            "questionId": "KjiMOBBtowrg",
+            "text": "Maternity Africa provides the full spectrum of maternal healthcare services, including comprehensive family planning, to vulnerable and marginalized women and girls of childbearing age.  It does so free of charge, so that 'none get left behind'."
+          },
+          {
+            "questionId": "ljjLBQRXGtJ4",
+            "text": "Comprehensive family planning services are offered free of charge to all maternity patients, fistula patients and members of the local community.  Services offered include temporary and permanent solutions.  We have an arrangement with Unite the World with Africa Foundation, Inc., whereby we have increased contact with teenagers in the community, thus increasing our reach and scope for offering comprehensive family planning services for this vulnerable population."
+          },
+          {
+            "questionId": "i2gteXtXYyvN",
+            "text": "How did you hear about this opportunity?"
+          }
+        ]
+      },
+      {
+        "id": "6kqrxgjcm2migykzwsw56kqrx3n5tjcd",
+        "formId": "bv8u0Y",
+        "answers": [
+          {
+            "questionId": "IUWgGhQA3d5t",
+            "text": "Michael Hynds"
+          },
+          {
+            "questionId": "F2NsnryEDre7",
+            "text": "Vision Maternity Care"
+          },
+          {
+            "questionId": "vyQF0KCqWuay",
+            "text": "Fundraising consultant"
+          },
+          {
+            "questionId": "rzO4roXJIPzF",
+            "text": "https://www.barbaramayfoundation.com/index"
+          },
+          {
+            "questionId": "P4PPcwnBSztV",
+            "text": "+447818094787"
+          },
+          {
+            "questionId": "NLWFHlRalA0H",
+            "text": "michaelhynds@maternityafrica.org"
+          },
+          {
+            "questionId": "l9Hf0HNHcpXp",
+            "text": "Ethiopia"
+          },
+          {
+            "questionId": "KjiMOBBtowrg",
+            "text": "Vision Maternity Care provides the full spectrum of maternal healthcare services to vulnerable and marginalized women and girls of childbearing age.  Services are provided free of charge, so that no-one gets left behind."
+          },
+          {
+            "questionId": "ljjLBQRXGtJ4",
+            "text": "All of the women accessing Vision Maternity Care for maternal health services are offered family planning consultations at the neighbouring Government-run health centre.  In the event that a patient chooses permanent family planning solutions, Vision Maternity Care provides them at its facility.  Through its provision of access to good, evidence-based maternal healthcare, Vision Maternity Care also provides access to comprehensive family planning services."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "email": "jsebisaho@amaniglobalworks.org",
+    "createdAt": "2019-08-11T12:37:25Z",
+    "notes": " ",
+    "responses": [
+      {
+        "id": "jkc176cqu3n5bgjbjkc4btxp4x82hblv",
+        "formId": "bv8u0Y",
+        "answers": [
+          {
+            "questionId": "IUWgGhQA3d5t",
+            "text": "Jacques Sebisaho"
+          },
+          {
+            "questionId": "F2NsnryEDre7",
+            "text": "Amani Global Works"
+          },
+          {
+            "questionId": "vyQF0KCqWuay",
+            "text": "Founder and CEO"
+          },
+          {
+            "questionId": "rzO4roXJIPzF",
+            "text": "https://www.amaniglobalworks.org"
+          },
+          {
+            "questionId": "P4PPcwnBSztV",
+            "text": "+13472661481"
+          },
+          {
+            "questionId": "NLWFHlRalA0H",
+            "text": "jsebisaho@amaniglobalworks.org"
+          },
+          {
+            "questionId": "l9Hf0HNHcpXp",
+            "text": "Idjwi Island (Democratic Republic of Congo)"
+          },
+          {
+            "questionId": "KjiMOBBtowrg",
+            "text": "We built and manage a primary healthcare care system for 300,000 who didn’t have access to healthcare before on a big island between Rwanda and Congo where the population has grown from 37,000 in 1978 to 300,000 in 2018 and where fertility rate is 8.5 per woman."
+          },
+          {
+            "questionId": "ljjLBQRXGtJ4",
+            "text": "We provide women and girls access to short and long-term birth control methods at the community level (through our network of community health workers) and health facility ( through our hospital and network of health clinics). Family planning fits within our overall maternal health that consists of providing a minimum of 3 prenatal care to all pregnant women, family planning counseling, safe birth with a skilled birth attendent, and our goal to have all women in Idjwi access a modern family planning method, and decrease fertility rate from 8.5 to 6 in the 5 years."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "email": "ndayirukiye2013@gmail.com",
+    "createdAt": "2019-08-11T10:12:04Z",
+    "notes": " ",
+    "responses": [
+      {
+        "id": "qnhtbem05uy6b1vukf0qnhtqf15mere1",
+        "formId": "bv8u0Y",
+        "answers": [
+          {
+            "questionId": "IUWgGhQA3d5t",
+            "text": "Ndayirukiye Jean Pierre"
+          },
+          {
+            "questionId": "F2NsnryEDre7",
+            "text": "IPROSARUDE"
+          },
+          {
+            "questionId": "vyQF0KCqWuay",
+            "text": "Executive secretary "
+          },
+          {
+            "questionId": "rzO4roXJIPzF",
+            "text": "http://www.iprosarude.com"
+          },
+          {
+            "questionId": "P4PPcwnBSztV",
+            "text": "+25779927913"
+          },
+          {
+            "questionId": "NLWFHlRalA0H",
+            "text": "ndayirukiye2013@gmail.com"
+          },
+          {
+            "questionId": "l9Hf0HNHcpXp",
+            "text": "Burundi"
+          },
+          {
+            "questionId": "KjiMOBBtowrg",
+            "text": "is  a local NGO who work in rural area to  provide health quality care  to vulnerable peoples  especially specialized services and included sexual reproductive health  like family planning care,post abortion care,antenatal and postnatal care,STI treatment;HIV/AIDS,cancer services care,...We have to both  clinic and community health programs."
+          },
+          {
+            "questionId": "ljjLBQRXGtJ4",
+            "text": "we have to both programs :clinic and community .I clinic,we are provided family planning services in 4 clinics and in community we use the community health workers to provide family planning products  for the peoples who can't not attending our clinics ."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "email": "muzabel@resilienceaction.net",
+    "createdAt": "2019-08-11T04:47:00Z",
+    "notes": " ",
+    "responses": [
+      {
+        "id": "m0a9wlry9n9fm845jjef8m0a9wlrzj19",
+        "formId": "bv8u0Y",
+        "answers": [
+          {
+            "questionId": "IUWgGhQA3d5t",
+            "text": "Muzabel Welongo "
+          },
+          {
+            "questionId": "F2NsnryEDre7",
+            "text": "Resilience Action International "
+          },
+          {
+            "questionId": "vyQF0KCqWuay",
+            "text": "Founder & Executive Director "
+          },
+          {
+            "questionId": "rzO4roXJIPzF",
+            "text": "https://www.resilienceaction.net"
+          },
+          {
+            "questionId": "P4PPcwnBSztV",
+            "text": "+12028201034"
+          },
+          {
+            "questionId": "NLWFHlRalA0H",
+            "text": "muzabel@resilienceaction.net"
+          },
+          {
+            "questionId": "l9Hf0HNHcpXp",
+            "text": "Kenya, Tanzania "
+          },
+          {
+            "questionId": "KjiMOBBtowrg",
+            "text": "Resilience Action is a refugee run nonprofit that promotes the right to self-reliance among refugees through reproductive health information and services, vocational training, and entrepreneurship development. "
+          },
+          {
+            "questionId": "ljjLBQRXGtJ4",
+            "text": "Our YouthRise Initiative avails accurate and relevant information about reproductive health and family planning to refugee adolescent girls and boys in Kenya and Tanzania. We partner with local healthcare providers to refer sexually active adolescents to receive specialized counseling and contraceptive services. Our plan is to establish Health Corners, which are youth-friendly facilities where adolescents can access family planning services with dignity. "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "email": "jberman@musohealth.org",
+    "createdAt": "2019-08-09T23:07:16Z",
+    "notes": " ",
+    "responses": [
+      {
+        "id": "ubewdf5ypi32es7wfubedufxdc90k638",
+        "formId": "bv8u0Y",
+        "answers": [
+          {
+            "questionId": "IUWgGhQA3d5t",
+            "text": "Julia Berman"
+          },
+          {
+            "questionId": "F2NsnryEDre7",
+            "text": "Muso"
+          },
+          {
+            "questionId": "vyQF0KCqWuay",
+            "text": "Chief Partnerships Officer "
+          },
+          {
+            "questionId": "rzO4roXJIPzF",
+            "text": "https://www.musohealth.org/"
+          },
+          {
+            "questionId": "P4PPcwnBSztV",
+            "text": "+15034845098"
+          },
+          {
+            "questionId": "NLWFHlRalA0H",
+            "text": "jberman@musohealth.org"
+          },
+          {
+            "questionId": "l9Hf0HNHcpXp",
+            "text": "Mali"
+          },
+          {
+            "questionId": "KjiMOBBtowrg",
+            "text": "Muso acts as an operational research partner to help governments design and implement strategies for universal health coverage. We create systems that deliver health care with speed: to all patients who need it, when they need it. \n\nMany national programs have been unable to deliver impact because of inadequate community engagement, insufficient performance management, out-of-pocket payments patients can’t afford, and inadequate quality of diagnosis and care, in the community and in the clinic. These barriers mean patients get care too late, or not at all. New, research-proven models for child survival and universal health coverage are urgently needed. \n\nFor more than a decade, we have partnered with the Malian government on a proactive community health care model, Proactive Community Case Management (ProCCM). The Malian government has recently committed to taking many of ProCCM's strategies to scale nationally with support and technical assistance from the Muso team.\n"
+          },
+          {
+            "questionId": "ljjLBQRXGtJ4",
+            "text": "Muso's model deploys Community Health Workers (CHWs) as the front lines of ProCCM. These health workers, mostly women, provide care within their own neighborhoods and build trusting, ongoing relationships with their patients. Reproductive health services, including pregnancy tests and same-day family planning provision, are integrated into our package of care. All CHWs are trained to provide this service. CHWs can provide condoms, Depo-Provera injections, and oral contraceptive pills in the privacy of their patient’s home, or they can bring women to the health center for IUDs or implants.\n\nMuso added reproductive services to our package of care in 2015.  Between 2015-2017, preliminary data shows that contraceptive use among the population we serve increased from 34.7% to 42.4%. The baseline rate of 34.7% in 2015 was already significantly higher than the rate of contraceptive use documented nationally in Mali, which has hovered between 10%-16% over the past five years. A visit by a CHW within the previous three months was also found to be a positive predictor of family planning use, underlying how the connection established by a CHW and community members can work against limiting taboos and gender norms, opening up a path to family planning access for all."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "email": "hakizetutanzania@yahoo.com",
+    "createdAt": "2019-08-09T11:15:17Z",
+    "notes": " ",
+    "responses": [
+      {
+        "id": "e30fltmmork1e5uhe30flt87z39159zi",
+        "formId": "bv8u0Y",
+        "answers": [
+          {
+            "questionId": "IUWgGhQA3d5t",
+            "text": "Gervas Evodius"
+          },
+          {
+            "questionId": "F2NsnryEDre7",
+            "text": "Hakizetu Tanzania"
+          },
+          {
+            "questionId": "vyQF0KCqWuay",
+            "text": "Co-founder and Programs Director"
+          },
+          {
+            "questionId": "rzO4roXJIPzF",
+            "text": "https://www.hakizetu.org"
+          },
+          {
+            "questionId": "P4PPcwnBSztV",
+            "text": "+255757330906"
+          },
+          {
+            "questionId": "NLWFHlRalA0H",
+            "text": "hakizetutanzania@yahoo.com"
+          },
+          {
+            "questionId": "l9Hf0HNHcpXp",
+            "text": "Tanzania"
+          },
+          {
+            "questionId": "KjiMOBBtowrg",
+            "text": "Hakizetu Tanzania is a non governmental organization working on preventing violence against  women and girls specifically working on preventing child marriage, teenage pregnancy and other form of sexual violence, Hakizetu is also working on empowering economically young women and girls survivors of violence.  "
+          },
+          {
+            "questionId": "ljjLBQRXGtJ4",
+            "text": "Hakizetu is working on providing information on SRHR in  communities and schools. Hakizetu is using a well trained community volunteers and in school champion educators to lead small and large group conversation toward family planning and other SRH issues. Hakizetu has developed a tool kits which can be used by adolescents to lead conversation on issues related to family planning, abortion and pregnancy. The tool kit has been adapted in other part of East Africa.  Also currently  Hakizetu is conducting a SMART advocacy to call the government of Tanzania accountable toward its commitment toward FP2020. Hakizetu have been funded by PAI and Segal Family Foundation  to advocate for change toward family planning. Also Hakizetu is conducting community session intended to eradicate abortion stigma and linking those in need of family planning in the community with service provides "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "email": "nderitudavid@gmail.com",
+    "createdAt": "2019-08-08T13:29:27Z",
+    "notes": " ",
+    "responses": [
+      {
+        "id": "tv9bh14cqzqilhy8tv9bhh4krdeh6to0",
+        "formId": "bv8u0Y",
+        "answers": [
+          {
+            "questionId": "IUWgGhQA3d5t",
+            "text": "David Nderitu"
+          },
+          {
+            "questionId": "F2NsnryEDre7",
+            "text": "Imarisha CBO"
+          },
+          {
+            "questionId": "vyQF0KCqWuay",
+            "text": "Executive Director"
+          },
+          {
+            "questionId": "rzO4roXJIPzF",
+            "text": "https://www.imarisha.org"
+          },
+          {
+            "questionId": "P4PPcwnBSztV",
+            "text": "+254723935597"
+          },
+          {
+            "questionId": "NLWFHlRalA0H",
+            "text": "nderitudavid@gmail.com"
+          },
+          {
+            "questionId": "l9Hf0HNHcpXp",
+            "text": "Kenya"
+          },
+          {
+            "questionId": "KjiMOBBtowrg",
+            "text": "Imarisha is a Kiswahili word meaning to make better.  We envision empowered Kenya communities driving sustainable development while our mission is to facilitate adoption of innovative practices and approaches among marginalized communities for sustainable development."
+          },
+          {
+            "questionId": "ljjLBQRXGtJ4",
+            "text": "Imarisha CBO is currently running a project whose goal is to have Sexual and Reproductive Health (SRH) and other livelihoods needs of adolescents living with HIV/AIDS addressed in Nyeri County in Kenya. The project acknowledges that discussion of SRH issues between parents/guardians and adolescents face myriad socio-cultural challenges. The project takes note of the rising number of HIV positive adolescents and the inadequate programming for them which may trigger increased HIV infections in Kenya if the issue is not addressed. We are equipping adolescents living with requisite skills to champion for adolescents living with HIV health and other livelihoods needs. We are empowering and encouraging HIV-positive young people to freely discuss the SRH issues not only with parents/ guardians but also with other service providers by strengthening support groups and peer groups for HIV positive adolescents. The project has trained 22 champions on peer education, leadership and management and advocacy. Additionally, the project has conducted Systemic Child Counseling training to 23 school teachers aiming at equipping the trained counselors with the counseling skills and empower them to diversify the context. "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "email": "jamesgondwe@cydmalawi.org",
+    "createdAt": "2019-08-05T17:46:38Z",
+    "notes": " ",
+    "responses": [
+      {
+        "id": "4rdvi15b6k298w1lslg34rdh0934tklk",
+        "formId": "bv8u0Y",
+        "answers": [
+          {
+            "questionId": "IUWgGhQA3d5t",
+            "text": "James Gondwe"
+          },
+          {
+            "questionId": "F2NsnryEDre7",
+            "text": "Centre for Youth and Development"
+          },
+          {
+            "questionId": "vyQF0KCqWuay",
+            "text": "Executive Director"
+          },
+          {
+            "questionId": "rzO4roXJIPzF",
+            "text": "https://www.cydmalawi.org"
+          },
+          {
+            "questionId": "P4PPcwnBSztV",
+            "text": "+265999940260"
+          },
+          {
+            "questionId": "NLWFHlRalA0H",
+            "text": "jamesgondwe@cydmalawi.org"
+          },
+          {
+            "questionId": "l9Hf0HNHcpXp",
+            "text": "Malawi"
+          },
+          {
+            "questionId": "KjiMOBBtowrg",
+            "text": "We are a local Non-Governmental organization that works with Government and communities to improve lives for children, youth and women to create a conducive environment for them to develop to their fullest potential. We effect changes in sectors of education, sustainable livelihoods and health."
+          },
+          {
+            "questionId": "ljjLBQRXGtJ4",
+            "text": "Our family planning program is called \"Community-based Integrated family planning Promotion (CIFPP)\" and is embedded in our strategic plan and aims at enabling people to have access to information, products and services. \n\nOur model revolves around “Community-Health workers (CHW)” who are based in communities but are linked to health facilities.  Our model builds the capacity of CWH and provides them with tools to ensure that family planning services are provided effectively. Apart from training, we also provide push bicycles for mobility and materials for raising awareness. We also conduct social mobilization through the use of Theatre for Development by training youth on theatre and Family planning. \n\nWe also work on Health governance in relation to family at facility level but also at district level. Our work at facility level is with the Health Advisory committee, by providing them with training on social accountability specifically Community Score Card. They facilitate these sessions with health facility staff and community members to rank service delivery and develop plans for improvement. At district level we work with the District Health Technical Committee to lobby for provision of contraceptives and improved service delivery in the district specifically hard to reach areas. \n\nFamily planning contributes to health family's, health children, youth and women allowing them to access education and other opportunities and reach their fullest potential. \n"
+          }
+        ]
+      }
+    ]
+  }
+]
 
 users.forEach(user => {
   docClient.put({ TableName: "users", Item: user }, function (err, data) {
