@@ -1174,6 +1174,24 @@ const users = [
             "text": "Our family planning program is called \"Community-based Integrated family planning Promotion (CIFPP)\" and is embedded in our strategic plan and aims at enabling people to have access to information, products and services. \n\nOur model revolves around “Community-Health workers (CHW)” who are based in communities but are linked to health facilities.  Our model builds the capacity of CWH and provides them with tools to ensure that family planning services are provided effectively. Apart from training, we also provide push bicycles for mobility and materials for raising awareness. We also conduct social mobilization through the use of Theatre for Development by training youth on theatre and Family planning. \n\nWe also work on Health governance in relation to family at facility level but also at district level. Our work at facility level is with the Health Advisory committee, by providing them with training on social accountability specifically Community Score Card. They facilitate these sessions with health facility staff and community members to rank service delivery and develop plans for improvement. At district level we work with the District Health Technical Committee to lobby for provision of contraceptives and improved service delivery in the district specifically hard to reach areas. \n\nFamily planning contributes to health family's, health children, youth and women allowing them to access education and other opportunities and reach their fullest potential. \n"
           }
         ]
+      },
+      {
+        "id": "4rdvi15b6k298w1lslg34rdh0934tklk",
+        "formId": "vuL4pI",
+        "answers": [
+          {
+            "questionId": "QLvCL7dN8vsp",
+            "text": "22 October 2012"
+          },
+          {
+            "questionId": "emsscfAphSSV",
+            "text": "We have a total of 13 paid staff.\n\nList of Positions; 1. Executive Director, 2. Programmes Lead, 3. Finance and Administration Manager, 4. District Officers, 5. Project Officers, 6. Administrator, 7. Field Officers, 8. Programmes Support Assistants."
+          },
+          {
+            "questionId": "Rn9WI8PEHqVp",
+            "text": "278000"
+          }
+        ]
       }
     ]
   }
