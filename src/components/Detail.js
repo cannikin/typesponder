@@ -14,7 +14,9 @@ export default function Detail({ user, forms, onUserUpdate }) {
   }
 
   function findQuestion(answer) {
-    return questions.find(q => q.id === answer.questionId)
+    const question = questions.find(q => q.id === answer.questionId)
+
+    return question || { text: `QuestionId ${answer.questionId} not found` }
   }
 
   if (user && forms) {
