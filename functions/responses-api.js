@@ -3,14 +3,14 @@ const fetch = require("node-fetch")
 const ACCESS_TOKEN = "AvWBFZmj55JZMitwGFyMcSV5iJYMHmjAgPNv5pWYyZ6t"
 const FORMS = [
   { name: "intro", id: "bv8u0Y", ignoredQuestions: ["FNpSFI70cRum", "xoPkRLGnE7M1"] },
-  { name: "e-start", id: "VwLtMw", ignoredQuestions: [] },
-  { name: "e-no_workshop", id: "cpVmqA", ignoredQuestions: [] },
-  { name: "e-workshop", id: "xktNJH", ignoredQuestions: [] },
-  { name: "e-visit", id: "VVnEvV", ignoredQuestions: [] },
-  { name: "e-big_picture", id: "s1Vr4F", ignoredQuestions: [] },
-  { name: "e-finances", id: "MlQjwT", ignoredQuestions: [] },
-  { name: "e-existing_program", id: "aOvsHK", ignoredQuestions: [] },
-  { name: "e-new_program", id: "dfU7O3", ignoredQuestions: [] },
+  // { name: "e-start", id: "VwLtMw", ignoredQuestions: [] },
+  // { name: "e-no_workshop", id: "cpVmqA", ignoredQuestions: [] },
+  // { name: "e-workshop", id: "xktNJH", ignoredQuestions: [] },
+  // { name: "e-visit", id: "VVnEvV", ignoredQuestions: [] },
+  // { name: "e-big_picture", id: "s1Vr4F", ignoredQuestions: [] },
+  // { name: "e-finances", id: "MlQjwT", ignoredQuestions: [] },
+  // { name: "e-existing_program", id: "aOvsHK", ignoredQuestions: [] },
+  // { name: "e-new_program", id: "dfU7O3", ignoredQuestions: [] },
 ]
 const AUTH_HEADER = {
   "Authorization": `Bearer ${ACCESS_TOKEN}`
