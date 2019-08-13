@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-const Photon = require("../src/generated/photon")
+const Photon = require("../functions/generated/photon")
 const moment = require("moment")
 
 const photon = new Photon({ debug: true })
