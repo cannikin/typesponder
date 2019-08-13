@@ -9,8 +9,6 @@ export default function Row({ id, email, createdAt, tags }) {
     return `https://gravatar.com/avatar/${md5(email)}`
   }
 
-  console.info(tags)
-
   return(
     <li className="mb1">
       <NavLink to={`/users/${id}`} className="db hover-bg-near-white no-underline pa2 br2" activeClassName="active bg-pwv-blue hover-bg-pwv-blue white">
