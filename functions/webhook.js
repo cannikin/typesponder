@@ -25,9 +25,8 @@ exports.handler = (event, context, callback) => {
   const response = JSON.parse(event.body).form_response
 
   console.log(response)
-  
-  // TODO: need to check in both regular fields and hidden fields for email address
-  if (response.answers.find(f => f.type === "email") === undefined) {
+
+  if (!getEmail()) {
     // no email found, but return 200 so Typeform is happy
     callback(null, {
       statusCode: 200,
@@ -40,8 +39,15 @@ exports.handler = (event, context, callback) => {
   const responseId = response.token.toLowerCase()
   const formId = response.form_id
   const createdAt = response.submitted_at
-  const email = response.answers.find(f => f.type === "email").email
+  const email = getEmail()
   const answers = response.answers
+
+  function getEmail() {
+    const answer = response.answers.find(f => f.type === "email")
+    const hidden = response.hidden
+
+    return (answer || {}).email || (hidden || {}).email
+  }
 
   function formattedAnswers() {
     let output = []
