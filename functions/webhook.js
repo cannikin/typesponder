@@ -24,6 +24,9 @@ exports.handler = (event, context, callback) => {
 
   const response = JSON.parse(event.body).form_response
 
+  console.log(response)
+  
+  // TODO: need to check in both regular fields and hidden fields for email address
   if (response.answers.find(f => f.type === "email") === undefined) {
     // no email found, but return 200 so Typeform is happy
     callback(null, {
