@@ -9,6 +9,10 @@ export default function ResultCount({ users, count }) {
       </>
     )
   } else {
-    return null
+    return (
+      <>
+        Loading...
+      </>
+    )
   } 
 }
