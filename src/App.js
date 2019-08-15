@@ -8,16 +8,30 @@ import endpoints from "./endpoints"
 import BlankSlate from "./components/BlankSlate"
 import Responses from "./components/Responses"
 import Detail from "./components/Detail"
+import NewResults from "./components/NewResults"
+import ResultCount from "./components/ResultCount"
 
 export default function App() {
 
+  const NEW_USER_INTERVAL_SECONDS = 60
+
   const [users, setUsers] = useState([])
   const [forms, setForms] = useState([])
+  const [newResults, setNewResults] = useState(false)
 
-  function updateUser(data) {
+  // gets all data for the app
+  async function getData() {
+    const response = await fetch(endpoints.getUsers)
+    const json = await response.json()
+    
+    return json
+  }
+
+  // replaces a single user with `userData` and updates `users` state
+  function updateUser(userData) {
     const updatedUsers = users.map(user => {
-      if (data.id === user.id) {
-        return data
+      if (userData.id === user.id) {
+        return userData
       } else {
         return user
       }
@@ -26,6 +40,7 @@ export default function App() {
     setUsers(updatedUsers)
   }
 
+  // sorts users based on createdAt date, descending
   function sortUsers(users) {
     return users.sort((a, b) => {
       if (moment(a.createdAt).unix() < moment(b.createdAt).unix()) {
@@ -36,27 +51,53 @@ export default function App() {
     })
   }
 
+  // counts number of responses for all users
+  function responseCount(users) {
+    return users.map(user => user.responses.length).reduce((total, num) => total + num)
+  }
+
+  // gets data and populates state
   useEffect(() => {
     if (!users.length) {
-      fetch(endpoints.getUsers)
-        .then(response => response.json())
-        .then(json => {
-          setForms(json.forms)
-          setUsers(sortUsers(json.users))
-        })
-        .catch()
+      // eslint-disable-next-line no-inner-declarations
+      async function get() {
+        let json = await getData()
+        setForms(json.forms)
+        setUsers(sortUsers(json.users))
+      }
+      get()
     }
+  })
+
+  // periodically check for new responses and set `newResults` state if new data is available
+  // used https://overreacted.io/making-setinterval-declarative-with-react-hooks/ for help
+  useEffect(() => {    
+    let id = setInterval(async () => {
+      if (users.length) {
+        let json = await getData()
+        if (responseCount(users) !== responseCount(json.users)) {
+          setNewResults(true)
+        }
+      }
+    }, NEW_USER_INTERVAL_SECONDS * 1000)
+
+    return () => clearInterval(id)
   })
 
   return (
     <Router>
       <div className="app sans-serif">
-        <header className="App-header ph3 pv3 mb4 cf bb b--moon-gray">
-          <h1 className="ma0 f4 fl">
+        <header className="App-header ph3 mb4 flex bb b--moon-gray">
+          <h1 className="ma0 f4 w-third pv3">
             <img src={ logo } alt="logo" className="w2 v-mid mr2" />
             <Link to="/" className="no-underline pwv-blue">Typesponder</Link>
           </h1>
-          <h3 className="mt1 mb0 f6 fw4 fr silver">{ users.length } Responses</h3>
+          <div className="w-third tc">
+            <NewResults show={ newResults } />
+          </div>
+          <h3 className="mt1 mb0 f6 pv3 fw4 w-third tr silver">
+            <ResultCount users={ users } count={ responseCount } />
+          </h3>
         </header>
         <main className="flex flex-wrap flex-auto-ns">
           <nav className="w-100 w-25-ns mb3 ph3 bb bn-ns b--moon-gray">
@@ -73,5 +114,5 @@ export default function App() {
         </main>
       </div>
     </Router>
-  );
+  )
 }
