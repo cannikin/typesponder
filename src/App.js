@@ -53,7 +53,7 @@ export default function App() {
 
   // counts number of responses for all users
   function responseCount(users) {
-    return users.map(user => user.responses.length).reduce((total, num) => total + num)
+    return users.reduce((count, user) => count + user.responses.length, 0)
   }
 
   // gets data and populates state
