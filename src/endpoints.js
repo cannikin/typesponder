@@ -1,4 +1,4 @@
 export default {
-  getUsers: "/.netlify/functions/users",
-  saveNote: "/.netlify/functions/note"
+  getUsers: "/.netlify/functions/get-users",
+  saveNote: "/.netlify/functions/update-note"
 }
