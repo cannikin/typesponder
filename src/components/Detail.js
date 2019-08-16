@@ -27,7 +27,11 @@ export default function Detail({ user, forms, onUserUpdate }) {
             answers.map((answer, i) => (
               <div key={ i }>
                 <dt className="f4 fw5 pwv-blue lh-title mb2">{ findQuestion(answer).text }</dt>
-                <Linkify properties={{ target: "_blank" }}><dd className="ma0 mb4 pwv-blue o-70 lh-copy">{ textFormat(answer.text) }</dd></Linkify>
+                <dd className="ma0 mb4 pwv-blue o-70 lh-copy nowrap truncate o-hidden">
+                  <Linkify properties={{ target: "_blank" }}>
+                    { textFormat(answer.text) }
+                  </Linkify>
+                </dd>
               </div>
             ))
           }
