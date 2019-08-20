@@ -1,15 +1,4 @@
-const AWS = require("aws-sdk");
-
-AWS.config.update({
-  accessKeyId: process.env.AMAZON_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AMAZON_SECRET_ACCESS_KEY,
-  region: process.env.AMAZON_DYNAMODB_REGION
-});
-
-if (process.env.AMAZON_DYNAMODB_ENDPOINT) {
-  AWS.config.update({ endpoint: process.env.AMAZON_DYNAMODB_ENDPOINT })
-}
-
+const AWS = require('./dynamo_connect')
 const docClient = new AWS.DynamoDB.DocumentClient();
 const IGNORE_QUESTION_IDS = ["FNpSFI70cRum", "xoPkRLGnE7M1"]
 
@@ -55,7 +44,7 @@ exports.handler = (event, context, callback) => {
 
     answers.forEach(answer => {
       let text = ""
-      
+
       if (IGNORE_QUESTION_IDS.indexOf(answer.field.id) === -1) {
         switch (answer.type) {
           case "choice":
@@ -84,10 +73,10 @@ exports.handler = (event, context, callback) => {
     }
   }
 
-  // given a user, adds the latest response to it, otherwise creates a new user with an id 
+  // given a user, adds the latest response to it, otherwise creates a new user with an id
   // of lastId + 1
   function formattedUser(user, lastId) {
-    if (user) {  
+    if (user) {
       let existingUser = user
       existingUser.responses.push(formattedResponse())
       return existingUser
