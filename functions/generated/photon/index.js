@@ -9,6 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const runtime_1 = require("./runtime");
+/**
+ * Query Engine version: latest
+ */
 const path = require("path");
 const debug = runtime_1.debugLib('photon');
 class PhotonFetcher {
@@ -18,21 +21,38 @@ class PhotonFetcher {
         this.debug = debug;
         this.hooks = hooks;
     }
-    request(document, path = [], rootField, typeName, isList) {
+    request(document, path = [], rootField, typeName, isList, callsite) {
         return __awaiter(this, void 0, void 0, function* () {
             const query = String(document);
+            debug('Request:');
             debug(query);
             if (this.hooks && this.hooks.beforeRequest) {
                 this.hooks.beforeRequest({ query, path, rootField, typeName, document });
             }
-            yield this.photon.connect();
             try {
+                yield this.photon.connect();
                 const result = yield this.engine.request(query, typeName);
+                debug('Response:');
                 debug(result);
                 return this.unpack(result, path, rootField, isList);
             }
             catch (e) {
-                throw new Error(`Error in Photon${path}: \n` + e.message);
+                if (callsite) {
+                    const { stack } = runtime_1.printStack({
+                        callsite,
+                        originalMethod: path.join('.'),
+                        onUs: e.isPanic
+                    });
+                    throw new Error(stack + '\n\n' + e.message);
+                }
+                else {
+                    if (e.isPanic) {
+                        throw e;
+                    }
+                    else {
+                        throw new Error(`Error in Photon${path}: \n` + e.stack);
+                    }
+                }
             }
         });
     }
@@ -76,7 +96,7 @@ class Photon {
         this.datamodel = "datasource db {\n  provider = env(\"PRISMA_PROVIDER\")\n  url      = env(\"PRISMA_URL\")\n}\n\ngenerator photon {\n  provider = \"photonjs\"\n  platforms = [\"native\", \"linux-glibc-libssl1.0.2\"]\n  output    = \"../functions/generated/photon\"\n}\n\nmodel Form {\n  id        Int     @id @unique\n  uid       String  @unique\n  name      String\n  tag       String\n  questions Question[]\n  responses Response[]\n}\n\nmodel Question {\n  id        Int      @id @unique\n  uid       String   @unique\n  type      String\n  text      String\n  form      Form?\n  answers   Answer[]\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Answer {\n  id        Int      @id @unique\n  text      String\n  question  Question?\n  response  Response?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Response {\n  id          Int      @id @unique\n  uid         String   @unique\n  submittedAt DateTime\n  user        User?\n  form        Form?\n  answers     Answer[]\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n}\n\nmodel User {\n  id        Int      @id @unique\n  email     String   @unique\n  responses Response[]\n  note      Note?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Note {\n  id   Int @id @unique\n  text String\n  user User\n}\n";
         const predefinedDatasources = [];
         const inputDatasources = Object.entries(options.datasources || {}).map(([name, url]) => ({ name, url: url }));
-        const datasources = uniqueBy([...predefinedDatasources, ...inputDatasources], source => source.name);
+        const datasources = uniqueBy([...predefinedDatasources, ...inputDatasources], (source) => source.name);
         const internal = options.__internal || {};
         const engineConfig = internal.engine || {};
         this.engine = new runtime_1.Engine({
@@ -150,8 +170,8 @@ function FormDelegate(dmmf, fetcher) {
     Form.create = (args) => args.select ? new FormClient(dmmf, fetcher, 'mutation', 'createOneForm', 'forms.create', args, []) : new FormClient(dmmf, fetcher, 'mutation', 'createOneForm', 'forms.create', args, []);
     Form.delete = (args) => args.select ? new FormClient(dmmf, fetcher, 'mutation', 'deleteOneForm', 'forms.delete', args, []) : new FormClient(dmmf, fetcher, 'mutation', 'deleteOneForm', 'forms.delete', args, []);
     Form.update = (args) => args.select ? new FormClient(dmmf, fetcher, 'mutation', 'updateOneForm', 'forms.update', args, []) : new FormClient(dmmf, fetcher, 'mutation', 'updateOneForm', 'forms.update', args, []);
-    Form.deleteMany = (args) => args.select ? new FormClient(dmmf, fetcher, 'mutation', 'deleteManyForm', 'forms.deleteMany', args, []) : new FormClient(dmmf, fetcher, 'mutation', 'deleteManyForm', 'forms.deleteMany', args, []);
-    Form.updateMany = (args) => args.select ? new FormClient(dmmf, fetcher, 'mutation', 'updateManyForm', 'forms.updateMany', args, []) : new FormClient(dmmf, fetcher, 'mutation', 'updateManyForm', 'forms.updateMany', args, []);
+    Form.deleteMany = (args) => new FormClient(dmmf, fetcher, 'mutation', 'deleteManyForm', 'forms.deleteMany', args, []);
+    Form.updateMany = (args) => new FormClient(dmmf, fetcher, 'mutation', 'updateManyForm', 'forms.updateMany', args, []);
     Form.upsert = (args) => args.select ? new FormClient(dmmf, fetcher, 'mutation', 'upsertOneForm', 'forms.upsert', args, []) : new FormClient(dmmf, fetcher, 'mutation', 'upsertOneForm', 'forms.upsert', args, []);
     return Form; // any needed until https://github.com/microsoft/TypeScript/issues/31335 is resolved
 }
@@ -208,7 +228,6 @@ class FormClient {
             }
             throw e;
         }
-        debug(String(document));
         return runtime_1.transformDocument(document);
     }
     /**
@@ -219,7 +238,7 @@ class FormClient {
      */
     then(onfulfilled, onrejected) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Form', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Form', this._isList, this._callsite);
         }
         return this._requestPromise.then(onfulfilled, onrejected);
     }
@@ -230,7 +249,7 @@ class FormClient {
      */
     catch(onrejected) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Form', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Form', this._isList, this._callsite);
         }
         return this._requestPromise.catch(onrejected);
     }
@@ -242,7 +261,7 @@ class FormClient {
      */
     finally(onfinally) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Form', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Form', this._isList, this._callsite);
         }
         return this._requestPromise.finally(onfinally);
     }
@@ -255,8 +274,8 @@ function QuestionDelegate(dmmf, fetcher) {
     Question.create = (args) => args.select ? new QuestionClient(dmmf, fetcher, 'mutation', 'createOneQuestion', 'questions.create', args, []) : new QuestionClient(dmmf, fetcher, 'mutation', 'createOneQuestion', 'questions.create', args, []);
     Question.delete = (args) => args.select ? new QuestionClient(dmmf, fetcher, 'mutation', 'deleteOneQuestion', 'questions.delete', args, []) : new QuestionClient(dmmf, fetcher, 'mutation', 'deleteOneQuestion', 'questions.delete', args, []);
     Question.update = (args) => args.select ? new QuestionClient(dmmf, fetcher, 'mutation', 'updateOneQuestion', 'questions.update', args, []) : new QuestionClient(dmmf, fetcher, 'mutation', 'updateOneQuestion', 'questions.update', args, []);
-    Question.deleteMany = (args) => args.select ? new QuestionClient(dmmf, fetcher, 'mutation', 'deleteManyQuestion', 'questions.deleteMany', args, []) : new QuestionClient(dmmf, fetcher, 'mutation', 'deleteManyQuestion', 'questions.deleteMany', args, []);
-    Question.updateMany = (args) => args.select ? new QuestionClient(dmmf, fetcher, 'mutation', 'updateManyQuestion', 'questions.updateMany', args, []) : new QuestionClient(dmmf, fetcher, 'mutation', 'updateManyQuestion', 'questions.updateMany', args, []);
+    Question.deleteMany = (args) => new QuestionClient(dmmf, fetcher, 'mutation', 'deleteManyQuestion', 'questions.deleteMany', args, []);
+    Question.updateMany = (args) => new QuestionClient(dmmf, fetcher, 'mutation', 'updateManyQuestion', 'questions.updateMany', args, []);
     Question.upsert = (args) => args.select ? new QuestionClient(dmmf, fetcher, 'mutation', 'upsertOneQuestion', 'questions.upsert', args, []) : new QuestionClient(dmmf, fetcher, 'mutation', 'upsertOneQuestion', 'questions.upsert', args, []);
     return Question; // any needed until https://github.com/microsoft/TypeScript/issues/31335 is resolved
 }
@@ -313,7 +332,6 @@ class QuestionClient {
             }
             throw e;
         }
-        debug(String(document));
         return runtime_1.transformDocument(document);
     }
     /**
@@ -324,7 +342,7 @@ class QuestionClient {
      */
     then(onfulfilled, onrejected) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Question', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Question', this._isList, this._callsite);
         }
         return this._requestPromise.then(onfulfilled, onrejected);
     }
@@ -335,7 +353,7 @@ class QuestionClient {
      */
     catch(onrejected) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Question', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Question', this._isList, this._callsite);
         }
         return this._requestPromise.catch(onrejected);
     }
@@ -347,7 +365,7 @@ class QuestionClient {
      */
     finally(onfinally) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Question', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Question', this._isList, this._callsite);
         }
         return this._requestPromise.finally(onfinally);
     }
@@ -360,8 +378,8 @@ function AnswerDelegate(dmmf, fetcher) {
     Answer.create = (args) => args.select ? new AnswerClient(dmmf, fetcher, 'mutation', 'createOneAnswer', 'answers.create', args, []) : new AnswerClient(dmmf, fetcher, 'mutation', 'createOneAnswer', 'answers.create', args, []);
     Answer.delete = (args) => args.select ? new AnswerClient(dmmf, fetcher, 'mutation', 'deleteOneAnswer', 'answers.delete', args, []) : new AnswerClient(dmmf, fetcher, 'mutation', 'deleteOneAnswer', 'answers.delete', args, []);
     Answer.update = (args) => args.select ? new AnswerClient(dmmf, fetcher, 'mutation', 'updateOneAnswer', 'answers.update', args, []) : new AnswerClient(dmmf, fetcher, 'mutation', 'updateOneAnswer', 'answers.update', args, []);
-    Answer.deleteMany = (args) => args.select ? new AnswerClient(dmmf, fetcher, 'mutation', 'deleteManyAnswer', 'answers.deleteMany', args, []) : new AnswerClient(dmmf, fetcher, 'mutation', 'deleteManyAnswer', 'answers.deleteMany', args, []);
-    Answer.updateMany = (args) => args.select ? new AnswerClient(dmmf, fetcher, 'mutation', 'updateManyAnswer', 'answers.updateMany', args, []) : new AnswerClient(dmmf, fetcher, 'mutation', 'updateManyAnswer', 'answers.updateMany', args, []);
+    Answer.deleteMany = (args) => new AnswerClient(dmmf, fetcher, 'mutation', 'deleteManyAnswer', 'answers.deleteMany', args, []);
+    Answer.updateMany = (args) => new AnswerClient(dmmf, fetcher, 'mutation', 'updateManyAnswer', 'answers.updateMany', args, []);
     Answer.upsert = (args) => args.select ? new AnswerClient(dmmf, fetcher, 'mutation', 'upsertOneAnswer', 'answers.upsert', args, []) : new AnswerClient(dmmf, fetcher, 'mutation', 'upsertOneAnswer', 'answers.upsert', args, []);
     return Answer; // any needed until https://github.com/microsoft/TypeScript/issues/31335 is resolved
 }
@@ -418,7 +436,6 @@ class AnswerClient {
             }
             throw e;
         }
-        debug(String(document));
         return runtime_1.transformDocument(document);
     }
     /**
@@ -429,7 +446,7 @@ class AnswerClient {
      */
     then(onfulfilled, onrejected) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Answer', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Answer', this._isList, this._callsite);
         }
         return this._requestPromise.then(onfulfilled, onrejected);
     }
@@ -440,7 +457,7 @@ class AnswerClient {
      */
     catch(onrejected) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Answer', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Answer', this._isList, this._callsite);
         }
         return this._requestPromise.catch(onrejected);
     }
@@ -452,7 +469,7 @@ class AnswerClient {
      */
     finally(onfinally) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Answer', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Answer', this._isList, this._callsite);
         }
         return this._requestPromise.finally(onfinally);
     }
@@ -465,8 +482,8 @@ function ResponseDelegate(dmmf, fetcher) {
     Response.create = (args) => args.select ? new ResponseClient(dmmf, fetcher, 'mutation', 'createOneResponse', 'responses.create', args, []) : new ResponseClient(dmmf, fetcher, 'mutation', 'createOneResponse', 'responses.create', args, []);
     Response.delete = (args) => args.select ? new ResponseClient(dmmf, fetcher, 'mutation', 'deleteOneResponse', 'responses.delete', args, []) : new ResponseClient(dmmf, fetcher, 'mutation', 'deleteOneResponse', 'responses.delete', args, []);
     Response.update = (args) => args.select ? new ResponseClient(dmmf, fetcher, 'mutation', 'updateOneResponse', 'responses.update', args, []) : new ResponseClient(dmmf, fetcher, 'mutation', 'updateOneResponse', 'responses.update', args, []);
-    Response.deleteMany = (args) => args.select ? new ResponseClient(dmmf, fetcher, 'mutation', 'deleteManyResponse', 'responses.deleteMany', args, []) : new ResponseClient(dmmf, fetcher, 'mutation', 'deleteManyResponse', 'responses.deleteMany', args, []);
-    Response.updateMany = (args) => args.select ? new ResponseClient(dmmf, fetcher, 'mutation', 'updateManyResponse', 'responses.updateMany', args, []) : new ResponseClient(dmmf, fetcher, 'mutation', 'updateManyResponse', 'responses.updateMany', args, []);
+    Response.deleteMany = (args) => new ResponseClient(dmmf, fetcher, 'mutation', 'deleteManyResponse', 'responses.deleteMany', args, []);
+    Response.updateMany = (args) => new ResponseClient(dmmf, fetcher, 'mutation', 'updateManyResponse', 'responses.updateMany', args, []);
     Response.upsert = (args) => args.select ? new ResponseClient(dmmf, fetcher, 'mutation', 'upsertOneResponse', 'responses.upsert', args, []) : new ResponseClient(dmmf, fetcher, 'mutation', 'upsertOneResponse', 'responses.upsert', args, []);
     return Response; // any needed until https://github.com/microsoft/TypeScript/issues/31335 is resolved
 }
@@ -530,7 +547,6 @@ class ResponseClient {
             }
             throw e;
         }
-        debug(String(document));
         return runtime_1.transformDocument(document);
     }
     /**
@@ -541,7 +557,7 @@ class ResponseClient {
      */
     then(onfulfilled, onrejected) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Response', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Response', this._isList, this._callsite);
         }
         return this._requestPromise.then(onfulfilled, onrejected);
     }
@@ -552,7 +568,7 @@ class ResponseClient {
      */
     catch(onrejected) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Response', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Response', this._isList, this._callsite);
         }
         return this._requestPromise.catch(onrejected);
     }
@@ -564,7 +580,7 @@ class ResponseClient {
      */
     finally(onfinally) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Response', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Response', this._isList, this._callsite);
         }
         return this._requestPromise.finally(onfinally);
     }
@@ -577,8 +593,8 @@ function UserDelegate(dmmf, fetcher) {
     User.create = (args) => args.select ? new UserClient(dmmf, fetcher, 'mutation', 'createOneUser', 'users.create', args, []) : new UserClient(dmmf, fetcher, 'mutation', 'createOneUser', 'users.create', args, []);
     User.delete = (args) => args.select ? new UserClient(dmmf, fetcher, 'mutation', 'deleteOneUser', 'users.delete', args, []) : new UserClient(dmmf, fetcher, 'mutation', 'deleteOneUser', 'users.delete', args, []);
     User.update = (args) => args.select ? new UserClient(dmmf, fetcher, 'mutation', 'updateOneUser', 'users.update', args, []) : new UserClient(dmmf, fetcher, 'mutation', 'updateOneUser', 'users.update', args, []);
-    User.deleteMany = (args) => args.select ? new UserClient(dmmf, fetcher, 'mutation', 'deleteManyUser', 'users.deleteMany', args, []) : new UserClient(dmmf, fetcher, 'mutation', 'deleteManyUser', 'users.deleteMany', args, []);
-    User.updateMany = (args) => args.select ? new UserClient(dmmf, fetcher, 'mutation', 'updateManyUser', 'users.updateMany', args, []) : new UserClient(dmmf, fetcher, 'mutation', 'updateManyUser', 'users.updateMany', args, []);
+    User.deleteMany = (args) => new UserClient(dmmf, fetcher, 'mutation', 'deleteManyUser', 'users.deleteMany', args, []);
+    User.updateMany = (args) => new UserClient(dmmf, fetcher, 'mutation', 'updateManyUser', 'users.updateMany', args, []);
     User.upsert = (args) => args.select ? new UserClient(dmmf, fetcher, 'mutation', 'upsertOneUser', 'users.upsert', args, []) : new UserClient(dmmf, fetcher, 'mutation', 'upsertOneUser', 'users.upsert', args, []);
     return User; // any needed until https://github.com/microsoft/TypeScript/issues/31335 is resolved
 }
@@ -635,7 +651,6 @@ class UserClient {
             }
             throw e;
         }
-        debug(String(document));
         return runtime_1.transformDocument(document);
     }
     /**
@@ -646,7 +661,7 @@ class UserClient {
      */
     then(onfulfilled, onrejected) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'User', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'User', this._isList, this._callsite);
         }
         return this._requestPromise.then(onfulfilled, onrejected);
     }
@@ -657,7 +672,7 @@ class UserClient {
      */
     catch(onrejected) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'User', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'User', this._isList, this._callsite);
         }
         return this._requestPromise.catch(onrejected);
     }
@@ -669,7 +684,7 @@ class UserClient {
      */
     finally(onfinally) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'User', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'User', this._isList, this._callsite);
         }
         return this._requestPromise.finally(onfinally);
     }
@@ -682,8 +697,8 @@ function NoteDelegate(dmmf, fetcher) {
     Note.create = (args) => args.select ? new NoteClient(dmmf, fetcher, 'mutation', 'createOneNote', 'notes.create', args, []) : new NoteClient(dmmf, fetcher, 'mutation', 'createOneNote', 'notes.create', args, []);
     Note.delete = (args) => args.select ? new NoteClient(dmmf, fetcher, 'mutation', 'deleteOneNote', 'notes.delete', args, []) : new NoteClient(dmmf, fetcher, 'mutation', 'deleteOneNote', 'notes.delete', args, []);
     Note.update = (args) => args.select ? new NoteClient(dmmf, fetcher, 'mutation', 'updateOneNote', 'notes.update', args, []) : new NoteClient(dmmf, fetcher, 'mutation', 'updateOneNote', 'notes.update', args, []);
-    Note.deleteMany = (args) => args.select ? new NoteClient(dmmf, fetcher, 'mutation', 'deleteManyNote', 'notes.deleteMany', args, []) : new NoteClient(dmmf, fetcher, 'mutation', 'deleteManyNote', 'notes.deleteMany', args, []);
-    Note.updateMany = (args) => args.select ? new NoteClient(dmmf, fetcher, 'mutation', 'updateManyNote', 'notes.updateMany', args, []) : new NoteClient(dmmf, fetcher, 'mutation', 'updateManyNote', 'notes.updateMany', args, []);
+    Note.deleteMany = (args) => new NoteClient(dmmf, fetcher, 'mutation', 'deleteManyNote', 'notes.deleteMany', args, []);
+    Note.updateMany = (args) => new NoteClient(dmmf, fetcher, 'mutation', 'updateManyNote', 'notes.updateMany', args, []);
     Note.upsert = (args) => args.select ? new NoteClient(dmmf, fetcher, 'mutation', 'upsertOneNote', 'notes.upsert', args, []) : new NoteClient(dmmf, fetcher, 'mutation', 'upsertOneNote', 'notes.upsert', args, []);
     return Note; // any needed until https://github.com/microsoft/TypeScript/issues/31335 is resolved
 }
@@ -733,7 +748,6 @@ class NoteClient {
             }
             throw e;
         }
-        debug(String(document));
         return runtime_1.transformDocument(document);
     }
     /**
@@ -744,7 +758,7 @@ class NoteClient {
      */
     then(onfulfilled, onrejected) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Note', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Note', this._isList, this._callsite);
         }
         return this._requestPromise.then(onfulfilled, onrejected);
     }
@@ -755,7 +769,7 @@ class NoteClient {
      */
     catch(onrejected) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Note', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Note', this._isList, this._callsite);
         }
         return this._requestPromise.catch(onrejected);
     }
@@ -767,7 +781,7 @@ class NoteClient {
      */
     finally(onfinally) {
         if (!this._requestPromise) {
-            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Note', this._isList);
+            this._requestPromise = this._fetcher.request(this._document, this._path, this._rootField, 'Note', this._isList, this._callsite);
         }
         return this._requestPromise.finally(onfinally);
     }

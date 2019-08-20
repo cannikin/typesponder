@@ -41,3 +41,6 @@ export declare type Datasource = any
 
 export declare var printDatasources: any
 export declare type printDatasources = any
+
+export declare var printStack: any
+export declare type printStack = any

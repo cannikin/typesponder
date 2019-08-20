@@ -22,7 +22,7 @@ declare class PhotonFetcher {
     private readonly debug;
     private readonly hooks?;
     constructor(photon: Photon, engine: Engine, debug?: boolean, hooks?: Hooks | undefined);
-    request<T>(document: any, path?: string[], rootField?: string, typeName?: string, isList?: boolean): Promise<T>;
+    request<T>(document: any, path?: string[], rootField?: string, typeName?: string, isList?: boolean, callsite?: string): Promise<T>;
     protected unpack(data: any, path: string[], rootField?: string, isList?: boolean): any;
 }
 /**
@@ -120,8 +120,8 @@ export interface FormDelegate {
     create<T extends FormCreateArgs>(args: Subset<T, FormCreateArgs>): T extends FormCreateArgsRequired ? 'Please either choose `select` or `include`' : T extends FormSelectCreateArgs ? Promise<FormGetSelectPayload<ExtractFormSelectCreateArgs<T>>> : T extends FormIncludeCreateArgs ? Promise<FormGetIncludePayload<ExtractFormIncludeCreateArgs<T>>> : FormClient<Form>;
     delete<T extends FormDeleteArgs>(args: Subset<T, FormDeleteArgs>): T extends FormDeleteArgsRequired ? 'Please either choose `select` or `include`' : T extends FormSelectDeleteArgs ? Promise<FormGetSelectPayload<ExtractFormSelectDeleteArgs<T>>> : T extends FormIncludeDeleteArgs ? Promise<FormGetIncludePayload<ExtractFormIncludeDeleteArgs<T>>> : FormClient<Form>;
     update<T extends FormUpdateArgs>(args: Subset<T, FormUpdateArgs>): T extends FormUpdateArgsRequired ? 'Please either choose `select` or `include`' : T extends FormSelectUpdateArgs ? Promise<FormGetSelectPayload<ExtractFormSelectUpdateArgs<T>>> : T extends FormIncludeUpdateArgs ? Promise<FormGetIncludePayload<ExtractFormIncludeUpdateArgs<T>>> : FormClient<Form>;
-    deleteMany<T extends FormDeleteManyArgs>(args: Subset<T, FormDeleteManyArgs>): T extends FormDeleteManyArgsRequired ? 'Please either choose `select` or `include`' : T extends FormSelectDeleteManyArgs ? Promise<FormGetSelectPayload<ExtractFormSelectDeleteManyArgs<T>>> : T extends FormIncludeDeleteManyArgs ? Promise<FormGetIncludePayload<ExtractFormIncludeDeleteManyArgs<T>>> : FormClient<Form>;
-    updateMany<T extends FormUpdateManyArgs>(args: Subset<T, FormUpdateManyArgs>): T extends FormUpdateManyArgsRequired ? 'Please either choose `select` or `include`' : T extends FormSelectUpdateManyArgs ? Promise<FormGetSelectPayload<ExtractFormSelectUpdateManyArgs<T>>> : T extends FormIncludeUpdateManyArgs ? Promise<FormGetIncludePayload<ExtractFormIncludeUpdateManyArgs<T>>> : FormClient<Form>;
+    deleteMany<T extends FormDeleteManyArgs>(args: Subset<T, FormDeleteManyArgs>): Promise<BatchPayload>;
+    updateMany<T extends FormUpdateManyArgs>(args: Subset<T, FormUpdateManyArgs>): Promise<BatchPayload>;
     upsert<T extends FormUpsertArgs>(args: Subset<T, FormUpsertArgs>): T extends FormUpsertArgsRequired ? 'Please either choose `select` or `include`' : T extends FormSelectUpsertArgs ? Promise<FormGetSelectPayload<ExtractFormSelectUpsertArgs<T>>> : T extends FormIncludeUpsertArgs ? Promise<FormGetIncludePayload<ExtractFormIncludeUpsertArgs<T>>> : FormClient<Form>;
 }
 export declare class FormClient<T> implements Promise<T> {
@@ -135,7 +135,7 @@ export declare class FormClient<T> implements Promise<T> {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: DMMFClass, _fetcher: PhotonFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: FormArgs, _path: string[], _isList?: boolean);
+    constructor(_dmmf: DMMFClass, _fetcher: PhotonFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _path: string[], _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PhotonPromise';
     questions<T extends FindManyQuestionArgs = {}>(args?: Subset<T, FindManyQuestionArgs>): T extends FindManyQuestionArgsRequired ? 'Please either choose `select` or `include`' : T extends FindManyQuestionSelectArgs ? Promise<Array<QuestionGetSelectPayload<ExtractFindManyQuestionSelectArgs<T>>>> : T extends FindManyQuestionIncludeArgs ? Promise<Array<QuestionGetIncludePayload<ExtractFindManyQuestionIncludeArgs<T>>>> : Promise<Array<Question>>;
     responses<T extends FindManyResponseArgs = {}>(args?: Subset<T, FindManyResponseArgs>): T extends FindManyResponseArgsRequired ? 'Please either choose `select` or `include`' : T extends FindManyResponseSelectArgs ? Promise<Array<ResponseGetSelectPayload<ExtractFindManyResponseSelectArgs<T>>>> : T extends FindManyResponseIncludeArgs ? Promise<Array<ResponseGetIncludePayload<ExtractFindManyResponseIncludeArgs<T>>>> : Promise<Array<Response>>;
@@ -331,39 +331,9 @@ export declare type ExtractFormIncludeUpdateArgs<S extends undefined | boolean |
  * Form updateMany
  */
 export declare type FormUpdateManyArgs = {
-    select?: FormSelect | null;
-    include?: FormInclude | null;
     data: FormUpdateManyMutationInput;
     where?: FormWhereInput | null;
 };
-export declare type FormUpdateManyArgsRequired = {
-    select: FormSelect;
-    include: FormInclude;
-    data: FormUpdateManyMutationInput;
-    where?: FormWhereInput | null;
-};
-export declare type FormSelectUpdateManyArgs = {
-    select: FormSelect;
-    data: FormUpdateManyMutationInput;
-    where?: FormWhereInput | null;
-};
-export declare type FormSelectUpdateManyArgsOptional = {
-    select?: FormSelect | null;
-    data: FormUpdateManyMutationInput;
-    where?: FormWhereInput | null;
-};
-export declare type FormIncludeUpdateManyArgs = {
-    include: FormInclude;
-    data: FormUpdateManyMutationInput;
-    where?: FormWhereInput | null;
-};
-export declare type FormIncludeUpdateManyArgsOptional = {
-    include?: FormInclude | null;
-    data: FormUpdateManyMutationInput;
-    where?: FormWhereInput | null;
-};
-export declare type ExtractFormSelectUpdateManyArgs<S extends undefined | boolean | FormSelectUpdateManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends FormSelectUpdateManyArgs ? S['select'] : true;
-export declare type ExtractFormIncludeUpdateManyArgs<S extends undefined | boolean | FormIncludeUpdateManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends FormIncludeUpdateManyArgs ? S['include'] : true;
 /**
  * Form upsert
  */
@@ -442,33 +412,8 @@ export declare type ExtractFormIncludeDeleteArgs<S extends undefined | boolean |
  * Form deleteMany
  */
 export declare type FormDeleteManyArgs = {
-    select?: FormSelect | null;
-    include?: FormInclude | null;
     where?: FormWhereInput | null;
 };
-export declare type FormDeleteManyArgsRequired = {
-    select: FormSelect;
-    include: FormInclude;
-    where?: FormWhereInput | null;
-};
-export declare type FormSelectDeleteManyArgs = {
-    select: FormSelect;
-    where?: FormWhereInput | null;
-};
-export declare type FormSelectDeleteManyArgsOptional = {
-    select?: FormSelect | null;
-    where?: FormWhereInput | null;
-};
-export declare type FormIncludeDeleteManyArgs = {
-    include: FormInclude;
-    where?: FormWhereInput | null;
-};
-export declare type FormIncludeDeleteManyArgsOptional = {
-    include?: FormInclude | null;
-    where?: FormWhereInput | null;
-};
-export declare type ExtractFormSelectDeleteManyArgs<S extends undefined | boolean | FormSelectDeleteManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends FormSelectDeleteManyArgs ? S['select'] : true;
-export declare type ExtractFormIncludeDeleteManyArgs<S extends undefined | boolean | FormIncludeDeleteManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends FormIncludeDeleteManyArgs ? S['include'] : true;
 /**
  * Form without action
  */
@@ -541,8 +486,8 @@ export interface QuestionDelegate {
     create<T extends QuestionCreateArgs>(args: Subset<T, QuestionCreateArgs>): T extends QuestionCreateArgsRequired ? 'Please either choose `select` or `include`' : T extends QuestionSelectCreateArgs ? Promise<QuestionGetSelectPayload<ExtractQuestionSelectCreateArgs<T>>> : T extends QuestionIncludeCreateArgs ? Promise<QuestionGetIncludePayload<ExtractQuestionIncludeCreateArgs<T>>> : QuestionClient<Question>;
     delete<T extends QuestionDeleteArgs>(args: Subset<T, QuestionDeleteArgs>): T extends QuestionDeleteArgsRequired ? 'Please either choose `select` or `include`' : T extends QuestionSelectDeleteArgs ? Promise<QuestionGetSelectPayload<ExtractQuestionSelectDeleteArgs<T>>> : T extends QuestionIncludeDeleteArgs ? Promise<QuestionGetIncludePayload<ExtractQuestionIncludeDeleteArgs<T>>> : QuestionClient<Question>;
     update<T extends QuestionUpdateArgs>(args: Subset<T, QuestionUpdateArgs>): T extends QuestionUpdateArgsRequired ? 'Please either choose `select` or `include`' : T extends QuestionSelectUpdateArgs ? Promise<QuestionGetSelectPayload<ExtractQuestionSelectUpdateArgs<T>>> : T extends QuestionIncludeUpdateArgs ? Promise<QuestionGetIncludePayload<ExtractQuestionIncludeUpdateArgs<T>>> : QuestionClient<Question>;
-    deleteMany<T extends QuestionDeleteManyArgs>(args: Subset<T, QuestionDeleteManyArgs>): T extends QuestionDeleteManyArgsRequired ? 'Please either choose `select` or `include`' : T extends QuestionSelectDeleteManyArgs ? Promise<QuestionGetSelectPayload<ExtractQuestionSelectDeleteManyArgs<T>>> : T extends QuestionIncludeDeleteManyArgs ? Promise<QuestionGetIncludePayload<ExtractQuestionIncludeDeleteManyArgs<T>>> : QuestionClient<Question>;
-    updateMany<T extends QuestionUpdateManyArgs>(args: Subset<T, QuestionUpdateManyArgs>): T extends QuestionUpdateManyArgsRequired ? 'Please either choose `select` or `include`' : T extends QuestionSelectUpdateManyArgs ? Promise<QuestionGetSelectPayload<ExtractQuestionSelectUpdateManyArgs<T>>> : T extends QuestionIncludeUpdateManyArgs ? Promise<QuestionGetIncludePayload<ExtractQuestionIncludeUpdateManyArgs<T>>> : QuestionClient<Question>;
+    deleteMany<T extends QuestionDeleteManyArgs>(args: Subset<T, QuestionDeleteManyArgs>): Promise<BatchPayload>;
+    updateMany<T extends QuestionUpdateManyArgs>(args: Subset<T, QuestionUpdateManyArgs>): Promise<BatchPayload>;
     upsert<T extends QuestionUpsertArgs>(args: Subset<T, QuestionUpsertArgs>): T extends QuestionUpsertArgsRequired ? 'Please either choose `select` or `include`' : T extends QuestionSelectUpsertArgs ? Promise<QuestionGetSelectPayload<ExtractQuestionSelectUpsertArgs<T>>> : T extends QuestionIncludeUpsertArgs ? Promise<QuestionGetIncludePayload<ExtractQuestionIncludeUpsertArgs<T>>> : QuestionClient<Question>;
 }
 export declare class QuestionClient<T> implements Promise<T> {
@@ -556,7 +501,7 @@ export declare class QuestionClient<T> implements Promise<T> {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: DMMFClass, _fetcher: PhotonFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: QuestionArgs, _path: string[], _isList?: boolean);
+    constructor(_dmmf: DMMFClass, _fetcher: PhotonFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _path: string[], _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PhotonPromise';
     form<T extends FormArgs = {}>(args?: Subset<T, FormArgs>): T extends FindOneFormArgsRequired ? 'Please either choose `select` or `include`' : T extends FormSelectArgs ? Promise<FormGetSelectPayload<ExtractFormSelectArgs<T>>> : T extends FormIncludeArgs ? Promise<FormGetIncludePayload<ExtractFormIncludeArgs<T>>> : FormClient<Form>;
     answers<T extends FindManyAnswerArgs = {}>(args?: Subset<T, FindManyAnswerArgs>): T extends FindManyAnswerArgsRequired ? 'Please either choose `select` or `include`' : T extends FindManyAnswerSelectArgs ? Promise<Array<AnswerGetSelectPayload<ExtractFindManyAnswerSelectArgs<T>>>> : T extends FindManyAnswerIncludeArgs ? Promise<Array<AnswerGetIncludePayload<ExtractFindManyAnswerIncludeArgs<T>>>> : Promise<Array<Answer>>;
@@ -752,39 +697,9 @@ export declare type ExtractQuestionIncludeUpdateArgs<S extends undefined | boole
  * Question updateMany
  */
 export declare type QuestionUpdateManyArgs = {
-    select?: QuestionSelect | null;
-    include?: QuestionInclude | null;
     data: QuestionUpdateManyMutationInput;
     where?: QuestionWhereInput | null;
 };
-export declare type QuestionUpdateManyArgsRequired = {
-    select: QuestionSelect;
-    include: QuestionInclude;
-    data: QuestionUpdateManyMutationInput;
-    where?: QuestionWhereInput | null;
-};
-export declare type QuestionSelectUpdateManyArgs = {
-    select: QuestionSelect;
-    data: QuestionUpdateManyMutationInput;
-    where?: QuestionWhereInput | null;
-};
-export declare type QuestionSelectUpdateManyArgsOptional = {
-    select?: QuestionSelect | null;
-    data: QuestionUpdateManyMutationInput;
-    where?: QuestionWhereInput | null;
-};
-export declare type QuestionIncludeUpdateManyArgs = {
-    include: QuestionInclude;
-    data: QuestionUpdateManyMutationInput;
-    where?: QuestionWhereInput | null;
-};
-export declare type QuestionIncludeUpdateManyArgsOptional = {
-    include?: QuestionInclude | null;
-    data: QuestionUpdateManyMutationInput;
-    where?: QuestionWhereInput | null;
-};
-export declare type ExtractQuestionSelectUpdateManyArgs<S extends undefined | boolean | QuestionSelectUpdateManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends QuestionSelectUpdateManyArgs ? S['select'] : true;
-export declare type ExtractQuestionIncludeUpdateManyArgs<S extends undefined | boolean | QuestionIncludeUpdateManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends QuestionIncludeUpdateManyArgs ? S['include'] : true;
 /**
  * Question upsert
  */
@@ -863,33 +778,8 @@ export declare type ExtractQuestionIncludeDeleteArgs<S extends undefined | boole
  * Question deleteMany
  */
 export declare type QuestionDeleteManyArgs = {
-    select?: QuestionSelect | null;
-    include?: QuestionInclude | null;
     where?: QuestionWhereInput | null;
 };
-export declare type QuestionDeleteManyArgsRequired = {
-    select: QuestionSelect;
-    include: QuestionInclude;
-    where?: QuestionWhereInput | null;
-};
-export declare type QuestionSelectDeleteManyArgs = {
-    select: QuestionSelect;
-    where?: QuestionWhereInput | null;
-};
-export declare type QuestionSelectDeleteManyArgsOptional = {
-    select?: QuestionSelect | null;
-    where?: QuestionWhereInput | null;
-};
-export declare type QuestionIncludeDeleteManyArgs = {
-    include: QuestionInclude;
-    where?: QuestionWhereInput | null;
-};
-export declare type QuestionIncludeDeleteManyArgsOptional = {
-    include?: QuestionInclude | null;
-    where?: QuestionWhereInput | null;
-};
-export declare type ExtractQuestionSelectDeleteManyArgs<S extends undefined | boolean | QuestionSelectDeleteManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends QuestionSelectDeleteManyArgs ? S['select'] : true;
-export declare type ExtractQuestionIncludeDeleteManyArgs<S extends undefined | boolean | QuestionIncludeDeleteManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends QuestionIncludeDeleteManyArgs ? S['include'] : true;
 /**
  * Question without action
  */
@@ -956,8 +846,8 @@ export interface AnswerDelegate {
     create<T extends AnswerCreateArgs>(args: Subset<T, AnswerCreateArgs>): T extends AnswerCreateArgsRequired ? 'Please either choose `select` or `include`' : T extends AnswerSelectCreateArgs ? Promise<AnswerGetSelectPayload<ExtractAnswerSelectCreateArgs<T>>> : T extends AnswerIncludeCreateArgs ? Promise<AnswerGetIncludePayload<ExtractAnswerIncludeCreateArgs<T>>> : AnswerClient<Answer>;
     delete<T extends AnswerDeleteArgs>(args: Subset<T, AnswerDeleteArgs>): T extends AnswerDeleteArgsRequired ? 'Please either choose `select` or `include`' : T extends AnswerSelectDeleteArgs ? Promise<AnswerGetSelectPayload<ExtractAnswerSelectDeleteArgs<T>>> : T extends AnswerIncludeDeleteArgs ? Promise<AnswerGetIncludePayload<ExtractAnswerIncludeDeleteArgs<T>>> : AnswerClient<Answer>;
     update<T extends AnswerUpdateArgs>(args: Subset<T, AnswerUpdateArgs>): T extends AnswerUpdateArgsRequired ? 'Please either choose `select` or `include`' : T extends AnswerSelectUpdateArgs ? Promise<AnswerGetSelectPayload<ExtractAnswerSelectUpdateArgs<T>>> : T extends AnswerIncludeUpdateArgs ? Promise<AnswerGetIncludePayload<ExtractAnswerIncludeUpdateArgs<T>>> : AnswerClient<Answer>;
-    deleteMany<T extends AnswerDeleteManyArgs>(args: Subset<T, AnswerDeleteManyArgs>): T extends AnswerDeleteManyArgsRequired ? 'Please either choose `select` or `include`' : T extends AnswerSelectDeleteManyArgs ? Promise<AnswerGetSelectPayload<ExtractAnswerSelectDeleteManyArgs<T>>> : T extends AnswerIncludeDeleteManyArgs ? Promise<AnswerGetIncludePayload<ExtractAnswerIncludeDeleteManyArgs<T>>> : AnswerClient<Answer>;
-    updateMany<T extends AnswerUpdateManyArgs>(args: Subset<T, AnswerUpdateManyArgs>): T extends AnswerUpdateManyArgsRequired ? 'Please either choose `select` or `include`' : T extends AnswerSelectUpdateManyArgs ? Promise<AnswerGetSelectPayload<ExtractAnswerSelectUpdateManyArgs<T>>> : T extends AnswerIncludeUpdateManyArgs ? Promise<AnswerGetIncludePayload<ExtractAnswerIncludeUpdateManyArgs<T>>> : AnswerClient<Answer>;
+    deleteMany<T extends AnswerDeleteManyArgs>(args: Subset<T, AnswerDeleteManyArgs>): Promise<BatchPayload>;
+    updateMany<T extends AnswerUpdateManyArgs>(args: Subset<T, AnswerUpdateManyArgs>): Promise<BatchPayload>;
     upsert<T extends AnswerUpsertArgs>(args: Subset<T, AnswerUpsertArgs>): T extends AnswerUpsertArgsRequired ? 'Please either choose `select` or `include`' : T extends AnswerSelectUpsertArgs ? Promise<AnswerGetSelectPayload<ExtractAnswerSelectUpsertArgs<T>>> : T extends AnswerIncludeUpsertArgs ? Promise<AnswerGetIncludePayload<ExtractAnswerIncludeUpsertArgs<T>>> : AnswerClient<Answer>;
 }
 export declare class AnswerClient<T> implements Promise<T> {
@@ -971,7 +861,7 @@ export declare class AnswerClient<T> implements Promise<T> {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: DMMFClass, _fetcher: PhotonFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: AnswerArgs, _path: string[], _isList?: boolean);
+    constructor(_dmmf: DMMFClass, _fetcher: PhotonFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _path: string[], _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PhotonPromise';
     question<T extends QuestionArgs = {}>(args?: Subset<T, QuestionArgs>): T extends FindOneQuestionArgsRequired ? 'Please either choose `select` or `include`' : T extends QuestionSelectArgs ? Promise<QuestionGetSelectPayload<ExtractQuestionSelectArgs<T>>> : T extends QuestionIncludeArgs ? Promise<QuestionGetIncludePayload<ExtractQuestionIncludeArgs<T>>> : QuestionClient<Question>;
     response<T extends ResponseArgs = {}>(args?: Subset<T, ResponseArgs>): T extends FindOneResponseArgsRequired ? 'Please either choose `select` or `include`' : T extends ResponseSelectArgs ? Promise<ResponseGetSelectPayload<ExtractResponseSelectArgs<T>>> : T extends ResponseIncludeArgs ? Promise<ResponseGetIncludePayload<ExtractResponseIncludeArgs<T>>> : ResponseClient<Response>;
@@ -1167,39 +1057,9 @@ export declare type ExtractAnswerIncludeUpdateArgs<S extends undefined | boolean
  * Answer updateMany
  */
 export declare type AnswerUpdateManyArgs = {
-    select?: AnswerSelect | null;
-    include?: AnswerInclude | null;
     data: AnswerUpdateManyMutationInput;
     where?: AnswerWhereInput | null;
 };
-export declare type AnswerUpdateManyArgsRequired = {
-    select: AnswerSelect;
-    include: AnswerInclude;
-    data: AnswerUpdateManyMutationInput;
-    where?: AnswerWhereInput | null;
-};
-export declare type AnswerSelectUpdateManyArgs = {
-    select: AnswerSelect;
-    data: AnswerUpdateManyMutationInput;
-    where?: AnswerWhereInput | null;
-};
-export declare type AnswerSelectUpdateManyArgsOptional = {
-    select?: AnswerSelect | null;
-    data: AnswerUpdateManyMutationInput;
-    where?: AnswerWhereInput | null;
-};
-export declare type AnswerIncludeUpdateManyArgs = {
-    include: AnswerInclude;
-    data: AnswerUpdateManyMutationInput;
-    where?: AnswerWhereInput | null;
-};
-export declare type AnswerIncludeUpdateManyArgsOptional = {
-    include?: AnswerInclude | null;
-    data: AnswerUpdateManyMutationInput;
-    where?: AnswerWhereInput | null;
-};
-export declare type ExtractAnswerSelectUpdateManyArgs<S extends undefined | boolean | AnswerSelectUpdateManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends AnswerSelectUpdateManyArgs ? S['select'] : true;
-export declare type ExtractAnswerIncludeUpdateManyArgs<S extends undefined | boolean | AnswerIncludeUpdateManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends AnswerIncludeUpdateManyArgs ? S['include'] : true;
 /**
  * Answer upsert
  */
@@ -1278,33 +1138,8 @@ export declare type ExtractAnswerIncludeDeleteArgs<S extends undefined | boolean
  * Answer deleteMany
  */
 export declare type AnswerDeleteManyArgs = {
-    select?: AnswerSelect | null;
-    include?: AnswerInclude | null;
     where?: AnswerWhereInput | null;
 };
-export declare type AnswerDeleteManyArgsRequired = {
-    select: AnswerSelect;
-    include: AnswerInclude;
-    where?: AnswerWhereInput | null;
-};
-export declare type AnswerSelectDeleteManyArgs = {
-    select: AnswerSelect;
-    where?: AnswerWhereInput | null;
-};
-export declare type AnswerSelectDeleteManyArgsOptional = {
-    select?: AnswerSelect | null;
-    where?: AnswerWhereInput | null;
-};
-export declare type AnswerIncludeDeleteManyArgs = {
-    include: AnswerInclude;
-    where?: AnswerWhereInput | null;
-};
-export declare type AnswerIncludeDeleteManyArgsOptional = {
-    include?: AnswerInclude | null;
-    where?: AnswerWhereInput | null;
-};
-export declare type ExtractAnswerSelectDeleteManyArgs<S extends undefined | boolean | AnswerSelectDeleteManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends AnswerSelectDeleteManyArgs ? S['select'] : true;
-export declare type ExtractAnswerIncludeDeleteManyArgs<S extends undefined | boolean | AnswerIncludeDeleteManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends AnswerIncludeDeleteManyArgs ? S['include'] : true;
 /**
  * Answer without action
  */
@@ -1376,8 +1211,8 @@ export interface ResponseDelegate {
     create<T extends ResponseCreateArgs>(args: Subset<T, ResponseCreateArgs>): T extends ResponseCreateArgsRequired ? 'Please either choose `select` or `include`' : T extends ResponseSelectCreateArgs ? Promise<ResponseGetSelectPayload<ExtractResponseSelectCreateArgs<T>>> : T extends ResponseIncludeCreateArgs ? Promise<ResponseGetIncludePayload<ExtractResponseIncludeCreateArgs<T>>> : ResponseClient<Response>;
     delete<T extends ResponseDeleteArgs>(args: Subset<T, ResponseDeleteArgs>): T extends ResponseDeleteArgsRequired ? 'Please either choose `select` or `include`' : T extends ResponseSelectDeleteArgs ? Promise<ResponseGetSelectPayload<ExtractResponseSelectDeleteArgs<T>>> : T extends ResponseIncludeDeleteArgs ? Promise<ResponseGetIncludePayload<ExtractResponseIncludeDeleteArgs<T>>> : ResponseClient<Response>;
     update<T extends ResponseUpdateArgs>(args: Subset<T, ResponseUpdateArgs>): T extends ResponseUpdateArgsRequired ? 'Please either choose `select` or `include`' : T extends ResponseSelectUpdateArgs ? Promise<ResponseGetSelectPayload<ExtractResponseSelectUpdateArgs<T>>> : T extends ResponseIncludeUpdateArgs ? Promise<ResponseGetIncludePayload<ExtractResponseIncludeUpdateArgs<T>>> : ResponseClient<Response>;
-    deleteMany<T extends ResponseDeleteManyArgs>(args: Subset<T, ResponseDeleteManyArgs>): T extends ResponseDeleteManyArgsRequired ? 'Please either choose `select` or `include`' : T extends ResponseSelectDeleteManyArgs ? Promise<ResponseGetSelectPayload<ExtractResponseSelectDeleteManyArgs<T>>> : T extends ResponseIncludeDeleteManyArgs ? Promise<ResponseGetIncludePayload<ExtractResponseIncludeDeleteManyArgs<T>>> : ResponseClient<Response>;
-    updateMany<T extends ResponseUpdateManyArgs>(args: Subset<T, ResponseUpdateManyArgs>): T extends ResponseUpdateManyArgsRequired ? 'Please either choose `select` or `include`' : T extends ResponseSelectUpdateManyArgs ? Promise<ResponseGetSelectPayload<ExtractResponseSelectUpdateManyArgs<T>>> : T extends ResponseIncludeUpdateManyArgs ? Promise<ResponseGetIncludePayload<ExtractResponseIncludeUpdateManyArgs<T>>> : ResponseClient<Response>;
+    deleteMany<T extends ResponseDeleteManyArgs>(args: Subset<T, ResponseDeleteManyArgs>): Promise<BatchPayload>;
+    updateMany<T extends ResponseUpdateManyArgs>(args: Subset<T, ResponseUpdateManyArgs>): Promise<BatchPayload>;
     upsert<T extends ResponseUpsertArgs>(args: Subset<T, ResponseUpsertArgs>): T extends ResponseUpsertArgsRequired ? 'Please either choose `select` or `include`' : T extends ResponseSelectUpsertArgs ? Promise<ResponseGetSelectPayload<ExtractResponseSelectUpsertArgs<T>>> : T extends ResponseIncludeUpsertArgs ? Promise<ResponseGetIncludePayload<ExtractResponseIncludeUpsertArgs<T>>> : ResponseClient<Response>;
 }
 export declare class ResponseClient<T> implements Promise<T> {
@@ -1391,7 +1226,7 @@ export declare class ResponseClient<T> implements Promise<T> {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: DMMFClass, _fetcher: PhotonFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: ResponseArgs, _path: string[], _isList?: boolean);
+    constructor(_dmmf: DMMFClass, _fetcher: PhotonFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _path: string[], _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PhotonPromise';
     user<T extends UserArgs = {}>(args?: Subset<T, UserArgs>): T extends FindOneUserArgsRequired ? 'Please either choose `select` or `include`' : T extends UserSelectArgs ? Promise<UserGetSelectPayload<ExtractUserSelectArgs<T>>> : T extends UserIncludeArgs ? Promise<UserGetIncludePayload<ExtractUserIncludeArgs<T>>> : UserClient<User>;
     form<T extends FormArgs = {}>(args?: Subset<T, FormArgs>): T extends FindOneFormArgsRequired ? 'Please either choose `select` or `include`' : T extends FormSelectArgs ? Promise<FormGetSelectPayload<ExtractFormSelectArgs<T>>> : T extends FormIncludeArgs ? Promise<FormGetIncludePayload<ExtractFormIncludeArgs<T>>> : FormClient<Form>;
@@ -1588,39 +1423,9 @@ export declare type ExtractResponseIncludeUpdateArgs<S extends undefined | boole
  * Response updateMany
  */
 export declare type ResponseUpdateManyArgs = {
-    select?: ResponseSelect | null;
-    include?: ResponseInclude | null;
     data: ResponseUpdateManyMutationInput;
     where?: ResponseWhereInput | null;
 };
-export declare type ResponseUpdateManyArgsRequired = {
-    select: ResponseSelect;
-    include: ResponseInclude;
-    data: ResponseUpdateManyMutationInput;
-    where?: ResponseWhereInput | null;
-};
-export declare type ResponseSelectUpdateManyArgs = {
-    select: ResponseSelect;
-    data: ResponseUpdateManyMutationInput;
-    where?: ResponseWhereInput | null;
-};
-export declare type ResponseSelectUpdateManyArgsOptional = {
-    select?: ResponseSelect | null;
-    data: ResponseUpdateManyMutationInput;
-    where?: ResponseWhereInput | null;
-};
-export declare type ResponseIncludeUpdateManyArgs = {
-    include: ResponseInclude;
-    data: ResponseUpdateManyMutationInput;
-    where?: ResponseWhereInput | null;
-};
-export declare type ResponseIncludeUpdateManyArgsOptional = {
-    include?: ResponseInclude | null;
-    data: ResponseUpdateManyMutationInput;
-    where?: ResponseWhereInput | null;
-};
-export declare type ExtractResponseSelectUpdateManyArgs<S extends undefined | boolean | ResponseSelectUpdateManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends ResponseSelectUpdateManyArgs ? S['select'] : true;
-export declare type ExtractResponseIncludeUpdateManyArgs<S extends undefined | boolean | ResponseIncludeUpdateManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends ResponseIncludeUpdateManyArgs ? S['include'] : true;
 /**
  * Response upsert
  */
@@ -1699,33 +1504,8 @@ export declare type ExtractResponseIncludeDeleteArgs<S extends undefined | boole
  * Response deleteMany
  */
 export declare type ResponseDeleteManyArgs = {
-    select?: ResponseSelect | null;
-    include?: ResponseInclude | null;
     where?: ResponseWhereInput | null;
 };
-export declare type ResponseDeleteManyArgsRequired = {
-    select: ResponseSelect;
-    include: ResponseInclude;
-    where?: ResponseWhereInput | null;
-};
-export declare type ResponseSelectDeleteManyArgs = {
-    select: ResponseSelect;
-    where?: ResponseWhereInput | null;
-};
-export declare type ResponseSelectDeleteManyArgsOptional = {
-    select?: ResponseSelect | null;
-    where?: ResponseWhereInput | null;
-};
-export declare type ResponseIncludeDeleteManyArgs = {
-    include: ResponseInclude;
-    where?: ResponseWhereInput | null;
-};
-export declare type ResponseIncludeDeleteManyArgsOptional = {
-    include?: ResponseInclude | null;
-    where?: ResponseWhereInput | null;
-};
-export declare type ExtractResponseSelectDeleteManyArgs<S extends undefined | boolean | ResponseSelectDeleteManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends ResponseSelectDeleteManyArgs ? S['select'] : true;
-export declare type ExtractResponseIncludeDeleteManyArgs<S extends undefined | boolean | ResponseIncludeDeleteManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends ResponseIncludeDeleteManyArgs ? S['include'] : true;
 /**
  * Response without action
  */
@@ -1792,8 +1572,8 @@ export interface UserDelegate {
     create<T extends UserCreateArgs>(args: Subset<T, UserCreateArgs>): T extends UserCreateArgsRequired ? 'Please either choose `select` or `include`' : T extends UserSelectCreateArgs ? Promise<UserGetSelectPayload<ExtractUserSelectCreateArgs<T>>> : T extends UserIncludeCreateArgs ? Promise<UserGetIncludePayload<ExtractUserIncludeCreateArgs<T>>> : UserClient<User>;
     delete<T extends UserDeleteArgs>(args: Subset<T, UserDeleteArgs>): T extends UserDeleteArgsRequired ? 'Please either choose `select` or `include`' : T extends UserSelectDeleteArgs ? Promise<UserGetSelectPayload<ExtractUserSelectDeleteArgs<T>>> : T extends UserIncludeDeleteArgs ? Promise<UserGetIncludePayload<ExtractUserIncludeDeleteArgs<T>>> : UserClient<User>;
     update<T extends UserUpdateArgs>(args: Subset<T, UserUpdateArgs>): T extends UserUpdateArgsRequired ? 'Please either choose `select` or `include`' : T extends UserSelectUpdateArgs ? Promise<UserGetSelectPayload<ExtractUserSelectUpdateArgs<T>>> : T extends UserIncludeUpdateArgs ? Promise<UserGetIncludePayload<ExtractUserIncludeUpdateArgs<T>>> : UserClient<User>;
-    deleteMany<T extends UserDeleteManyArgs>(args: Subset<T, UserDeleteManyArgs>): T extends UserDeleteManyArgsRequired ? 'Please either choose `select` or `include`' : T extends UserSelectDeleteManyArgs ? Promise<UserGetSelectPayload<ExtractUserSelectDeleteManyArgs<T>>> : T extends UserIncludeDeleteManyArgs ? Promise<UserGetIncludePayload<ExtractUserIncludeDeleteManyArgs<T>>> : UserClient<User>;
-    updateMany<T extends UserUpdateManyArgs>(args: Subset<T, UserUpdateManyArgs>): T extends UserUpdateManyArgsRequired ? 'Please either choose `select` or `include`' : T extends UserSelectUpdateManyArgs ? Promise<UserGetSelectPayload<ExtractUserSelectUpdateManyArgs<T>>> : T extends UserIncludeUpdateManyArgs ? Promise<UserGetIncludePayload<ExtractUserIncludeUpdateManyArgs<T>>> : UserClient<User>;
+    deleteMany<T extends UserDeleteManyArgs>(args: Subset<T, UserDeleteManyArgs>): Promise<BatchPayload>;
+    updateMany<T extends UserUpdateManyArgs>(args: Subset<T, UserUpdateManyArgs>): Promise<BatchPayload>;
     upsert<T extends UserUpsertArgs>(args: Subset<T, UserUpsertArgs>): T extends UserUpsertArgsRequired ? 'Please either choose `select` or `include`' : T extends UserSelectUpsertArgs ? Promise<UserGetSelectPayload<ExtractUserSelectUpsertArgs<T>>> : T extends UserIncludeUpsertArgs ? Promise<UserGetIncludePayload<ExtractUserIncludeUpsertArgs<T>>> : UserClient<User>;
 }
 export declare class UserClient<T> implements Promise<T> {
@@ -1807,7 +1587,7 @@ export declare class UserClient<T> implements Promise<T> {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: DMMFClass, _fetcher: PhotonFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: UserArgs, _path: string[], _isList?: boolean);
+    constructor(_dmmf: DMMFClass, _fetcher: PhotonFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _path: string[], _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PhotonPromise';
     responses<T extends FindManyResponseArgs = {}>(args?: Subset<T, FindManyResponseArgs>): T extends FindManyResponseArgsRequired ? 'Please either choose `select` or `include`' : T extends FindManyResponseSelectArgs ? Promise<Array<ResponseGetSelectPayload<ExtractFindManyResponseSelectArgs<T>>>> : T extends FindManyResponseIncludeArgs ? Promise<Array<ResponseGetIncludePayload<ExtractFindManyResponseIncludeArgs<T>>>> : Promise<Array<Response>>;
     note<T extends NoteArgs = {}>(args?: Subset<T, NoteArgs>): T extends FindOneNoteArgsRequired ? 'Please either choose `select` or `include`' : T extends NoteSelectArgs ? Promise<NoteGetSelectPayload<ExtractNoteSelectArgs<T>>> : T extends NoteIncludeArgs ? Promise<NoteGetIncludePayload<ExtractNoteIncludeArgs<T>>> : NoteClient<Note>;
@@ -2003,39 +1783,9 @@ export declare type ExtractUserIncludeUpdateArgs<S extends undefined | boolean |
  * User updateMany
  */
 export declare type UserUpdateManyArgs = {
-    select?: UserSelect | null;
-    include?: UserInclude | null;
     data: UserUpdateManyMutationInput;
     where?: UserWhereInput | null;
 };
-export declare type UserUpdateManyArgsRequired = {
-    select: UserSelect;
-    include: UserInclude;
-    data: UserUpdateManyMutationInput;
-    where?: UserWhereInput | null;
-};
-export declare type UserSelectUpdateManyArgs = {
-    select: UserSelect;
-    data: UserUpdateManyMutationInput;
-    where?: UserWhereInput | null;
-};
-export declare type UserSelectUpdateManyArgsOptional = {
-    select?: UserSelect | null;
-    data: UserUpdateManyMutationInput;
-    where?: UserWhereInput | null;
-};
-export declare type UserIncludeUpdateManyArgs = {
-    include: UserInclude;
-    data: UserUpdateManyMutationInput;
-    where?: UserWhereInput | null;
-};
-export declare type UserIncludeUpdateManyArgsOptional = {
-    include?: UserInclude | null;
-    data: UserUpdateManyMutationInput;
-    where?: UserWhereInput | null;
-};
-export declare type ExtractUserSelectUpdateManyArgs<S extends undefined | boolean | UserSelectUpdateManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends UserSelectUpdateManyArgs ? S['select'] : true;
-export declare type ExtractUserIncludeUpdateManyArgs<S extends undefined | boolean | UserIncludeUpdateManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends UserIncludeUpdateManyArgs ? S['include'] : true;
 /**
  * User upsert
  */
@@ -2114,33 +1864,8 @@ export declare type ExtractUserIncludeDeleteArgs<S extends undefined | boolean |
  * User deleteMany
  */
 export declare type UserDeleteManyArgs = {
-    select?: UserSelect | null;
-    include?: UserInclude | null;
     where?: UserWhereInput | null;
 };
-export declare type UserDeleteManyArgsRequired = {
-    select: UserSelect;
-    include: UserInclude;
-    where?: UserWhereInput | null;
-};
-export declare type UserSelectDeleteManyArgs = {
-    select: UserSelect;
-    where?: UserWhereInput | null;
-};
-export declare type UserSelectDeleteManyArgsOptional = {
-    select?: UserSelect | null;
-    where?: UserWhereInput | null;
-};
-export declare type UserIncludeDeleteManyArgs = {
-    include: UserInclude;
-    where?: UserWhereInput | null;
-};
-export declare type UserIncludeDeleteManyArgsOptional = {
-    include?: UserInclude | null;
-    where?: UserWhereInput | null;
-};
-export declare type ExtractUserSelectDeleteManyArgs<S extends undefined | boolean | UserSelectDeleteManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends UserSelectDeleteManyArgs ? S['select'] : true;
-export declare type ExtractUserIncludeDeleteManyArgs<S extends undefined | boolean | UserIncludeDeleteManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends UserIncludeDeleteManyArgs ? S['include'] : true;
 /**
  * User without action
  */
@@ -2199,8 +1924,8 @@ export interface NoteDelegate {
     create<T extends NoteCreateArgs>(args: Subset<T, NoteCreateArgs>): T extends NoteCreateArgsRequired ? 'Please either choose `select` or `include`' : T extends NoteSelectCreateArgs ? Promise<NoteGetSelectPayload<ExtractNoteSelectCreateArgs<T>>> : T extends NoteIncludeCreateArgs ? Promise<NoteGetIncludePayload<ExtractNoteIncludeCreateArgs<T>>> : NoteClient<Note>;
     delete<T extends NoteDeleteArgs>(args: Subset<T, NoteDeleteArgs>): T extends NoteDeleteArgsRequired ? 'Please either choose `select` or `include`' : T extends NoteSelectDeleteArgs ? Promise<NoteGetSelectPayload<ExtractNoteSelectDeleteArgs<T>>> : T extends NoteIncludeDeleteArgs ? Promise<NoteGetIncludePayload<ExtractNoteIncludeDeleteArgs<T>>> : NoteClient<Note>;
     update<T extends NoteUpdateArgs>(args: Subset<T, NoteUpdateArgs>): T extends NoteUpdateArgsRequired ? 'Please either choose `select` or `include`' : T extends NoteSelectUpdateArgs ? Promise<NoteGetSelectPayload<ExtractNoteSelectUpdateArgs<T>>> : T extends NoteIncludeUpdateArgs ? Promise<NoteGetIncludePayload<ExtractNoteIncludeUpdateArgs<T>>> : NoteClient<Note>;
-    deleteMany<T extends NoteDeleteManyArgs>(args: Subset<T, NoteDeleteManyArgs>): T extends NoteDeleteManyArgsRequired ? 'Please either choose `select` or `include`' : T extends NoteSelectDeleteManyArgs ? Promise<NoteGetSelectPayload<ExtractNoteSelectDeleteManyArgs<T>>> : T extends NoteIncludeDeleteManyArgs ? Promise<NoteGetIncludePayload<ExtractNoteIncludeDeleteManyArgs<T>>> : NoteClient<Note>;
-    updateMany<T extends NoteUpdateManyArgs>(args: Subset<T, NoteUpdateManyArgs>): T extends NoteUpdateManyArgsRequired ? 'Please either choose `select` or `include`' : T extends NoteSelectUpdateManyArgs ? Promise<NoteGetSelectPayload<ExtractNoteSelectUpdateManyArgs<T>>> : T extends NoteIncludeUpdateManyArgs ? Promise<NoteGetIncludePayload<ExtractNoteIncludeUpdateManyArgs<T>>> : NoteClient<Note>;
+    deleteMany<T extends NoteDeleteManyArgs>(args: Subset<T, NoteDeleteManyArgs>): Promise<BatchPayload>;
+    updateMany<T extends NoteUpdateManyArgs>(args: Subset<T, NoteUpdateManyArgs>): Promise<BatchPayload>;
     upsert<T extends NoteUpsertArgs>(args: Subset<T, NoteUpsertArgs>): T extends NoteUpsertArgsRequired ? 'Please either choose `select` or `include`' : T extends NoteSelectUpsertArgs ? Promise<NoteGetSelectPayload<ExtractNoteSelectUpsertArgs<T>>> : T extends NoteIncludeUpsertArgs ? Promise<NoteGetIncludePayload<ExtractNoteIncludeUpsertArgs<T>>> : NoteClient<Note>;
 }
 export declare class NoteClient<T> implements Promise<T> {
@@ -2214,7 +1939,7 @@ export declare class NoteClient<T> implements Promise<T> {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: DMMFClass, _fetcher: PhotonFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: NoteArgs, _path: string[], _isList?: boolean);
+    constructor(_dmmf: DMMFClass, _fetcher: PhotonFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _path: string[], _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PhotonPromise';
     user<T extends UserArgs = {}>(args?: Subset<T, UserArgs>): T extends FindOneUserArgsRequired ? 'Please either choose `select` or `include`' : T extends UserSelectArgs ? Promise<UserGetSelectPayload<ExtractUserSelectArgs<T>>> : T extends UserIncludeArgs ? Promise<UserGetIncludePayload<ExtractUserIncludeArgs<T>>> : UserClient<User>;
     private readonly _document;
@@ -2409,39 +2134,9 @@ export declare type ExtractNoteIncludeUpdateArgs<S extends undefined | boolean |
  * Note updateMany
  */
 export declare type NoteUpdateManyArgs = {
-    select?: NoteSelect | null;
-    include?: NoteInclude | null;
     data: NoteUpdateManyMutationInput;
     where?: NoteWhereInput | null;
 };
-export declare type NoteUpdateManyArgsRequired = {
-    select: NoteSelect;
-    include: NoteInclude;
-    data: NoteUpdateManyMutationInput;
-    where?: NoteWhereInput | null;
-};
-export declare type NoteSelectUpdateManyArgs = {
-    select: NoteSelect;
-    data: NoteUpdateManyMutationInput;
-    where?: NoteWhereInput | null;
-};
-export declare type NoteSelectUpdateManyArgsOptional = {
-    select?: NoteSelect | null;
-    data: NoteUpdateManyMutationInput;
-    where?: NoteWhereInput | null;
-};
-export declare type NoteIncludeUpdateManyArgs = {
-    include: NoteInclude;
-    data: NoteUpdateManyMutationInput;
-    where?: NoteWhereInput | null;
-};
-export declare type NoteIncludeUpdateManyArgsOptional = {
-    include?: NoteInclude | null;
-    data: NoteUpdateManyMutationInput;
-    where?: NoteWhereInput | null;
-};
-export declare type ExtractNoteSelectUpdateManyArgs<S extends undefined | boolean | NoteSelectUpdateManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends NoteSelectUpdateManyArgs ? S['select'] : true;
-export declare type ExtractNoteIncludeUpdateManyArgs<S extends undefined | boolean | NoteIncludeUpdateManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends NoteIncludeUpdateManyArgs ? S['include'] : true;
 /**
  * Note upsert
  */
@@ -2520,33 +2215,8 @@ export declare type ExtractNoteIncludeDeleteArgs<S extends undefined | boolean |
  * Note deleteMany
  */
 export declare type NoteDeleteManyArgs = {
-    select?: NoteSelect | null;
-    include?: NoteInclude | null;
     where?: NoteWhereInput | null;
 };
-export declare type NoteDeleteManyArgsRequired = {
-    select: NoteSelect;
-    include: NoteInclude;
-    where?: NoteWhereInput | null;
-};
-export declare type NoteSelectDeleteManyArgs = {
-    select: NoteSelect;
-    where?: NoteWhereInput | null;
-};
-export declare type NoteSelectDeleteManyArgsOptional = {
-    select?: NoteSelect | null;
-    where?: NoteWhereInput | null;
-};
-export declare type NoteIncludeDeleteManyArgs = {
-    include: NoteInclude;
-    where?: NoteWhereInput | null;
-};
-export declare type NoteIncludeDeleteManyArgsOptional = {
-    include?: NoteInclude | null;
-    where?: NoteWhereInput | null;
-};
-export declare type ExtractNoteSelectDeleteManyArgs<S extends undefined | boolean | NoteSelectDeleteManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends NoteSelectDeleteManyArgs ? S['select'] : true;
-export declare type ExtractNoteIncludeDeleteManyArgs<S extends undefined | boolean | NoteIncludeDeleteManyArgsOptional> = S extends undefined ? false : S extends boolean ? S : S extends NoteIncludeDeleteManyArgs ? S['include'] : true;
 /**
  * Note without action
  */
@@ -3326,6 +2996,12 @@ export declare type UserOrderByInput = {
 export declare type NoteOrderByInput = {
     id?: OrderByArg | null;
     text?: OrderByArg | null;
+};
+/**
+ * Batch Payload for updateMany & deleteMany
+ */
+export declare type BatchPayload = {
+    count: number;
 };
 /**
  * DMMF

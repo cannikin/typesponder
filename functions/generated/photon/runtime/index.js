@@ -45,17 +45,21 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
-/***/ 0:
-/***/ (function(module, __unusedexports, __webpack_require__) {
+/***/ 24:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
 
 "use strict";
 
-const ansiRegex = __webpack_require__(963);
-
-const stripAnsi = string => typeof string === 'string' ? string.replace(ansiRegex(), '') : string;
-
-module.exports = stripAnsi;
-module.exports.default = stripAnsi;
+Object.defineProperty(exports, "__esModule", { value: true });
+const prism_1 = __webpack_require__(848);
+function highlightTS(str) {
+    return highlight(str, prism_1.Prism.languages.javascript);
+}
+exports.highlightTS = highlightTS;
+function highlight(str, grammar) {
+    const tokens = prism_1.Prism.tokenize(str, grammar);
+    return tokens.map(t => prism_1.Token.stringify(t)).join('');
+}
 
 
 /***/ }),
@@ -296,6 +300,109 @@ module.exports = input => (
 
 /***/ }),
 
+/***/ 41:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const chalk_1 = __importDefault(__webpack_require__(946));
+const stackTraceParser = __importStar(__webpack_require__(579));
+const highlight_1 = __webpack_require__(24);
+const dedent_1 = __webpack_require__(469);
+function renderN(n, max) {
+    const wantedLetters = String(max).length;
+    const hasLetters = String(n).length;
+    if (hasLetters >= wantedLetters) {
+        return String(n);
+    }
+    return String(' '.repeat(wantedLetters - hasLetters) + n);
+}
+exports.printStack = ({ callsite, originalMethod, onUs }) => {
+    const lastErrorHeight = 20;
+    let callsiteStr = ':';
+    let prevLines = '\n';
+    let afterLines = '';
+    let indentValue = 0;
+    let functionName = `photon.${originalMethod}()`;
+    // @ts-ignore
+    if (callsite && typeof window === 'undefined') {
+        const stack = stackTraceParser.parse(callsite);
+        // TODO: more resilient logic to check that it's not relative to cwd
+        const trace = stack.find(t => t.file &&
+            !t.file.includes('@generated') &&
+            !t.methodName.includes('new ') &&
+            t.methodName.split('.').length < 4);
+        if (process.env.NODE_ENV !== 'production' && trace && trace.file && trace.lineNumber && trace.column) {
+            const fileName = trace.file;
+            const lineNumber = trace.lineNumber;
+            callsiteStr = callsite ? ` in ${chalk_1.default.underline(`${trace.file}:${trace.lineNumber}:${trace.column}`)}` : '';
+            const height = process.stdout.rows || 20;
+            const start = Math.max(0, lineNumber - 5);
+            const neededHeight = lastErrorHeight + lineNumber - start;
+            if (height > neededHeight) {
+                const fs = __webpack_require__(747);
+                if (fs.existsSync(fileName)) {
+                    const file = fs.readFileSync(fileName, 'utf-8');
+                    const slicedFile = file
+                        .split('\n')
+                        .slice(start, lineNumber)
+                        .join('\n');
+                    const lines = dedent_1.dedent(slicedFile).split('\n');
+                    const theLine = lines[lines.length - 1];
+                    const photonRegex = /(=|return)*\s+(await)?\s*(.*\()/;
+                    const match = theLine.match(photonRegex);
+                    if (match) {
+                        functionName = `${match[3]})`;
+                    }
+                    const slicePoint = theLine.indexOf('{');
+                    const highlightedLines = highlight_1.highlightTS(lines
+                        .map((l, i, all) => !onUs && i === all.length - 1 ? l.slice(0, slicePoint > -1 ? slicePoint : l.length - 1) : l)
+                        .join('\n')).split('\n');
+                    prevLines =
+                        '\n' +
+                            highlightedLines
+                                .map((l, i) => chalk_1.default.grey(renderN(i + start + 1, lineNumber + start + 1) + ' ') + chalk_1.default.reset() + l)
+                                .map((l, i, arr) => (i === arr.length - 1 ? `${chalk_1.default.red.bold('→')} ${l}` : chalk_1.default.dim('  ' + l)))
+                                .join('\n');
+                    afterLines = ')';
+                    indentValue = String(lineNumber + start + 1).length + getIndent(theLine) + 1;
+                }
+            }
+        }
+    }
+    function getIndent(line) {
+        let spaceCount = 0;
+        for (let i = 0; i < line.length; i++) {
+            if (line.charAt(i) !== ' ') {
+                return spaceCount;
+            }
+            spaceCount++;
+        }
+        return spaceCount;
+    }
+    const introText = onUs
+        ? chalk_1.default.red(`Oops, an unknown error occured! This is ${chalk_1.default.bold('on us')}, you did nothing wrong.
+It occured in the ${chalk_1.default.bold(`\`${functionName}\``)} invocation${callsiteStr}`)
+        : chalk_1.default.red(`Invalid ${chalk_1.default.bold(`\`${functionName}\``)} invocation${callsiteStr}`);
+    const stackStr = `\n${introText}
+${prevLines}${chalk_1.default.reset()}`;
+    return { indent: indentValue, stack: stackStr, afterLines, lastErrorHeight };
+};
+
+
+/***/ }),
+
 /***/ 48:
 /***/ (function(module) {
 
@@ -320,7 +427,7 @@ module.exports = (url, opts) => {
 /***/ }),
 
 /***/ 49:
-/***/ (function(__unusedmodule, exports) {
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
 
 "use strict";
 
@@ -335,22 +442,44 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const chalk_1 = __importDefault(__webpack_require__(214));
 class PhotonError extends Error {
     constructor(log) {
-        let { application, level, message } = log, rest = __rest(log, ["application", "level", "message"]);
-        message = log.message + ' ' + serializeObject(rest);
+        const isPanic = log.message === 'PANIC';
+        const message = isPanic ? serializePanic(log) : serializeError(log);
         super(message);
         Object.defineProperty(this, 'log', {
             enumerable: false,
             value: log,
         });
+        Object.defineProperty(this, 'isPanic', {
+            enumerable: false,
+            value: isPanic,
+        });
     }
 }
 exports.PhotonError = PhotonError;
+function serializeError(log) {
+    let { application, level, message } = log, rest = __rest(log, ["application", "level", "message"]);
+    if (application === 'datamodel') {
+        return chalk_1.default.red.bold('Schema ') + message;
+    }
+    return chalk_1.default.red(log.message + ' ' + serializeObject(rest));
+}
+function serializePanic(log) {
+    return `${chalk_1.default.red.bold('Reason: ')}${chalk_1.default.red(`${log.reason} in ${chalk_1.default.underline(`${log.file}:${log.line}:${log.column}`)}`)}
+
+Please create an issue in the ${chalk_1.default.bold('photonjs')} repo with
+your \`schema.prisma\` and the Photon method you tried to use 🙏:
+${chalk_1.default.underline('https://github.com/prisma/photonjs/issues/new')}\n`;
+}
 class PhotonQueryError extends Error {
     constructor(message) {
-        super(message);
+        super(chalk_1.default.red.bold('Reason: ') + chalk_1.default.red(message + '\n'));
     }
 }
 exports.PhotonQueryError = PhotonQueryError;
@@ -840,20 +969,16 @@ module.exports = require("os");
 /***/ }),
 
 /***/ 90:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
+/***/ (function(module, __unusedexports, __webpack_require__) {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const prism_1 = __webpack_require__(848);
-function highlightTS(str) {
-    return highlight(str, prism_1.Prism.languages.javascript);
-}
-exports.highlightTS = highlightTS;
-function highlight(str, grammar) {
-    const tokens = prism_1.Prism.tokenize(str, grammar);
-    return tokens.map(t => prism_1.Token.stringify(t)).join('');
-}
+const ansiRegex = __webpack_require__(963);
+
+const stripAnsi = string => typeof string === 'string' ? string.replace(ansiRegex(), '') : string;
+
+module.exports = stripAnsi;
+module.exports.default = stripAnsi;
 
 
 /***/ }),
@@ -921,6 +1046,17 @@ module.exports.MaxBufferError = MaxBufferError;
 
 "use strict";
 
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const logLevelMap = {
     CRIT: 'critical',
@@ -934,12 +1070,8 @@ function rustToPublicLogLevel(rustLevel) {
     return logLevelMap[rustLevel];
 }
 function convertLog(rustLog) {
-    return {
-        message: rustLog.msg,
-        level: rustToPublicLogLevel(rustLog.level),
-        application: rustLog.application,
-        date: new Date(rustLog.ts),
-    };
+    const { msg, level, application, ts } = rustLog, rest = __rest(rustLog, ["msg", "level", "application", "ts"]);
+    return Object.assign({ message: msg, level: rustToPublicLogLevel(level), application: application, date: new Date(ts) }, rest);
 }
 exports.convertLog = convertLog;
 //# sourceMappingURL=log.js.map
@@ -1340,26 +1472,17 @@ module.exports = create;
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = __importDefault(__webpack_require__(946));
 __webpack_require__(175);
 const indent_string_1 = __importDefault(__webpack_require__(257));
-const stackTraceParser = __importStar(__webpack_require__(579));
-const highlight_1 = __webpack_require__(90);
 const common_1 = __webpack_require__(664);
-const dedent_1 = __webpack_require__(469);
 const deep_extend_1 = __webpack_require__(608);
 const deep_set_1 = __webpack_require__(721);
 const filterObject_1 = __webpack_require__(344);
 const omit_1 = __webpack_require__(478);
 const printJsonErrors_1 = __webpack_require__(959);
+const printStack_1 = __webpack_require__(41);
 const stringifyObject_1 = __importDefault(__webpack_require__(212));
 const visit_1 = __webpack_require__(79);
 const tab = 2;
@@ -1559,68 +1682,11 @@ ${indent_string_1.default(this.children.map(String).join('\n'), tab)}
             }
             return String(' '.repeat(wantedLetters - hasLetters) + n);
         }
-        let lastErrorHeight = 20;
         const renderErrorStr = (callsite) => {
-            let callsiteStr = ':';
-            let prevLines = '\n';
-            let afterLines = '';
-            let indentValue = 0;
-            let functionName = `photon.${originalMethod || queryName}()`;
-            // @ts-ignore
-            if (callsite && typeof window === 'undefined') {
-                const stack = stackTraceParser.parse(callsite);
-                // TODO: more resilient logic to check that it's not relative to cwd
-                const trace = stack.find(t => t.file &&
-                    !t.file.includes('@generated') &&
-                    !t.methodName.includes('new ') &&
-                    t.methodName.split('.').length < 4);
-                if (process.env.NODE_ENV !== 'production' && trace && trace.file && trace.lineNumber && trace.column) {
-                    const fileName = trace.file;
-                    const lineNumber = trace.lineNumber;
-                    callsiteStr = callsite ? ` in ${chalk_1.default.underline(`${trace.file}:${trace.lineNumber}:${trace.column}`)}` : '';
-                    const height = process.stdout.rows || 20;
-                    const start = Math.max(0, lineNumber - 5);
-                    const neededHeight = lastErrorHeight + lineNumber - start;
-                    if (height > neededHeight) {
-                        const fs = __webpack_require__(747);
-                        if (fs.existsSync(fileName)) {
-                            const file = fs.readFileSync(fileName, 'utf-8');
-                            const slicedFile = file
-                                .split('\n')
-                                .slice(start, lineNumber)
-                                .join('\n');
-                            const lines = dedent_1.dedent(slicedFile).split('\n');
-                            const theLine = lines[lines.length - 1];
-                            const photonRegex = /(=|return)+\s+(await)?\s*(.*\()/;
-                            const match = theLine.match(photonRegex);
-                            if (match) {
-                                functionName = `${match[3]})`;
-                            }
-                            const slicePoint = theLine.indexOf('{');
-                            const highlightedLines = highlight_1.highlightTS(lines
-                                .map((l, i, all) => i === all.length - 1 ? l.slice(0, slicePoint > -1 ? slicePoint : l.length - 1) : l)
-                                .join('\n')).split('\n');
-                            prevLines =
-                                '\n' +
-                                    highlightedLines
-                                        .map((l, i) => chalk_1.default.grey(renderN(i + start + 1, lineNumber + start + 1) + ' ') + chalk_1.default.reset() + l)
-                                        .join('\n');
-                            afterLines = ')';
-                            indentValue = String(lineNumber + start + 1).length + getIndent(theLine) + 1;
-                        }
-                    }
-                }
-            }
-            function getIndent(line) {
-                let spaceCount = 0;
-                for (let i = 0; i < line.length; i++) {
-                    if (line.charAt(i) !== ' ') {
-                        return spaceCount;
-                    }
-                    spaceCount++;
-                }
-                return spaceCount;
-            }
+            const { stack, indent: indentValue, afterLines } = printStack_1.printStack({
+                callsite,
+                originalMethod: originalMethod || queryName,
+            });
             const hasRequiredMissingArgsErrors = argErrors.some(e => e.error.type === 'missingArg' && e.error.missingType[0].isRequired);
             const hasOptionalMissingArgsErrors = argErrors.some(e => e.error.type === 'missingArg' && !e.error.missingType[0].isRequired);
             const hasMissingArgsErrors = hasOptionalMissingArgsErrors || hasRequiredMissingArgsErrors;
@@ -1640,15 +1706,13 @@ ${indent_string_1.default(this.children.map(String).join('\n'), tab)}
                 }
                 missingArgsLegend += chalk_1.default.dim('.');
             }
-            const errorStr = `\n${chalk_1.default.red(`Invalid ${chalk_1.default.bold(`\`${functionName}\``)} invocation${callsiteStr}`)}
-${chalk_1.default.dim(prevLines)}${chalk_1.default.reset()}${indent_string_1.default(printJsonErrors_1.printJsonWithErrors(isTopLevelQuery ? { [topLevelQueryName]: select } : select, keyPaths, valuePaths, missingItems), indentValue).slice(indentValue)}${chalk_1.default.dim(afterLines)}
+            const errorStr = `${stack}${indent_string_1.default(printJsonErrors_1.printJsonWithErrors(isTopLevelQuery ? { [topLevelQueryName]: select } : select, keyPaths, valuePaths, missingItems), indentValue).slice(indentValue)}${chalk_1.default.dim(afterLines)}
 
 ${argErrors
                 .filter(e => e.error.type !== 'missingArg' || e.error.missingType[0].isRequired)
                 .map(e => this.printArgError(e, hasMissingArgsErrors))
                 .join('\n')}
 ${fieldErrors.map(this.printFieldError).join('\n')}${missingArgsLegend}\n`;
-            lastErrorHeight = errorStr.split('\n').length;
             return errorStr;
         };
         const error = new PhotonError(renderErrorStr());
@@ -2158,8 +2222,12 @@ function getInvalidTypeArg(key, value, arg, bestFittingType) {
 }
 function hasCorrectScalarType(value, arg, inputType) {
     const { type } = inputType;
-    const expectedType = common_1.wrapWithList(common_1.stringifyGraphQLType(type), arg.inputType[0].isList);
+    const isList = arg.inputType[0].isList;
+    const expectedType = common_1.wrapWithList(common_1.stringifyGraphQLType(type), isList);
     const graphQLType = common_1.getGraphQLType(value, type);
+    if (isList && graphQLType === 'List<>') {
+        return true;
+    }
     // DateTime is a subset of string
     if (graphQLType === 'DateTime' && expectedType === 'String') {
         return true;
@@ -3090,6 +3158,8 @@ var printDatasources_1 = __webpack_require__(643);
 exports.printDatasources = printDatasources_1.printDatasources;
 var chalk_1 = __webpack_require__(946);
 exports.chalk = chalk_1.default;
+var printStack_1 = __webpack_require__(41);
+exports.printStack = printStack_1.printStack;
 
 
 /***/ }),
@@ -5691,6 +5761,146 @@ convert.rgb.gray = function (rgb) {
 	return [val / 255 * 100];
 };
 
+
+/***/ }),
+
+/***/ 399:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (C) 2011-2015 John Hewson
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+// sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+Object.defineProperty(exports, "__esModule", { value: true });
+var stream = __webpack_require__(413), util = __webpack_require__(669);
+// convinience API
+function byline(readStream, options) {
+    return module.exports.createStream(readStream, options);
+}
+exports.default = byline;
+// basic API
+module.exports.createStream = function (readStream, options) {
+    if (readStream) {
+        return createLineStream(readStream, options);
+    }
+    else {
+        return new LineStream(options);
+    }
+};
+function createLineStream(readStream, options) {
+    if (!readStream) {
+        throw new Error('expected readStream');
+    }
+    if (!readStream.readable) {
+        throw new Error('readStream must be readable');
+    }
+    var ls = new LineStream(options);
+    readStream.pipe(ls);
+    return ls;
+}
+exports.createLineStream = createLineStream;
+//
+// using the new node v0.10 "streams2" API
+//
+module.exports.LineStream = LineStream;
+function LineStream(options) {
+    stream.Transform.call(this, options);
+    options = options || {};
+    // use objectMode to stop the output from being buffered
+    // which re-concatanates the lines, just without newlines.
+    this._readableState.objectMode = true;
+    this._lineBuffer = [];
+    this._keepEmptyLines = options.keepEmptyLines || false;
+    this._lastChunkEndedWithCR = false;
+    // take the source's encoding if we don't have one
+    this.on('pipe', function (src) {
+        if (!this.encoding) {
+            // but we can't do this for old-style streams
+            if (src instanceof stream.Readable) {
+                this.encoding = src._readableState.encoding;
+            }
+        }
+    });
+}
+util.inherits(LineStream, stream.Transform);
+LineStream.prototype._transform = function (chunk, encoding, done) {
+    // decode binary chunks as UTF-8
+    encoding = encoding || 'utf8';
+    if (Buffer.isBuffer(chunk)) {
+        if (encoding == 'buffer') {
+            chunk = chunk.toString(); // utf8
+            encoding = 'utf8';
+        }
+        else {
+            chunk = chunk.toString(encoding);
+        }
+    }
+    this._chunkEncoding = encoding;
+    var lines = chunk.split(/\r\n|\r|\n/g);
+    // don't split CRLF which spans chunks
+    if (this._lastChunkEndedWithCR && chunk[0] == '\n') {
+        lines.shift();
+    }
+    if (this._lineBuffer.length > 0) {
+        this._lineBuffer[this._lineBuffer.length - 1] += lines[0];
+        lines.shift();
+    }
+    this._lastChunkEndedWithCR = chunk[chunk.length - 1] == '\r';
+    this._lineBuffer = this._lineBuffer.concat(lines);
+    this._pushBuffer(encoding, 1, done);
+};
+LineStream.prototype._pushBuffer = function (encoding, keep, done) {
+    // always buffer the last (possibly partial) line
+    while (this._lineBuffer.length > keep) {
+        var line = this._lineBuffer.shift();
+        // skip empty lines
+        if (this._keepEmptyLines || line.length > 0) {
+            if (!this.push(this._reencode(line, encoding))) {
+                // when the high-water mark is reached, defer pushes until the next tick
+                var self = this;
+                setImmediate(function () {
+                    self._pushBuffer(encoding, keep, done);
+                });
+                return;
+            }
+        }
+    }
+    done();
+};
+LineStream.prototype._flush = function (done) {
+    this._pushBuffer(this._chunkEncoding, 0, done);
+};
+// see Readable::push
+LineStream.prototype._reencode = function (line, chunkEncoding) {
+    if (this.encoding && this.encoding != chunkEncoding) {
+        return Buffer.from(line, chunkEncoding).toString(this.encoding);
+    }
+    else if (this.encoding) {
+        // this should be the most common case, i.e. we're using an encoded source stream
+        return line;
+    }
+    else {
+        return Buffer.from(line, chunkEncoding);
+    }
+};
+//# sourceMappingURL=byline.js.map
 
 /***/ }),
 
@@ -11214,8 +11424,6 @@ class DMMFClass {
         this.enumMap = this.getEnumMap();
         this.queryType = this.getQueryType();
         this.mutationType = this.getMutationType();
-        this.schema.outputTypes.push(this.queryType); // create "virtual" query type
-        this.schema.outputTypes.push(this.mutationType); // create "virtual" mutation type
         this.modelMap = this.getModelMap();
         this.outputTypes = this.getOutputTypes();
         this.resolveOutputTypes(this.outputTypes);
@@ -12811,6 +13019,7 @@ const util_2 = __webpack_require__(669);
 const events_1 = __importDefault(__webpack_require__(614));
 const log_1 = __webpack_require__(125);
 const child_process_1 = __webpack_require__(129);
+const byline_1 = __importDefault(__webpack_require__(399));
 const debug = debug_1.default('engine');
 const exists = util_2.promisify(fs_1.default.exists);
 /**
@@ -12852,6 +13061,9 @@ class NodeEngine extends Engine_1.Engine {
         this.logEmitter.on('log', log => {
             if (log.level === 'error') {
                 this.lastError = log;
+                if (log.message === 'PANIC') {
+                    this.handlePanic(log);
+                }
             }
             if (this.debug) {
                 debug_1.default('engine:log')(log);
@@ -12879,6 +13091,13 @@ You may have to run ${chalk_1.default.greenBright('prisma2 generate')} for your 
         }
         this.platformPromise = get_platform_1.getPlatform();
         return this.platformPromise;
+    }
+    handlePanic(log) {
+        this.child.kill();
+        if (this.currentRequestPromise) {
+            ;
+            this.currentRequestPromise.cancel();
+        }
     }
     async resolvePrismaPath() {
         if (this.prismaPath) {
@@ -12975,17 +13194,24 @@ ${chalk_1.default.dim("In case we're mistaken, please report this to us 🙏.")}
                     PRISMA_DML: this.datamodel,
                     PORT: String(this.port),
                     RUST_BACKTRACE: '1',
+                    RUST_LOG: 'info',
                 };
                 if (this.datasources) {
                     env.OVERWRITE_DATASOURCES = this.printDatasources();
                 }
-                debug_1.default('engine', env);
+                debug(env);
                 const prismaPath = await this.getPrismaPath();
                 this.child = child_process_1.spawn(prismaPath, [], {
                     env: Object.assign({}, process.env, env),
-                    stdio: ['pipe', 'pipe', 'ignore'],
+                    stdio: ['pipe', 'pipe', 'pipe'],
                 });
-                this.child.stdout.on('data', msg => {
+                this.child.stderr.on('data', msg => {
+                    const data = String(msg);
+                    if (data.includes('\u001b[1;94m-->\u001b[0m')) {
+                        this.stderrLogs += data;
+                    }
+                });
+                byline_1.default(this.child.stdout).on('data', msg => {
                     const data = String(msg);
                     try {
                         const json = JSON.parse(data);
@@ -12993,20 +13219,21 @@ ${chalk_1.default.dim("In case we're mistaken, please report this to us 🙏.")}
                         this.logEmitter.emit('log', log);
                     }
                     catch (e) {
-                        debug_1.default('engine', e);
-                        //
+                        debug(e, data);
                     }
+                });
+                this.child.on('exit', code => {
+                    const message = this.stderrLogs ? this.stderrLogs : this.stdoutLogs;
+                    this.lastError = {
+                        application: 'datamodel',
+                        date: new Date(),
+                        level: 'error',
+                        message,
+                    };
                 });
                 this.child.on('error', err => {
                     reject(err);
                 });
-                // wait for the engine to be ready
-                // TODO: we should fix this since it's not obvious what's happening
-                // here. We wait for the engine to try and connect, if it fails
-                // we'll try to kill the child. Often times the child is already
-                // dead and will also throw. We prefer that error over engineReady's
-                // error, so we take that first. If there wasn't an error, we'll use
-                // engineReady's error.
                 if (this.lastError) {
                     return reject(new Engine_1.PhotonError(this.lastError));
                 }
@@ -13120,14 +13347,14 @@ ${chalk_1.default.dim("In case we're mistaken, please report this to us 🙏.")}
         if (!this.child) {
             throw new Error(`Engine has already been stopped`);
         }
-        this.currentRequestPromise = got_1.default
-            .post(this.url, {
+        this.currentRequestPromise = got_1.default.post(this.url, {
             json: true,
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: { query, variables: {}, operationName: '' },
-        })
+            body: { query, variables: {} },
+        });
+        return this.currentRequestPromise
             .then(({ body }) => {
             const errors = body.error || body.errors;
             if (errors) {
@@ -13138,19 +13365,24 @@ ${chalk_1.default.dim("In case we're mistaken, please report this to us 🙏.")}
             }
             return body.data;
         })
-            .catch(errors => {
-            if (errors.code && errors.code === 'ECONNRESET') {
+            .catch(error => {
+            if (this.currentRequestPromise.isCanceled && this.lastError) {
+                throw new Engine_1.PhotonError(this.lastError);
+            }
+            if (error.code && error.code === 'ECONNRESET') {
+                if (this.lastError) {
+                    throw new Engine_1.PhotonError(this.lastError);
+                }
                 const logs = this.stderrLogs || this.stdoutLogs;
                 throw new Error(logs);
             }
-            if (!(errors instanceof Engine_1.PhotonQueryError)) {
-                return this.handleErrors({ errors, query });
+            if (!(error instanceof Engine_1.PhotonQueryError)) {
+                return this.handleErrors({ errors: error, query });
             }
             else {
-                throw errors;
+                throw error;
             }
         });
-        return this.currentRequestPromise;
     }
     serializeErrors(errors) {
         // make the happy case beautiful
@@ -13997,7 +14229,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = __importDefault(__webpack_require__(946));
-const strip_ansi_1 = __importDefault(__webpack_require__(0));
+const strip_ansi_1 = __importDefault(__webpack_require__(90));
 const deep_set_1 = __webpack_require__(721);
 const stringifyObject_1 = __importDefault(__webpack_require__(212));
 const DIM_TOKEN = '@@__DIM_POINTER__@@';
