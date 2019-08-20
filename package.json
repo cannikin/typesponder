@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "aws-sdk": "^2.513.0",
     "blueimp-md5": "^2.11.0",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
@@ -11,7 +12,8 @@
     "react-dom": "^16.8.6",
     "react-linkify": "^1.0.0-alpha",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "typescript": "^3.5.3"
   },
   "scripts": {
     "start": "react-scripts start",
