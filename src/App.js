@@ -17,13 +17,13 @@ export default function App() {
 
   const [users, setUsers] = useState([])
   const [forms, setForms] = useState([])
-  const [newResults, setNewResults] = useState(false)
+  const [newResults, setNewResults] = useState(0)
 
   // gets all data for the app
   async function getData() {
     const response = await fetch(endpoints.getUsers)
     const json = await response.json()
-    
+
     return json
   }
 
@@ -71,12 +71,15 @@ export default function App() {
 
   // periodically check for new responses and set `newResults` state if new data is available
   // used https://overreacted.io/making-setinterval-declarative-with-react-hooks/ for help
-  useEffect(() => {    
+  useEffect(() => {
     let id = setInterval(async () => {
       if (users.length) {
-        let json = await getData()
-        if (responseCount(users) !== responseCount(json.users)) {
-          setNewResults(true)
+        const response = await fetch(endpoints.responsesCount)
+        const json = await response.json()
+        const newResponsesCount = json.responsesCount - responseCount(users)
+
+        if (newResponsesCount) {
+          setNewResults(newResponsesCount)
         }
       }
     }, NEW_USER_INTERVAL_SECONDS * 1000)
@@ -93,7 +96,7 @@ export default function App() {
             <Link to="/" className="no-underline pwv-blue">Typesponder</Link>
           </h1>
           <div className="w-third tc">
-            <NewResults show={ newResults } />
+            <NewResults count={ newResults } />
           </div>
           <h3 className="mt1 mb0 f6 pv3 fw4 w-third tr silver">
             <ResultCount users={ users } count={ responseCount } />

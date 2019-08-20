@@ -1,11 +1,11 @@
 import React from "react"
 
-export default function NewResults({ show }) {
+export default function NewResults({ count }) {
 
-  if (show) {
+  if (count) {
     return (
       <h3 className="dib fw2 f6 pv2 ph4 white bg-pwv-red v-mid br4">
-        New responses, refresh to see!
+        {count} new response(s), refresh to see!
       </h3>
     )
   } else {
