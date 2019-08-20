@@ -1,7 +1,6 @@
 import React from "react"
 import Linkify from "react-linkify"
 import Notes from "./Notes"
-import endpoints from "../endpoints";
 
 function textFormat(text) {
   return String(text).split('\n').map((item, key) => {
