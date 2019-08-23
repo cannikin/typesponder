@@ -18,7 +18,7 @@ exports.handler = (event, context, callback) => {
 
   if (!getEmail()) {
     // no email found, but return 200 so Typeform is happy
-    callback(null, {
+    return callback(null, {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: "No email found, skipping" })
