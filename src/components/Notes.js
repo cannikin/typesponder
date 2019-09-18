@@ -75,10 +75,10 @@ export default function Notes({ id, notes, onUpdate }) {
           {saveButtonLabel()}
         </button>
       </form>
-      <div class="print-only">
+      <div className="print-only">
         <hr />
-        <h2 class="f4 fw5">Notes</h2>
-        <div class="courier">{notes}</div>
+        <h2 className="f4 fw5">Notes</h2>
+        <div className="courier">{notes}</div>
       </div>
     </>
   );

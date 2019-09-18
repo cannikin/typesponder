@@ -3,8 +3,10 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import "./styles/app.sass";
 import logo from "./images/logo.svg";
 import moment from "moment";
+import netlifyIdentity from "netlify-identity-widget";
 
 import endpoints from "./endpoints";
+import AuthButton from "./components/AuthButton";
 import BlankSlate from "./components/BlankSlate";
 import Responses from "./components/Responses";
 import Detail from "./components/Detail";
@@ -12,11 +14,29 @@ import NewResults from "./components/NewResults";
 import ResultCount from "./components/ResultCount";
 
 export default function App() {
-  const NEW_USER_INTERVAL_SECONDS = 60;
+  const NEW_USERS_INTERVAL_SECONDS = 60;
 
   const [users, setUsers] = useState([]);
   const [forms, setForms] = useState([]);
   const [newResults, setNewResults] = useState(0);
+  const [currentUser, setCurrentUser] = useState(localStorage.getItem("gotrue.user"));
+
+  const netlifyAuth = {
+    signin() {
+      netlifyIdentity.open();
+      netlifyIdentity.on("login", user => {
+        setCurrentUser(user);
+        netlifyIdentity.close();
+      });
+    },
+
+    signout() {
+      netlifyIdentity.logout();
+      netlifyIdentity.on("logout", () => {
+        setCurrentUser(null);
+      });
+    }
+  };
 
   // gets all data for the app
   async function getData() {
@@ -81,7 +101,7 @@ export default function App() {
           setNewResults(newResponsesCount);
         }
       }
-    }, NEW_USER_INTERVAL_SECONDS * 1000);
+    }, NEW_USERS_INTERVAL_SECONDS * 1000);
 
     return () => clearInterval(id);
   });
@@ -99,28 +119,47 @@ export default function App() {
           <div className="w-third tc">
             <NewResults count={newResults} />
           </div>
-          <h3 className="mt1 mb0 f6 pv3 fw4 w-third tr silver">
-            <ResultCount users={users} count={responseCount} />
-          </h3>
+          <div className="w-third tr">
+            <h3 className="dib mt1 mb0 mr2 f6 pv3 fw4 tr silver">
+              {currentUser ? <ResultCount users={users} count={responseCount} /> : ""}
+            </h3>
+            <AuthButton currentUser={currentUser} netlifyAuth={netlifyAuth} />
+          </div>
         </header>
-        <main className="flex flex-wrap flex-auto-ns">
-          <nav className="w-100 w-25-ns mb3 ph3 bb bn-ns b--moon-gray no-print">
-            <Responses users={users} forms={forms} />
-          </nav>
-          <section className="w-100 w-75-ns ph3">
-            <Route exact path="/" render={() => <BlankSlate />} />
-            <Route
-              path="/users/:id"
-              render={({ match }) => (
-                <Detail
-                  user={users.find(r => r.id === parseInt(match.params.id))}
-                  forms={forms}
-                  onUserUpdate={updateUser}
-                />
-              )}
-            />
-          </section>
-        </main>
+
+        {currentUser ? (
+          <main className="flex flex-wrap flex-auto-ns">
+            <nav className="w-100 w-25-ns mb3 ph3 bb bn-ns b--moon-gray no-print">
+              <Responses users={users} forms={forms} />
+            </nav>
+            <section className="w-100 w-75-ns ph3">
+              <Route exact path="/" component={BlankSlate} />
+              <Route
+                path="/users/:id"
+                render={({ match }) => (
+                  <Detail
+                    user={users.find(r => r.id === parseInt(match.params.id))}
+                    forms={forms}
+                    onUserUpdate={updateUser}
+                  />
+                )}
+              />
+            </section>
+          </main>
+        ) : (
+          <p className="tc">
+            <a
+              href="/signin"
+              className="pwv-red"
+              onClick={e => {
+                e.preventDefault();
+                netlifyAuth.signin();
+              }}>
+              Sign in
+            </a>{" "}
+            to continue
+          </p>
+        )}
       </div>
     </Router>
   );
