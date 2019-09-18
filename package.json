@@ -6,6 +6,7 @@
     "aws-sdk": "^2.513.0",
     "blueimp-md5": "^2.11.0",
     "moment": "^2.24.0",
+    "netlify-identity-widget": "^1.5.5",
     "node-fetch": "^2.6.0",
     "prisma2": "^2.0.0-preview-5",
     "react": "^16.8.6",
