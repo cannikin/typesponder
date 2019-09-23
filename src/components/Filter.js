@@ -1,9 +1,28 @@
 import React from "react";
 
 export default function Filter({ forms, formFilter, setFormFilter }) {
-  const changeFilter = e => {
+  function changeFilter(e) {
     setFormFilter(e.currentTarget.value);
-  };
+  }
+
+  function filterOptions() {
+    return forms
+      .sort((a, b) => {
+        const aName = a.name.toUpperCase();
+        const bName = b.name.toUpperCase();
+
+        if (aName > bName) return 1;
+        if (aName < bName) return -1;
+        return 0;
+      })
+      .map(form => {
+        return (
+          <option key={form.id} value={form.id}>
+            {form.name}
+          </option>
+        );
+      });
+  }
 
   return (
     <div className="relative tc mb3">
@@ -12,13 +31,7 @@ export default function Filter({ forms, formFilter, setFormFilter }) {
         value={formFilter}
         onChange={changeFilter}>
         <option value="">Filter by form</option>
-        {forms.map(form => {
-          return (
-            <option key={form.id} value={form.id}>
-              {form.name}
-            </option>
-          );
-        })}
+        {filterOptions()}
       </select>
       <div
         className="absolute flex items-center"
