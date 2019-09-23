@@ -10,7 +10,7 @@ import NewResults from "./NewResults";
 import ResultCount from "./ResultCount";
 
 export default function Header({ currentUser, setCurrentUser, users }) {
-  const NEW_USERS_INTERVAL_SECONDS = 5;
+  const NEW_USERS_INTERVAL_SECONDS = 60;
 
   const [newResults, setNewResults] = useState(0);
 
