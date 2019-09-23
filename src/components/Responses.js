@@ -26,6 +26,7 @@ export default function Responses({ users, forms, usersLoaded }) {
           key={user.id}
           id={user.id}
           email={user.email}
+          hasNotes={user.notes.trim() !== ""}
           createdAt={user.createdAt}
           tags={formTags(user.responses)}
         />
