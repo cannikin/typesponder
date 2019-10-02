@@ -14,20 +14,15 @@ export default function Row({ id, email, createdAt, tags, hasNotes }) {
         to={`/users/${id}`}
         className="db hover-bg-near-white no-underline pa2 br2 pwv-blue"
         activeClassName="active bg-pwv-blue hover-bg-pwv-blue white">
-        <div className="flex">
-          <div className="w2-5 mr2">
-            <img src={avatar(email)} alt="avatar" className="br-100" />
-          </div>
-          <div className="flex-auto">
-            <span className="db pwv-red active-white truncate" style={{ width: "205px" }}>
-              {email}
-            </span>
-            <time className="f7 silver" dateTime={moment(createdAt).format()}>
-              {moment(createdAt).format("LLL")}
-            </time>
-          </div>
+        <div className="">
+          <span className="db pwv-red active-white truncate" style={{ width: "250px" }}>
+            {email}
+          </span>
+          <time className="f7 silver" dateTime={moment(createdAt).format()}>
+            {moment(createdAt).format("LLL")}
+          </time>
         </div>
-        <ul className="flex flex-wrap list ml2 f7 fw2">
+        <ul className="flex flex-wrap list pl0 mr2 f7 fw2 mt1">
           {tags.map((tag, i) => (
             <li key={i} className="bg-pwv-red white mr1 mb1 ph2 pv1 br1">
               {tag}
