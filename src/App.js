@@ -58,18 +58,21 @@ export default function App() {
     setUsers(updatedUsers);
   }
 
-  // gets data and populates state
   useEffect(() => {
-    // eslint-disable-next-line no-inner-declarations
-    const retrieveForms = async () => {
-      setForms(await getForms());
+    const fetchData = async () => {
+      const response = await fetch("/.netlify/functions/get-forms");
+      const json = await response.json();
+      setForms(json.forms);
     };
-    const retrieveUsers = async () => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
       setUsers(await getUsers());
     };
-    if (!forms.length) retrieveForms();
-    if (!users.length) retrieveUsers();
-  });
+    fetchData();
+  }, []);
 
   return (
     <Router>
