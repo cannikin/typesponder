@@ -1,67 +1,67 @@
-const AWS = require('./dynamo_connect')
+const AWS = require("./dynamo_connect");
 const docClient = new AWS.DynamoDB.DocumentClient();
-const IGNORE_QUESTION_IDS = ["FNpSFI70cRum", "xoPkRLGnE7M1"]
+const IGNORE_QUESTION_IDS = ["FNpSFI70cRum", "xoPkRLGnE7M1"];
 
 exports.handler = (event, context, callback) => {
-
   // only respond to POST
   if (event.httpMethod !== "POST") {
     callback(null, {
       statusCode: 404,
       body: ""
-    })
+    });
   }
 
-  const response = JSON.parse(event.body).form_response
+  const response = JSON.parse(event.body).form_response;
 
-  console.log(response)
+  console.log(response);
 
   if (!getEmail()) {
+    console.log("No email found, skipping");
     // no email found, but return 200 so Typeform is happy
     return callback(null, {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: "No email found, skipping" })
-    })
+    });
   }
 
   // parse out some important fields we care about
-  const responseId = response.token.toLowerCase()
-  const formId = response.form_id
-  const createdAt = response.submitted_at
-  const email = getEmail()
-  const answers = response.answers
+  const responseId = response.token.toLowerCase();
+  const formId = response.form_id;
+  const createdAt = response.submitted_at;
+  const email = getEmail();
+  const answers = response.answers;
 
   function getEmail() {
-    const answer = response.answers.find(f => f.type === "email")
-    const hidden = response.hidden
+    const answer = response.answers.find(f => f.type === "email");
+    const hidden = response.hidden;
 
-    return (answer || {}).email || (hidden || {}).email
+    return (answer || {}).email || (hidden || {}).email;
   }
 
   function formattedAnswers() {
-    let output = []
+    let output = [];
 
     answers.forEach(answer => {
-      let text = ""
+      let text = "";
 
       if (IGNORE_QUESTION_IDS.indexOf(answer.field.id) === -1) {
         switch (answer.type) {
           case "choice":
-            text = answer.choice.label
-            break
+            text = answer.choice.label;
+            break;
           default:
-            text = String(answer[answer.type])
+            text = String(answer[answer.type]);
         }
 
         output.push({
           questionId: answer.field.id,
           text: text
-        })
+        });
       }
-    })
+    });
 
-    return output
+    return output;
   }
 
   // the entire Item that DynamoDB expects
@@ -70,16 +70,16 @@ exports.handler = (event, context, callback) => {
       formId: formId,
       id: responseId,
       answers: formattedAnswers()
-    }
+    };
   }
 
   // given a user, adds the latest response to it, otherwise creates a new user with an id
   // of lastId + 1
   function formattedUser(user, lastId) {
     if (user) {
-      let existingUser = user
-      existingUser.responses.push(formattedResponse())
-      return existingUser
+      let existingUser = user;
+      existingUser.responses.push(formattedResponse());
+      return existingUser;
     } else {
       return {
         id: ++lastId,
@@ -87,13 +87,16 @@ exports.handler = (event, context, callback) => {
         email: email,
         notes: " ",
         responses: [formattedResponse()]
-      }
+      };
     }
   }
 
   // actually saves the user to DyanmoDB
   function saveUser(user, lastId, afterSaveCallback) {
-    const userData = formattedUser(user, lastId)
+    const userData = formattedUser(user, lastId);
+
+    console.log("Adding user:");
+    console.log(userData);
 
     docClient.put({ TableName: "users", Item: userData }, (err, data) => {
       if (err) {
@@ -101,11 +104,11 @@ exports.handler = (event, context, callback) => {
           statusCode: 500,
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(err)
-        })
+        });
       } else {
-        afterSaveCallback(userData)
+        afterSaveCallback(userData);
       }
-    })
+    });
   }
 
   // will only get here if an email address is found in the response
@@ -115,24 +118,24 @@ exports.handler = (event, context, callback) => {
         statusCode: 500,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(err)
-      })
+      });
     } else {
-      let existingUser = data.Items.find(user => user.email === email)
+      let existingUser = data.Items.find(user => user.email === email);
       let lastId = data.Items.sort((a, b) => {
         if (a.id > b.id) {
-          return 1
+          return 1;
         } else {
-          return -1
+          return -1;
         }
-      }).pop().id
+      }).pop().id;
 
-      saveUser(existingUser, lastId, (user) => {
+      saveUser(existingUser, lastId, user => {
         callback(null, {
           statusCode: 200,
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(user)
-        })
-      })
+        });
+      });
     }
-  })
-}
+  });
+};
