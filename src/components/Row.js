@@ -1,13 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
-import md5 from "blueimp-md5/js/md5";
 
 export default function Row({ id, email, createdAt, tags, hasNotes }) {
-  function avatar(email) {
-    return `https://gravatar.com/avatar/${md5(email)}`;
-  }
-
   return (
     <li className="mb1 relative">
       <NavLink

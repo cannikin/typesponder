@@ -7,7 +7,7 @@ AWS.config.update({
 });
 
 if (process.env.AMAZON_DYNAMODB_ENDPOINT) {
-  AWS.config.update({ endpoint: process.env.AMAZON_DYNAMODB_ENDPOINT })
+  AWS.config.update({ endpoint: process.env.AMAZON_DYNAMODB_ENDPOINT });
 }
 
-module.exports = AWS
+module.exports = AWS;

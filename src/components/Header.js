@@ -10,7 +10,7 @@ import NewResults from "./NewResults";
 import ResultCount from "./ResultCount";
 
 export default function Header({ currentUser, setCurrentUser, users }) {
-  const NEW_USERS_INTERVAL_SECONDS = 60;
+  const NEW_USERS_INTERVAL_SECONDS = 10;
 
   const [newResults, setNewResults] = useState(0);
 
@@ -21,7 +21,7 @@ export default function Header({ currentUser, setCurrentUser, users }) {
       if (users.length) {
         const response = await fetch(endpoints.responsesCount);
         const json = await response.json();
-        const newResponsesCount = json.responsesCount - users.count;
+        const newResponsesCount = json.responsesCount - users.length;
 
         if (newResponsesCount) {
           setNewResults(newResponsesCount);

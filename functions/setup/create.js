@@ -7,11 +7,10 @@ AWS.config.update({
 });
 
 if (process.env.AMAZON_DYNAMODB_ENDPOINT) {
-  AWS.config.update({ endpoint: process.env.AMAZON_DYNAMODB_ENDPOINT })
+  AWS.config.update({ endpoint: process.env.AMAZON_DYNAMODB_ENDPOINT });
 }
 
 const dynamodb = new AWS.DynamoDB();
-
 
 ////////////////////////////////
 // Forms
@@ -19,28 +18,23 @@ const dynamodb = new AWS.DynamoDB();
 
 const forms = {
   TableName: "forms",
-  KeySchema: [
-    { AttributeName: "id", KeyType: "HASH" }
-  ],
-  AttributeDefinitions: [
-    { AttributeName: "id", AttributeType: "S" }
-  ],
+  KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
+  AttributeDefinitions: [{ AttributeName: "id", AttributeType: "S" }],
   ProvisionedThroughput: {
     ReadCapacityUnits: 1,
     WriteCapacityUnits: 1
   }
 };
 
-dynamodb.deleteTable({ TableName: "forms" }, (err, data) => {
-  dynamodb.createTable(forms, function (err, data) {
-    if (err) {
-      console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
-    } else {
-      console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
-    }
-  });
-})
-
+// dynamodb.deleteTable({ TableName: "forms" }, (err, data) => {
+dynamodb.createTable(forms, function(err, data) {
+  if (err) {
+    console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
+  } else {
+    console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
+  }
+});
+// });
 
 ////////////////////////////////
 // Users
@@ -48,11 +42,28 @@ dynamodb.deleteTable({ TableName: "forms" }, (err, data) => {
 
 const users = {
   TableName: "users",
-  KeySchema: [
-    { AttributeName: "id", KeyType: "HASH" }
-  ],
+  KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
   AttributeDefinitions: [
-    { AttributeName: "id", AttributeType: "N" }
+    { AttributeName: "id", AttributeType: "N" },
+    { AttributeName: "email", AttributeType: "S" }
+  ],
+  GlobalSecondaryIndexes: [
+    {
+      IndexName: "email-index",
+      KeySchema: [
+        {
+          AttributeName: "email",
+          KeyType: "HASH"
+        }
+      ],
+      Projection: {
+        ProjectionType: "ALL"
+      },
+      ProvisionedThroughput: {
+        ReadCapacityUnits: 1,
+        WriteCapacityUnits: 1
+      }
+    }
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 1,
@@ -60,14 +71,12 @@ const users = {
   }
 };
 
-dynamodb.deleteTable({ TableName: "users" }, (err, data) => {
-  dynamodb.createTable(users, function (err, data) {
-    if (err) {
-      console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
-    } else {
-      console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
-    }
-  });
-})
-
-
+// dynamodb.deleteTable({ TableName: "users" }, (err, data) => {
+dynamodb.createTable(users, function(err, data) {
+  if (err) {
+    console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
+  } else {
+    console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
+  }
+});
+// });

@@ -1,14 +1,13 @@
-const AWS = require('./dynamo_connect')
+const AWS = require("./helpers/dynamo_connect");
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = (event, context, callback) => {
-
   // only respond to POST
-  if (event.httpMethod != 'POST') {
+  if (event.httpMethod != "POST") {
     return callback(null, {
       statusCode: 404,
-      body: ''
-    })
+      body: ""
+    });
   }
 
   function respondWith(body) {
@@ -16,27 +15,29 @@ exports.handler = (event, context, callback) => {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body)
-    })
+    });
   }
 
-  const body = JSON.parse(event.body)
+  const body = JSON.parse(event.body);
 
-  docClient.update({
-    TableName: "users",
-    Key: {
-      id: parseInt(body.id)
+  docClient.update(
+    {
+      TableName: "users",
+      Key: {
+        id: parseInt(body.id)
+      },
+      UpdateExpression: "SET notes = :notes",
+      ExpressionAttributeValues: {
+        ":notes": body.notes == "" ? " " : body.notes
+      },
+      ReturnValues: "ALL_NEW"
     },
-    UpdateExpression: "SET notes = :notes",
-    ExpressionAttributeValues: {
-      ":notes": (body.notes == "" ? " " : body.notes)
-    },
-    ReturnValues: "ALL_NEW"
-  }, (err, data) => {
-    if (err) {
-      respondWith({ error: err })
-    } else {
-      respondWith(data.Attributes)
+    (err, data) => {
+      if (err) {
+        respondWith({ error: err });
+      } else {
+        respondWith(data.Attributes);
+      }
     }
-  })
-
-}
+  );
+};

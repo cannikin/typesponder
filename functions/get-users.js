@@ -1,7 +1,7 @@
 // Returns all forms and a limit of 25 users. Pass ?lastUser=123 for the starting point for the next
 // 25 users
 
-const AWS = require("./dynamo_connect");
+const AWS = require("./helpers/dynamo_connect");
 const docClient = new AWS.DynamoDB.DocumentClient();
 const PER_PAGE = 25;
 

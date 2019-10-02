@@ -1,14 +1,16 @@
-const AWS = require("./dynamo_connect");
+const AWS = require("./helpers/dynamo_connect");
+const Count = require("./helpers/count");
+
 const docClient = new AWS.DynamoDB.DocumentClient();
 const IGNORE_QUESTION_IDS = ["FNpSFI70cRum", "xoPkRLGnE7M1"];
 
-exports.handler = (event, context, callback) => {
+exports.handler = async (event, _context) => {
   // only respond to POST
   if (event.httpMethod !== "POST") {
-    callback(null, {
+    return {
       statusCode: 404,
       body: ""
-    });
+    };
   }
 
   const response = JSON.parse(event.body).form_response;
@@ -18,11 +20,11 @@ exports.handler = (event, context, callback) => {
   if (!getEmail()) {
     console.log("No email found, skipping");
     // no email found, but return 200 so Typeform is happy
-    return callback(null, {
+    return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: "No email found, skipping" })
-    });
+    };
   }
 
   // parse out some important fields we care about
@@ -92,50 +94,44 @@ exports.handler = (event, context, callback) => {
   }
 
   // actually saves the user to DyanmoDB
-  function saveUser(user, lastId, afterSaveCallback) {
+  async function saveUser(user, lastId, afterSaveCallback) {
     const userData = formattedUser(user, lastId);
+    const request = docClient.put({ TableName: "users", Item: userData });
+    const data = await request.promise();
 
-    console.log("Adding user:");
-    console.log(userData);
+    return userData;
+  }
 
-    docClient.put({ TableName: "users", Item: userData }, (err, data) => {
-      if (err) {
-        callback(null, {
-          statusCode: 500,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(err)
-        });
-      } else {
-        afterSaveCallback(userData);
+  async function getExistingUser() {
+    const request = docClient.query({
+      TableName: "users",
+      IndexName: "email-index",
+      KeyConditionExpression: "email = :email",
+      ExpressionAttributeValues: {
+        ":email": getEmail()
       }
     });
+    const promise = await request.promise();
+
+    return promise.Items[0];
   }
 
   // will only get here if an email address is found in the response
-  docClient.scan({ TableName: "users" }, (err, data) => {
-    if (err) {
-      callback(null, {
-        statusCode: 500,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(err)
-      });
-    } else {
-      let existingUser = data.Items.find(user => user.email === email);
-      let lastId = data.Items.sort((a, b) => {
-        if (a.id > b.id) {
-          return 1;
-        } else {
-          return -1;
-        }
-      }).pop().id;
 
-      saveUser(existingUser, lastId, user => {
-        callback(null, {
-          statusCode: 200,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(user)
-        });
-      });
-    }
-  });
+  const existingUser = await getExistingUser();
+  const lastId = await Count();
+  const user = await saveUser(existingUser, lastId);
+
+  return {
+    statusCode: 200,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user)
+  };
+
+  // DEBUG OUTPUT
+  // return {
+  //   statusCode: 200,
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify({ existingUser, lastId })
+  // };
 };
