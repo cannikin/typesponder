@@ -5,13 +5,6 @@ import "./styles/app.sass";
 import Header from "./components/Header";
 import Main from "./components/Main";
 
-const getForms = async () => {
-  const response = await fetch("/.netlify/functions/get-forms");
-  const json = await response.json();
-
-  return json.forms;
-};
-
 const getUsers = async () => {
   let endpointRoot = "/.netlify/functions/get-users",
     endpoint = endpointRoot,
