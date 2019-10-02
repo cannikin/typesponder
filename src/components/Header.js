@@ -21,7 +21,7 @@ export default function Header({ currentUser, setCurrentUser, users }) {
       if (users.length) {
         const response = await fetch(endpoints.responsesCount);
         const json = await response.json();
-        const newResponsesCount = json.responsesCount - responseCount(users);
+        const newResponsesCount = json.responsesCount - users.count;
 
         if (newResponsesCount) {
           setNewResults(newResponsesCount);
