@@ -3,14 +3,14 @@
 
 const AWS = require("./dynamo_connect");
 const docClient = new AWS.DynamoDB.DocumentClient();
+const PER_PAGE = 25;
 
 exports.handler = (event, context, callback) => {
-  console.log(event.queryStringParameters.lastUser);
   const lastUser = event.queryStringParameters.lastUser;
 
   let userParams = {
     TableName: "users",
-    Limit: 2,
+    Limit: PER_PAGE,
     ExclusiveStartKey: lastUser ? { id: parseInt(lastUser) } : null
   };
 
