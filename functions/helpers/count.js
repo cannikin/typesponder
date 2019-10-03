@@ -14,12 +14,12 @@ const Count = async () => {
   while (!done) {
     params = {
       TableName: "users",
-      Select: "COUNT",
+      AttributesToGet: ["id"],
       ExclusiveStartKey: lastUser ? { id: parseInt(lastUser) } : null
     };
     request = docClient.scan(params);
     data = await request.promise();
-    count += data.Count;
+    count += data.Items.length;
 
     if (data.LastEvaluatedKey) {
       lastUser = data.LastEvaluatedKey.id;
