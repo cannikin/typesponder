@@ -1,6 +1,4 @@
 const AWS = require("./helpers/dynamo_connect");
-const Count = require("./helpers/count");
-
 const docClient = new AWS.DynamoDB.DocumentClient();
 const IGNORE_QUESTION_IDS = ["FNpSFI70cRum", "xoPkRLGnE7M1"];
 
@@ -116,10 +114,38 @@ exports.handler = async (event, _context) => {
     return promise.Items[0];
   }
 
+  async function getLastId() {
+    let done = false,
+      lastUser = null,
+      ids = [],
+      request,
+      data,
+      params;
+
+    while (!done) {
+      params = {
+        TableName: "users",
+        AttributesToGet: ["id"],
+        ExclusiveStartKey: lastUser ? { id: parseInt(lastUser) } : null
+      };
+      request = docClient.scan(params);
+      data = await request.promise();
+      ids = ids.concat(data.Items.map(item => item.id));
+
+      if (data.LastEvaluatedKey) {
+        lastUser = data.LastEvaluatedKey.id;
+      } else {
+        done = true;
+      }
+    }
+
+    return ids.sort((a, b) => a - b).pop();
+  }
+
   // will only get here if an email address is found in the response
 
   const existingUser = await getExistingUser();
-  const lastId = await Count();
+  const lastId = await getLastId();
   const user = await saveUser(existingUser, lastId);
 
   return {

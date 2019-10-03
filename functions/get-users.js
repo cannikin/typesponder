@@ -5,7 +5,7 @@ const AWS = require("./helpers/dynamo_connect");
 const docClient = new AWS.DynamoDB.DocumentClient();
 const PER_PAGE = 25;
 
-exports.handler = (event, context, callback) => {
+exports.handler = (event, _context, callback) => {
   const lastUser = event.queryStringParameters.lastUser;
 
   let userParams = {
