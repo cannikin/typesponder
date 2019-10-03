@@ -84,7 +84,7 @@ exports.handler = async (event, _context) => {
       return existingUser;
     } else {
       return {
-        id: 18,
+        id: ++lastId,
         createdAt: createdAt,
         email: email,
         notes: " ",
