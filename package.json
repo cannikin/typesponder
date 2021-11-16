@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "aws-sdk": "^2.513.0",
+    "aws-sdk": "^2.814.0",
     "blueimp-md5": "^2.11.0",
     "moment": "^2.24.0",
     "netlify-identity-widget": "^1.5.5",
